@@ -1,0 +1,32 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "eli"
+version = "0.0.0"
+dependencies = ["django"]
+
+[tool.hatch.envs.style]
+dependencies = ["setuptools", "isort", "black", "pylama", "mypy", "types-beautifulsoup4", "django-stubs[compatible-mypy]"]
+
+[tool.hatch.envs.style.scripts]
+format = [
+       "isort --color src",
+       "black src",
+]
+
+check = [
+      "pylama --ignore E203 src", # E203 is not pep8-compliant, and black breaks it
+      "mypy --strict --pretty src",
+] 
+all = [
+    "format",
+    "check",
+]
+
+[tool.mypy]
+plugins = ["mypy_django_plugin.main"]
+
+[tool.django-stubs]
+django_settings_module = "eli.settings"
