@@ -17,23 +17,19 @@ Limit your response to 5 sentences. Don't use excessive exclamation marks.
 
 """
 
-def submit(request: HttpRequest) -> HttpResponse:
-    return HttpResponse(str(request.POST))
-
-
-class IndexView(FormView):
-    template_name = "eli_app/index.html"
+class QueryView(FormView):
+    template_name = "eli_app/query.html"
     form_class = QueryForm
 
+    def form_valid(self, form, **kwargs):
+        query = form.cleaned_data["query"]
+        response = ai_model.generate_content(preamble + query).text
 
-class SubmitView(TemplateView):
-    template_name = "eli_app/submit.html"
+        context = self.get_context_data(**kwargs)
+        context["previous_query"] = query
+        context["previous_response"] = response
+        return self.render_to_response(context)
 
-    def post(self, request, *args, **kwargs):
-        query = preamble + request.POST["query"]
-        ai_response = ai_model.generate_content(query)
-        print(ai_response.text)
-        return HttpResponseRedirect(reverse("index"))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
