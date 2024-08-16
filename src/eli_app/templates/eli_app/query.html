@@ -1,12 +1,19 @@
-{% if previous_query %}
-<p>Previous Query:</p>
-{{ previous_query }}
-<p>Previous Response:</p>
-{{ previous_response }}
-<br>
-{% endif %}
+{% extends "eli_app/base.html" %}
+
+{% block content %}
+
 <form method="post">
   {% csrf_token %}
   {{ form }}
   <input type="submit" value="Submit">
 </form>
+
+{% if previous_query %}
+<h3>History</h3>
+<article>
+  <header>{{ previous_query }}</header>
+  <p>{{ previous_response }}</p>
+</article>
+{% endif %}
+
+{% endblock %}
