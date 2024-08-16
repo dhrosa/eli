@@ -4,7 +4,7 @@ from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 
 from .forms import QueryForm
-from .models import CommonSnippet
+from .models import CommonSnippet, Conversation
 
 from google import generativeai
 from os import environ
@@ -14,7 +14,6 @@ from functools import cache
 def ai_model():
     generativeai.configure(api_key=environ["API_KEY"])
     return generativeai.GenerativeModel('gemini-1.5-flash')
-
 
 class QueryView(FormView):
     template_name = "eli_app/query.html"
@@ -29,11 +28,19 @@ class QueryView(FormView):
         style = data["style"]
 
         prompt = f"{preamble}\n\n{style.prompt}\n\n{query}"
+
         print("===Prompt===")
         print(prompt)
         response = ai_model().generate_content(prompt)
         print("===Response===")
         print(response.to_dict())
+
+        conversation = Conversation.objects.create(
+            style_name = style.name,
+            query=query,
+            full_prompt=prompt,
+            response_text=response.text,
+            response=response.to_dict())
 
         context = self.get_context_data(**kwargs)
         context["previous_query"] = query
