@@ -1,0 +1,50 @@
+{% extends "eli_app/base.html" %}
+
+{% block styles %}
+<style>
+  #info {
+      display: flex;
+      justify-content: space-between;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- <article> -->
+<!--   <header>{{ object.query }}</header> -->
+<!--   <p>{{ object.response_text }}</p> -->
+<!--   <footer>{{ object.id }}</footer> -->
+  <!-- </article> -->
+
+<section>
+  <blockquote>
+    {{ object.query }}
+    <footer>
+      <cite>- {{ object.style_name }}</cite>
+    </footer>
+  </blockquote>
+  <blockquote>
+    {{ object.response_text }}
+    <footer>
+      <cite>- ELI</cite>
+    </footer>
+  </blockquote>
+</section>
+
+<section>
+  <h6>Additional Info</h6>
+  <table>
+    <tbody>
+      <tr>
+        <th>ID</th>
+        <td>{{ object.id }}</td>
+      </tr>
+      <tr>
+        <th>Timestamp</th>
+        <td>{{ object.timestamp }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</section>
+{% endblock %}

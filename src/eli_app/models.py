@@ -31,4 +31,4 @@ class Conversation(models.Model):
     response = models.JSONField()
 
     def __str__(self):
-        return "id={self.id} style={self.style_name}"
+        return str(self.id)

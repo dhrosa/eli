@@ -5,6 +5,7 @@ from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
+from django.views.generic.detail import DetailView
 from google import generativeai
 
 from .forms import QueryForm
@@ -53,3 +54,7 @@ class QueryView(FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
+
+class ConversationView(DetailView):
+    template_name = "eli_app/conversation.html"
+    model = Conversation
