@@ -8,4 +8,5 @@ class QueryForm(forms.Form):
         label="Explain like I'm a",
         queryset=Style.objects.all(),
         empty_label=None)
-    query = forms.CharField()
+    query = forms.CharField(
+        widget=forms.TextInput(attrs=dict(autocomplete="off")))
