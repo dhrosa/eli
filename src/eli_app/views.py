@@ -11,19 +11,17 @@ from os import environ
 generativeai.configure(api_key=environ["API_KEY"])
 ai_model = generativeai.GenerativeModel('gemini-1.5-flash')
 
-preamble = """
-Answer the following question as if you were explaining this concept to a ten-year old.
-Limit your response to 5 sentences. Don't use excessive exclamation marks.
-
-"""
-
 class QueryView(FormView):
     template_name = "eli_app/query.html"
     form_class = QueryForm
 
     def form_valid(self, form, **kwargs):
-        query = form.cleaned_data["query"]
-        response = ai_model.generate_content(preamble + query).text
+        data = form.cleaned_data
+        query = data["query"]
+        style = data["style"]
+
+        full_prompt = style.prompt + "\n\n" + query
+        response = ai_model.generate_content(full_prompt).text
 
         context = self.get_context_data(**kwargs)
         context["previous_query"] = query
