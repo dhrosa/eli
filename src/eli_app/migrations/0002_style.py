@@ -6,17 +6,25 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('eli_app', '0001_initial'),
+        ("eli_app", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Style',
+            name="Style",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.TextField()),
-                ('description', models.TextField()),
-                ('prompt', models.TextField()),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.TextField()),
+                ("description", models.TextField()),
+                ("prompt", models.TextField()),
             ],
         ),
     ]

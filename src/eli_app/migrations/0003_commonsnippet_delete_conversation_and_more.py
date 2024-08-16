@@ -6,29 +6,37 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('eli_app', '0002_style'),
+        ("eli_app", "0002_style"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='CommonSnippet',
+            name="CommonSnippet",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
-                ('text', models.TextField()),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                ("text", models.TextField()),
             ],
         ),
         migrations.DeleteModel(
-            name='Conversation',
+            name="Conversation",
         ),
         migrations.AlterField(
-            model_name='style',
-            name='description',
+            model_name="style",
+            name="description",
             field=models.CharField(blank=True, max_length=255, null=True),
         ),
         migrations.AlterField(
-            model_name='style',
-            name='name',
+            model_name="style",
+            name="name",
             field=models.CharField(max_length=255),
         ),
     ]

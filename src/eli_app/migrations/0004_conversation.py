@@ -7,19 +7,32 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('eli_app', '0003_commonsnippet_delete_conversation_and_more'),
+        ("eli_app", "0003_commonsnippet_delete_conversation_and_more"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Conversation',
+            name="Conversation",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('timestamp', models.DateTimeField(auto_now_add=True)),
-                ('query', models.TextField()),
-                ('response_text', models.TextField()),
-                ('response', models.JSONField()),
-                ('style', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='eli_app.style')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("timestamp", models.DateTimeField(auto_now_add=True)),
+                ("query", models.TextField()),
+                ("response_text", models.TextField()),
+                ("response", models.JSONField()),
+                (
+                    "style",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="eli_app.style"
+                    ),
+                ),
             ],
         ),
     ]

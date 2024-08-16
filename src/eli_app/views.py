@@ -1,19 +1,21 @@
+from functools import cache
+from os import environ
+
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
+from google import generativeai
 
 from .forms import QueryForm
 from .models import CommonSnippet, Conversation
 
-from google import generativeai
-from os import environ
-from functools import cache
 
 @cache
 def ai_model():
     generativeai.configure(api_key=environ["API_KEY"])
-    return generativeai.GenerativeModel('gemini-1.5-flash')
+    return generativeai.GenerativeModel("gemini-1.5-flash")
+
 
 class QueryView(FormView):
     template_name = "eli_app/query.html"
@@ -36,17 +38,17 @@ class QueryView(FormView):
         print(response.to_dict())
 
         conversation = Conversation.objects.create(
-            style_name = style.name,
+            style_name=style.name,
             query=query,
             full_prompt=prompt,
             response_text=response.text,
-            response=response.to_dict())
+            response=response.to_dict(),
+        )
 
         context = self.get_context_data(**kwargs)
         context["previous_query"] = query
         context["previous_response"] = response.text
         return self.render_to_response(context)
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
