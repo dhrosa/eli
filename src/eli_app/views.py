@@ -31,12 +31,7 @@ class QueryView(FormView):
         style = data["style"]
 
         prompt = f"{preamble}\n\n{style.prompt}\n\n{query}"
-
-        print("===Prompt===")
-        print(prompt)
         response = ai_model().generate_content(prompt)
-        print("===Response===")
-        print(response.to_dict())
 
         conversation = Conversation.objects.create(
             style_name=style.name,
@@ -56,5 +51,5 @@ class QueryView(FormView):
         return context
 
 class ConversationView(DetailView):
-    template_name = "eli_app/conversation.html"
+    #template_name = "eli_app/conversation.html"
     model = Conversation

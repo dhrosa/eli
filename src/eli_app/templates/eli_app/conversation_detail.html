@@ -10,27 +10,7 @@
 {% endblock %}
 
 {% block content %}
-<!-- <article> -->
-<!--   <header>{{ object.query }}</header> -->
-<!--   <p>{{ object.response_text }}</p> -->
-<!--   <footer>{{ object.id }}</footer> -->
-  <!-- </article> -->
-
-<section>
-  <blockquote>
-    {{ object.query }}
-    <footer>
-      <cite>- {{ object.style_name }}</cite>
-    </footer>
-  </blockquote>
-  <blockquote>
-    {{ object.response_text }}
-    <footer>
-      <cite>- ELI</cite>
-    </footer>
-  </blockquote>
-</section>
-
+{% include "eli_app/conversation_quote.html" %}
 <section>
   <h6>Additional Info</h6>
   <table>
