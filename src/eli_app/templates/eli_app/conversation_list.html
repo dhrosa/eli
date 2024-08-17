@@ -1,0 +1,8 @@
+{% extends "eli_app/base.html" %}
+
+{% block content %}
+<h2>Past Conversations</h2>
+{% for object in object_list %}
+{% include "eli_app/conversation_quote.html" %}
+{% endfor %}
+{% endblock %}

@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 from django.views.generic.detail import DetailView
+from django.views.generic.list import ListView
 from google import generativeai
 
 from .forms import QueryForm
@@ -30,8 +31,11 @@ class QueryView(FormView):
         query = data["query"]
         style = data["style"]
 
-        prompt = f"{preamble}\n\n{style.prompt}\n\n{query}"
+        prompt = f"{style.prompt}\n\n{preamble}\n\n{query}"
         response = ai_model().generate_content(prompt)
+
+        print(prompt)
+        print(response.text)
 
         conversation = Conversation.objects.create(
             style_name=style.name,
@@ -40,10 +44,8 @@ class QueryView(FormView):
             response_text=response.text,
             response=response.to_dict(),
         )
-
         context = self.get_context_data(**kwargs)
-        context["previous_query"] = query
-        context["previous_response"] = response.text
+        context["conversation"] = conversation
         return self.render_to_response(context)
 
     def get_context_data(self, **kwargs):
@@ -53,3 +55,10 @@ class QueryView(FormView):
 class ConversationView(DetailView):
     #template_name = "eli_app/conversation.html"
     model = Conversation
+
+class ConversationListView(ListView):
+    model = Conversation
+
+    def get_queryset(self, **kwargs):
+        qs = super().get_queryset(**kwargs)
+        return qs

@@ -1,4 +1,4 @@
-<section>
+<article class="conversation">
   <blockquote>
     {{ object.query }}
     <footer>
@@ -6,9 +6,9 @@
     </footer>
   </blockquote>
   <blockquote>
-    {{ object.response_text }}
+    {{ object.response_text|linebreaks }}
     <footer>
       <cite>- ELI</cite>
     </footer>
   </blockquote>
-</section>
+</article>
