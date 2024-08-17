@@ -1,0 +1,21 @@
+services:
+  web:
+    build: .
+    secrets:
+      - django_settings
+    
+  web_migrate:
+    extends:
+      service: web
+    command: hatch run src/manage.py migrate
+    
+  web_run:
+    extends:
+      service: web
+    command: hatch run src/manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+
+secrets:
+  django_settings:
+    file: .env
