@@ -7,11 +7,12 @@ RUN mkdir /code
 
 WORKDIR /code
 COPY pyproject.toml /code/
-COPY src/ /code/src
 
 ENV PATH="/root/.local/bin:$PATH"
 RUN pipx install hatch
 
+RUN touch eli.py
 RUN hatch shell
+RUN rm eli.py
 
 WORKDIR /code/src
