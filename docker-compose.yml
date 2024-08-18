@@ -1,13 +1,15 @@
 services:
   django:
     build: .
+    depends_on:
+      db:
+        condition: service_healthy
     secrets:
       - django_settings
     environment:
       ENV_PATH: /run/secrets/django_settings
     command: >
-      bash -c "(until pg_isready --host db --timeout 30; do sleep 1; done) &&
-               hatch run ./manage.py migrate &&
+      bash -c "hatch run ./manage.py migrate &&
                hatch run gunicorn --bind 0.0.0.0:3000 eli.wsgi:application"
     ports:
       - "3000"
@@ -26,6 +28,12 @@ services:
       - db_data:/var/lib/postgresl/data/
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 1s
+      retries: 100
+      start_period: 1s
+      timeout: 10s
 
 secrets:
   django_settings:
