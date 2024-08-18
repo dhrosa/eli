@@ -1,22 +1,29 @@
 services:
-  web:
+  django:
     build: .
     secrets:
       - django_settings
     environment:
       ENV_PATH: /run/secrets/django_settings
+    command: >
+      bash -c "hatch run ./manage.py migrate &&
+               hatch run gunicorn --bind 0.0.0.0:3000 eli.wsgi:application"
+    ports:
+      - "3000"
     
   web_migrate:
     extends:
-      service: web
-    command: hatch run src/manage.py migrate
-    
-  web_run:
-    extends:
-      service: web
-    command: hatch run src/manage.py runserver 0.0.0.0:8000
+      service: django
+    command: hatch run ./manage.py migrate
+    profiles: [disabled]
+        
+
+  nginx:
+    build: ./nginx
     ports:
-      - "8000:8000"
+      - 8000:3001
+    depends_on:
+      - django
 
 secrets:
   django_settings:

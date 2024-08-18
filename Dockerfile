@@ -13,3 +13,5 @@ ENV PATH="/root/.local/bin:$PATH"
 RUN pipx install hatch
 
 RUN hatch shell
+
+WORKDIR /code/src
