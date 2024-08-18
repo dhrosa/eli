@@ -10,6 +10,9 @@ class Rule(models.Model):
     def __str__(self):
         return self.name
 
+    def natural_key(self):
+        return (self.name,)
+
 
 class Audience(models.Model):
     name = models.CharField(max_length=255)
@@ -18,6 +21,9 @@ class Audience(models.Model):
 
     def __str__(self):
         return self.name
+
+    def natural_key(self):
+        return (self.name)
 
 
 class Conversation(models.Model):
