@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "eli"
 version = "0.0.0"
-dependencies = ["django", "google-generativeai", "django-environ", "gunicorn"]
+dependencies = ["django", "google-generativeai", "django-environ", "gunicorn", "psycopg2"]
 
 [tool.hatch.envs.style]
 dependencies = ["setuptools", "isort", "black", "pylama", "mypy", "types-beautifulsoup4", "django-stubs[compatible-mypy]"]

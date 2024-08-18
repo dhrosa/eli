@@ -81,11 +81,22 @@ WSGI_APPLICATION = "eli.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+postgres_settings = {
+    "ENGINE": "django.db.backends.postgresql",
+    "NAME": "postgres",
+    "USER": "postgres",
+    "HOST": "db",
+    "PORT": 5432,
+}
+
+sqlite_settings =  {
+    "ENGINE": "django.db.backends.sqlite3",
+    "NAME": BASE_DIR / "db.sqlite3",
+}
+
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    "default": sqlite_settings if env.bool('USE_SQLITE', False) else postgres_settings,
 }
 
 
