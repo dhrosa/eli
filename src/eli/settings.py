@@ -11,22 +11,27 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Extra parent for 'src' directory.
+env = environ.Env()
+env.read_env(BASE_DIR.parent / ".env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-bs7ge(^&fo9@+8o1&x48)_gxisa%avnd^()y3j=v56dhhmpi=="
+SECRET_KEY = env.str("SECRET_KEY", "django-insecure-bs7ge(^&fo9@+8o1&x48)_gxisa%avnd^()y3j=v56dhhmpi==")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DEBUG", False)
 
-ALLOWED_HOSTS: list[str] = ["0.0.0.0"]
+ALLOWED_HOSTS: list[str] = ["0.0.0.0", "127.0.0.1"]
 
+GEMINI_API_KEY = env.str("GEMINI_API_KEY")
 
 # Application definition
 
