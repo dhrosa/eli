@@ -3,6 +3,8 @@ services:
     build: .
     secrets:
       - django_settings
+    environment:
+      ENV_PATH: /run/secrets/django_settings
     
   web_migrate:
     extends:

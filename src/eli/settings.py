@@ -18,7 +18,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Extra parent for 'src' directory.
 env = environ.Env()
-env.read_env(BASE_DIR.parent / ".env")
+
+# Overridable .env location
+env.read_env(env.str("ENV_PATH", BASE_DIR.parent / ".env"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/

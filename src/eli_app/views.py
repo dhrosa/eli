@@ -1,5 +1,6 @@
 from functools import cache
-from os import environ
+
+from django.conf import settings
 
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
@@ -15,7 +16,7 @@ from .models import CommonSnippet, Conversation
 
 @cache
 def ai_model():
-    generativeai.configure(api_key=environ["API_KEY"])
+    generativeai.configure(api_key=settings.GEMINI_API_KEY)
     return generativeai.GenerativeModel("gemini-1.5-flash")
 
 
