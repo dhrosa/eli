@@ -11,7 +11,7 @@ from django.views.generic.list import ListView
 from google import generativeai
 
 from .forms import QueryForm
-from .models import CommonSnippet, Conversation
+from .models import Rule, Conversation
 
 
 @cache
@@ -25,21 +25,22 @@ class QueryView(FormView):
     form_class = QueryForm
 
     def form_valid(self, form, **kwargs):
-        preamble_lines = [c.text for c in CommonSnippet.objects.all()]
+        preamble_lines = [c.text for c in Rule.objects.all()]
         preamble = "\n".join(preamble_lines)
 
         data = form.cleaned_data
         query = data["query"]
-        style = data["style"]
+        audience = data["audience"]
 
-        prompt = f"{style.prompt}\n\n{preamble}\n\n{query}"
+        prompt = f"{audience.prompt}\n\n{preamble}\n\n{query}"
         response = ai_model().generate_content(prompt)
 
         print(prompt)
+        print(response)
         print(response.text)
 
         conversation = Conversation.objects.create(
-            style_name=style.name,
+            audience_name=audience.name,
             query=query,
             full_prompt=prompt,
             response_text=response.text,
