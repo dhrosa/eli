@@ -6,16 +6,11 @@ services:
     environment:
       ENV_PATH: /run/secrets/django_settings
     command: >
-      bash -c "hatch run ./manage.py migrate &&
+      bash -c "(until pg_isready --host db --timeout 30; do sleep 1; done) &&
+               hatch run ./manage.py migrate &&
                hatch run gunicorn --bind 0.0.0.0:3000 eli.wsgi:application"
     ports:
       - "3000"
-    
-  web_migrate:
-    extends:
-      service: django
-    command: hatch run ./manage.py migrate
-    profiles: [disabled]
         
 
   nginx:
@@ -25,6 +20,17 @@ services:
     depends_on:
       - django
 
+  db:
+    image: postgres:15
+    volumes:
+      - db_data:/var/lib/postgresl/data/
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+
 secrets:
   django_settings:
     file: .env
+
+
+volumes:
+  db_data:

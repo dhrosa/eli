@@ -1,7 +1,7 @@
 FROM python:3.12
 
 RUN apt-get update
-RUN apt-get install --yes pipx
+RUN apt-get install --yes pipx postgresql-client
 
 RUN mkdir /code
 
