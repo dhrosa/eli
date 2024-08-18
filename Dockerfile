@@ -12,4 +12,4 @@ COPY src/ /code/src
 ENV PATH="/root/.local/bin:$PATH"
 RUN pipx install hatch
 
-RUN hatch build
+RUN hatch shell
