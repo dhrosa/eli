@@ -1,3 +1,5 @@
+{% load json %}
+
 <article class="conversation">
   <blockquote>
     {{ object.query }}
@@ -5,11 +7,22 @@
       <cite>- {{ object.audience_name }}</cite>
     </footer>
   </blockquote>
+  {% if object.response.ok %}
   <blockquote>
     {{ object.response_text|linebreaks }}
     <footer>
       <cite>- ELI</cite>
     </footer>
   </blockquote>
+  {% else %}
+  <p>Error! Could not answer. See 'Details' below.</p>
+  {% endif %}
+
   <a href="{{ object.get_absolute_url }}">Permalink</a>
+  
+  <details>
+    <summary role="button" class="secondary">Details</summary>
+    <h6>Response</h6>
+    {{ object.response | to_pretty_json }}
+  </details>
 </article>

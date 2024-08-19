@@ -33,7 +33,6 @@ class Conversation(models.Model):
     audience_name = models.CharField(max_length=255)
     system_prompt = models.TextField()
     query = models.TextField()
-    response_text = models.TextField()
     response = models.JSONField()
 
     def __str__(self):
@@ -41,3 +40,11 @@ class Conversation(models.Model):
 
     def get_absolute_url(self):
         return reverse("conversation", kwargs={"pk": self.id})
+
+    @property
+    def response_text(self):
+        return self.response["content"]["parts"][0]["text"]
+
+    @property
+    def ok(self):
+        return self.response["finish_reason"] == "STOP"

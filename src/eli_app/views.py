@@ -34,19 +34,14 @@ class QueryView(FormView):
 
         model = ai_model(system_instruction=system_prompt)
 
-        response = model.generate_content(query)
-
-        print(system_prompt)
-        print(query)
-        print(response)
-        print(response.text)
+        response = model.generate_content(query).candidates[0]
+        response_dict = type(response).to_dict(response, use_integers_for_enums=False)
 
         conversation = Conversation.objects.create(
             audience_name=audience.name,
             system_prompt=system_prompt,
             query=query,
-            response_text=response.text,
-            response=response.to_dict(),
+            response=response_dict,
         )
         context = self.get_context_data(**kwargs)
         context["conversation"] = conversation
