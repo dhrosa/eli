@@ -13,7 +13,6 @@ from google import generativeai
 from .forms import QueryForm
 from .models import Rule, Conversation
 
-
 @cache
 def ai_model():
     generativeai.configure(api_key=settings.GEMINI_API_KEY)
@@ -55,7 +54,6 @@ class QueryView(FormView):
         return context
 
 class ConversationView(DetailView):
-    #template_name = "eli_app/conversation.html"
     model = Conversation
 
 class ConversationListView(ListView):

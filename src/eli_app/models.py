@@ -1,5 +1,5 @@
 from uuid import uuid4
-
+from django.urls import reverse
 from django.db import models
 
 
@@ -38,3 +38,6 @@ class Conversation(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+    def get_absolute_url(self):
+        return reverse("conversation", kwargs={"pk": self.id})

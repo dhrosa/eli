@@ -1,4 +1,5 @@
 {% extends "eli_app/base.html" %}
+{% load json %}
 
 {% block content %}
 {% include "eli_app/conversation_quote.html" %}
@@ -16,6 +17,8 @@
       </tr>
     </tbody>
   </table>
-</div>
+  <h6>Raw Response</h6>
+  {{ object.response | to_pretty_json }}
 </section>
+
 {% endblock %}
