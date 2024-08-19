@@ -13,10 +13,9 @@ from google import generativeai
 from .forms import QueryForm
 from .models import Rule, Conversation, Audience
 
-@cache
-def ai_model():
+def ai_model(**kwargs):
     generativeai.configure(api_key=settings.GEMINI_API_KEY)
-    return generativeai.GenerativeModel("gemini-1.5-flash")
+    return generativeai.GenerativeModel("gemini-1.5-flash", **kwargs)
 
 
 class QueryView(FormView):
@@ -24,24 +23,28 @@ class QueryView(FormView):
     form_class = QueryForm
 
     def form_valid(self, form, **kwargs):
-        preamble_lines = [c.text for c in Rule.objects.all()]
-        preamble = "\n".join(preamble_lines)
 
         data = form.cleaned_data
         query = data["query"]
         audience = data["audience"]
 
-        prompt = f"{audience.prompt}\n\n{preamble}\n\n{query}"
-        response = ai_model().generate_content(prompt)
+        system_prompt_lines = [r.text for r in Rule.objects.all()]
+        system_prompt_lines.append(audience.prompt)
+        system_prompt = "\n".join(system_prompt_lines)
 
-        print(prompt)
+        model = ai_model(system_instruction=system_prompt)
+
+        response = model.generate_content(query)
+
+        print(system_prompt)
+        print(query)
         print(response)
         print(response.text)
 
         conversation = Conversation.objects.create(
             audience_name=audience.name,
             query=query,
-            full_prompt=prompt,
+            #full_prompt=prompt,
             response_text=response.text,
             response=response.to_dict(),
         )
