@@ -17,8 +17,10 @@
       </tr>
     </tbody>
   </table>
-  <h6>Raw Response</h6>
-  {{ object.response | to_pretty_json }}
+  <details>
+    <summary role="button" class="secondary">Raw Response</summary>
+    {{ object.response | to_pretty_json }}
+  </details>
 </section>
 
 {% endblock %}

@@ -11,7 +11,7 @@
     <!-- Pico.css -->
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.0.6/css/pico.classless.min.css"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
       />
     <link rel="stylesheet" href="{% static 'eli_app/conversation.css' %}"/>
     <script type="text/javascript" src="{% static 'eli_app/conversation.js' %}"></script>
@@ -19,13 +19,13 @@
   </head>
 
   <body>
-    <header>
+    <header class="container">
       <hgroup>
         <h1>ELI</h1>
         <p>Explain Like I'm ...</p>
       </hgroup>
     </header>
-    <main>
+    <main class="container">
       {% block content %}{% endblock %}
     </main>
   </body>
