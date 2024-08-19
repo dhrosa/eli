@@ -1,0 +1,14 @@
+{% extends "eli_app/base.html" %}
+
+{% block content %}
+<h2>LLM Rules</h2>
+<p>
+  The rules that ELI must follow:
+</p>
+<ul>
+  {% for object in object_list %}
+  <li>{{object.text}}</li>
+  {% endfor %}
+</ul>
+
+{% endblock %}

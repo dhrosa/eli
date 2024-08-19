@@ -59,6 +59,5 @@ class ConversationView(DetailView):
 class ConversationListView(ListView):
     model = Conversation
 
-    def get_queryset(self, **kwargs):
-        qs = super().get_queryset(**kwargs)
-        return qs
+class RuleListView(ListView):
+    model = Rule
