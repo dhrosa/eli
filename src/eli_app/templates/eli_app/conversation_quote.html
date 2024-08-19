@@ -7,7 +7,7 @@
       <cite>- {{ object.audience_name }}</cite>
     </footer>
   </blockquote>
-  {% if object.response.ok %}
+  {% if object.ok %}
   <blockquote>
     {{ object.response_text|linebreaks }}
     <footer>
