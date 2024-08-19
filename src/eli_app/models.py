@@ -31,8 +31,8 @@ class Conversation(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     audience_name = models.CharField(max_length=255)
+    system_prompt = models.TextField()
     query = models.TextField()
-    full_prompt = models.TextField()
     response_text = models.TextField()
     response = models.JSONField()
 

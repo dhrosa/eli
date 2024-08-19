@@ -43,8 +43,8 @@ class QueryView(FormView):
 
         conversation = Conversation.objects.create(
             audience_name=audience.name,
+            system_prompt=system_prompt,
             query=query,
-            #full_prompt=prompt,
             response_text=response.text,
             response=response.to_dict(),
         )
