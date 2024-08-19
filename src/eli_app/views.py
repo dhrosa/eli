@@ -11,7 +11,7 @@ from django.views.generic.list import ListView
 from google import generativeai
 
 from .forms import QueryForm
-from .models import Rule, Conversation
+from .models import Rule, Conversation, Audience
 
 @cache
 def ai_model():
@@ -61,3 +61,6 @@ class ConversationListView(ListView):
 
 class RuleListView(ListView):
     model = Rule
+
+class AudienceListView(ListView):
+    model = Audience
