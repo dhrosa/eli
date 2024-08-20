@@ -1,0 +1,22 @@
+.conversation .permalink {
+    text-decoration: none;
+}
+
+.conversation .permalink:hover {
+    text-decoration: underline;
+}
+
+.conversation footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.highlight pre {
+    margin-top: var(--pico-spacing);
+    margin-bottom: var(--pico-spacing);
+}
+
+.conversation dialog article {
+    max-width: calc(max(400px, 80%));
+}

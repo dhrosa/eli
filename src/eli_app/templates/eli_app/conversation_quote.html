@@ -4,7 +4,7 @@
   <blockquote>
     {{ object.query }}
     <footer>
-      <cite>- {{ object.audience_name }}</cite>
+      <cite>- {{ object.audience_name }} @ {{ object.timestamp }} ({{ object.timestamp|timesince}} ago)</td></cite>
     </footer>
   </blockquote>
   {% if object.ok %}
@@ -18,11 +18,31 @@
   <p>Error! Could not answer. See 'Details' below.</p>
   {% endif %}
 
-  <a href="{{ object.get_absolute_url }}">Permalink</a>
+  <dialog>
+    <article class="container-fluid">
+      <header>
+        <button aria-label="Close" rel="prev" onclick="closeDetails(event)"></button>
+        <p>Details</p>
+      </header>
+      <table>
+        <tbody>
+          <tr><th scope="row">ID</th><td>{{ object.id }}</td></tr>
+          <tr>
+            <th scope="row">Timestamp</th>
+            <td>{{ object.timestamp|date:"r" }}</td>
+          </tr>
+          <tr><th>Audience Name</th><td>{{ object.audience_name }}</td></tr>
+        </tbody>
+      </table>
+      <h6>Response</h6>
+      {{ object.response | to_pretty_json }}      
+    </article>
+  </dialog>
   
-  <details>
-    <summary role="button" class="secondary">Details</summary>
-    <h6>Response</h6>
-    {{ object.response | to_pretty_json }}
-  </details>
+  <footer>
+    <div>
+    Link: <a class="permalink" href="{{ object.get_absolute_url }}">{{ object.id }}</a>
+    </div>
+    <button onclick="openDetails(event)">Show Details</button>
+  </footer>
 </article>
