@@ -1,14 +1,23 @@
 {% extends "eli_app/base.html" %}
 
 {% block content %}
+
 <h2>Target Audiences</h2>
 <p>
   These are the available audiences ELI can explain things to.
 </p>
-<ul>
-  {% for object in object_list %}
-  <li>{{object.name}}</li>
-  {% endfor %}
-</ul>
+<table>
+  <thead>
+    <tr><th>Name</th><th>Prompt</th></tr>
+  </thead>
+  <tbody>
+    {% for object in object_list %}
+    <tr>
+      <td>{{ object.name }}</td>
+      <td>{{ object.prompt | linebreaks }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 
 {% endblock %}
