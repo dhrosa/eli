@@ -9,12 +9,14 @@ services:
     environment:
       ENV_PATH: /run/secrets/django_settings
     command: >
-      bash -c "hatch run ./manage.py migrate &&
+      bash -c "hatch run ./manage.py collectstatic --clear --no-input &&
+               hatch run ./manage.py migrate &&
                hatch run gunicorn --bind 0.0.0.0:3000 eli.wsgi:application"
     ports:
       - "3000"
     volumes:
       - ./src:/code/src
+      - static:/static
         
 
   nginx:
@@ -23,6 +25,8 @@ services:
       - 8000:3001
     depends_on:
       - django
+    volumes:
+      - static:/static
 
   db:
     image: postgres:15
@@ -44,3 +48,4 @@ secrets:
 
 volumes:
   db_data:
+  static:
