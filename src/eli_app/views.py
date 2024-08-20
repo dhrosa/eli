@@ -67,6 +67,8 @@ class ConversationView(DetailView):
 class ConversationListView(ListView):
     model = Conversation
 
+    ordering = '-timestamp'
+
 class RuleListView(ListView):
     model = Rule
 
