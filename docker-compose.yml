@@ -5,6 +5,8 @@ services:
       - django_settings
     environment:
       ENV_PATH: /run/secrets/django_settings
+    env_file:
+      - .env
     volumes:
       - ./src:/code/src
       - static:/static
@@ -29,8 +31,7 @@ services:
     depends_on:
       collectstatic:
         condition: service_completed_successfully
-    command: "hatch run gunicorn --bind 0.0.0.0:3000 eli.wsgi:application"
-        
+    command: "hatch run ./entrypoint.sh"
 
   nginx:
     build: ./nginx
