@@ -66,8 +66,8 @@ class ConversationView(DetailView):
 
 class ConversationListView(ListView):
     model = Conversation
-
     ordering = '-timestamp'
+    paginate_by = 10
 
 class RuleListView(ListView):
     model = Rule
