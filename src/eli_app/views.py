@@ -12,6 +12,8 @@ from google import generativeai
 
 from .forms import QueryForm
 from .models import Rule, Conversation, Audience
+from google.generativeai.types import HarmCategory, HarmBlockThreshold
+
 
 def ai_model(**kwargs):
     generativeai.configure(api_key=settings.GEMINI_API_KEY)
@@ -32,7 +34,15 @@ class QueryView(FormView):
         system_prompt_lines.append(audience.prompt)
         system_prompt = "\n".join(system_prompt_lines)
 
-        model = ai_model(system_instruction=system_prompt)
+        harm_categories = (
+            HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+            HarmCategory.HARM_CATEGORY_HARASSMENT,
+        )
+
+        model = ai_model(
+            system_instruction=system_prompt,
+            safety_settings={c: HarmBlockThreshold.BLOCK_NONE for c in harm_categories},
+        )
 
         response = model.generate_content(query).candidates[0]
         response_dict = type(response).to_dict(response, use_integers_for_enums=False)
