@@ -1,22 +1,35 @@
 services:
-  django:
+  django_base:
     build: .
-    depends_on:
-      db:
-        condition: service_healthy
     secrets:
       - django_settings
     environment:
       ENV_PATH: /run/secrets/django_settings
-    command: >
-      bash -c "hatch run ./manage.py collectstatic --clear --no-input &&
-               hatch run ./manage.py migrate &&
-               hatch run gunicorn --bind 0.0.0.0:3000 eli.wsgi:application"
-    ports:
-      - "3000"
     volumes:
       - ./src:/code/src
       - static:/static
+    command: "bash -c exit"
+
+  migrate:
+    extends: django_base
+    depends_on:
+      db:
+        condition: service_healthy
+    command: "hatch run ./manage.py migrate"
+    
+  collectstatic:
+    extends: django_base
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    command: "hatch run ./manage.py collectstatic --clear --no-input"
+
+  django:
+    extends: django_base
+    depends_on:
+      collectstatic:
+        condition: service_completed_successfully
+    command: "hatch run gunicorn --bind 0.0.0.0:3000 eli.wsgi:application"
         
 
   nginx:
