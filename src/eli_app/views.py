@@ -24,8 +24,10 @@ class QueryView(FormView):
     template_name = "eli_app/query.html"
     form_class = QueryForm
 
-    def form_valid(self, form, **kwargs):
+    def get_initial(self):
+        return self.request.POST
 
+    def form_valid(self, form, **kwargs):
         data = form.cleaned_data
         query = data["query"]
         audience = data["audience"]
