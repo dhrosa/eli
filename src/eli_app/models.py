@@ -25,6 +25,9 @@ class Audience(models.Model):
     def natural_key(self):
         return (self.name)
 
+    class Meta:
+        ordering = ["name"]
+
 
 class Conversation(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
@@ -48,3 +51,6 @@ class Conversation(models.Model):
     @property
     def ok(self):
         return self.response["finish_reason"] == "STOP"
+
+    class Meta:
+        ordering = ["-timestamp"]
