@@ -39,6 +39,7 @@ class QueryView(FormView):
         harm_categories = (
             HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
             HarmCategory.HARM_CATEGORY_HARASSMENT,
+            HarmCategory.HARM_CATEGORY_HATE_SPEECH,
         )
 
         model = ai_model(
