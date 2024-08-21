@@ -36,7 +36,7 @@ services:
   nginx:
     build: ./nginx
     ports:
-      - 8000:3001
+      - 80:3001
     depends_on:
       - django
     volumes:
