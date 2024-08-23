@@ -1,7 +1,7 @@
 from uuid import uuid4
 from django.urls import reverse
 from django.db import models
-
+from secrets import token_urlsafe
 
 class Rule(models.Model):
     name = models.CharField(max_length=255)
@@ -28,9 +28,13 @@ class Audience(models.Model):
     class Meta:
         ordering = ["name"]
 
+def random_id():
+    # 48-bit value. Can be expanded to 128-bit if needed.
+    return token_urlsafe(48 // 8)
 
 class Conversation(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    # 24 bytes is enough to represent a 128-bit value as base64
+    id = models.CharField(primary_key=True, max_length=24, default=random_id, editable=False)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     audience_name = models.CharField(max_length=255)
