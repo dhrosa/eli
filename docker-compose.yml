@@ -47,7 +47,7 @@ services:
   db:
     image: postgres:15
     volumes:
-      - db_data:/var/lib/postgresl/data/
+      - ./db_data:/var/lib/postgresl/data/
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
     healthcheck:
@@ -63,5 +63,4 @@ secrets:
 
 
 volumes:
-  db_data:
   static:
