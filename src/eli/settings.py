@@ -32,7 +32,7 @@ SECRET_KEY = env.str("SECRET_KEY", "django-insecure-bs7ge(^&fo9@+8o1&x48)_gxisa%
 DEBUG = env.bool("DEBUG", False)
 
 ALLOWED_HOSTS: list[str] = ["*"]
-CSRF_TRUSTED_ORIGINS = ["http://localhost:8000"]
+CSRF_TRUSTED_ORIGINS = ["https://localhost"]
 
 GEMINI_API_KEY = env.str("GEMINI_API_KEY")
 
