@@ -1,4 +1,5 @@
 {% load json %}
+{% load markdownify %}
 
 <article class="conversation">
   <blockquote>
@@ -9,7 +10,7 @@
   </blockquote>
   {% if object.ok %}
   <blockquote>
-    {{ object.response_text|linebreaks }}
+    {{ object.response_text|markdownify|linebreaks }}
     <footer>
       <cite>- ELI</cite>
     </footer>

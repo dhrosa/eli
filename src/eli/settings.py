@@ -39,6 +39,7 @@ GEMINI_API_KEY = env.str("GEMINI_API_KEY")
 # Application definition
 
 INSTALLED_APPS = [
+    "markdownify.apps.MarkdownifyConfig",
     "eli_app.apps.EliAppConfig",
     "django.contrib.admin",
     "django.contrib.auth",
