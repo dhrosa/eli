@@ -1,23 +1,15 @@
 from functools import cache
 
-from django.conf import settings
-
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
-from google import generativeai
 
 from .forms import QueryForm
+from . import ai
 from .models import Rule, Conversation, Audience
-from google.generativeai.types import HarmCategory, HarmBlockThreshold
-
-
-def ai_model(**kwargs):
-    generativeai.configure(api_key=settings.GEMINI_API_KEY)
-    return generativeai.GenerativeModel("gemini-1.5-flash", **kwargs)
 
 
 class QueryView(FormView):
@@ -36,25 +28,13 @@ class QueryView(FormView):
         system_prompt_lines.append(audience.prompt)
         system_prompt = "\n".join(system_prompt_lines)
 
-        harm_categories = (
-            HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-            HarmCategory.HARM_CATEGORY_HARASSMENT,
-            HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-        )
-
-        model = ai_model(
-            system_instruction=system_prompt,
-            safety_settings={c: HarmBlockThreshold.BLOCK_NONE for c in harm_categories},
-        )
-
-        response = model.generate_content(query).candidates[0]
-        response_dict = type(response).to_dict(response, use_integers_for_enums=False)
+        response = ai.get_gemini_completion(system_prompt, query)
 
         conversation = Conversation.objects.create(
             audience_name=audience.name,
             system_prompt=system_prompt,
             query=query,
-            response=response_dict,
+            response=response,
         )
         context = self.get_context_data(**kwargs)
         context["conversation"] = conversation

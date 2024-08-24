@@ -35,6 +35,7 @@ ALLOWED_HOSTS: list[str] = ["*"]
 CSRF_TRUSTED_ORIGINS = ["https://localhost", "https://eli-app.ddns.net"]
 
 GEMINI_API_KEY = env.str("GEMINI_API_KEY")
+OPENAI_API_KEY = env.str("OPENAI_API_KEY")
 
 # Application definition
 
