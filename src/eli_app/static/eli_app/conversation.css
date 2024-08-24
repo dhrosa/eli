@@ -24,3 +24,17 @@
 .conversation dialog article {
     max-width: calc(max(400px, 80%));
 }
+
+form {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.query {
+    flex-basis: 100%;
+    display: flex;
+}
+
+.query input[type="submit"] {
+    flex-basis: max-content;
+}
