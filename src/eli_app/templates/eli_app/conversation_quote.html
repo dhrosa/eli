@@ -2,6 +2,7 @@
 {% load markdownify %}
 
 <article class="conversation">
+  <header>{{ object.title }}</header>
   <blockquote>
     {{ object.query }}
     <footer>
@@ -37,8 +38,11 @@
           {% endif %}
         </tbody>
       </table>
-      <h6>Response</h6>
-      {{ object.response | to_pretty_json }}      
+      <h6>Structured Response</h6>
+      {{ object.structured_response | to_pretty_json }}
+      <h6>Raw Response</h6>
+      {{ object.raw_response | to_pretty_json }}
+      
     </article>
   </dialog>
   

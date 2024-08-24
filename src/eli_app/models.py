@@ -40,7 +40,8 @@ class Conversation(models.Model):
     audience_name = models.CharField(max_length=255)
     system_prompt = models.TextField()
     query = models.TextField()
-    response = models.JSONField()
+    raw_response = models.JSONField()
+    structured_response = models.JSONField()
 
     def __str__(self):
         return str(self.id)
@@ -50,11 +51,15 @@ class Conversation(models.Model):
 
     @property
     def response_text(self):
-        return self.response["content"]["parts"][0]["text"]
+        return self.structured_response["text"]
+
+    @property
+    def title(self):
+        return self.structured_response["title"]
 
     @property
     def ok(self):
-        return self.response["finish_reason"] == "STOP"
+        return self.raw_response["finish_reason"] == "STOP"
 
     class Meta:
         ordering = ["-timestamp"]

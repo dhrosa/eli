@@ -28,16 +28,16 @@ class QueryView(FormView):
         system_prompt_lines.append(audience.prompt)
         system_prompt = "\n".join(system_prompt_lines)
 
-        response = ai.get_gemini_completion(system_prompt, query)
-
-        conversation = Conversation.objects.create(
+        conversation = Conversation(
             audience_name=audience.name,
             system_prompt=system_prompt,
             query=query,
-            response=response,
         )
+        ai.fill_gemini_completion(conversation)
+        conversation.save()
         context = self.get_context_data(**kwargs)
         context["conversation"] = conversation
+        print(conversation.title)
         return self.render_to_response(context)
 
     def get_context_data(self, **kwargs):
