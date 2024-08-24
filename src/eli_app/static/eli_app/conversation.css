@@ -1,9 +1,11 @@
-.conversation .permalink {
+.material-icons {
     text-decoration: none;
+    border: var(--pico-outline-width) solid transparent;
+    border-radius: var(--pico-border-radius);
 }
 
-.conversation .permalink:hover {
-    text-decoration: underline;
+.material-icons:hover {
+    border-color: var(--pico-primary-hover-underline);
 }
 
 .conversation footer {

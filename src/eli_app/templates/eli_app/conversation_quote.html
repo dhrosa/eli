@@ -43,8 +43,10 @@
   
   <footer>
     <div>
-    Link: <a class="permalink" href="{{ object.get_absolute_url }}">{{ object.id }}</a>
+      <a class="material-icons" href="{{ object.get_absolute_url }}">link</a>
     </div>
-    <button onclick="openDetails(event)">Show Details</button>
+    <div>
+      <a class="material-icons" href="#" onclick="openDetails(event)">info</a>
+    </div>
   </footer>
 </article>
