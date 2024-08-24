@@ -1,7 +1,7 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -35,6 +35,7 @@
           <li><a class="contrast" href="{% url 'rule_list' %}">Rules</a></li>
           <li><a class="contrast" href="{% url 'audience_list' %}">Audiences</a></li>
           <li><a class="contrast" href="{% url 'conversation_list' %}">Conversations</a></li>
+          <li><a class="contrast material-icons" href="#" title="Toggle Light/Dark Mode" onclick="toggleTheme()">contrast</a>
         </ul>
       </nav>
     </header>

@@ -1,4 +1,6 @@
 .material-icons {
+    /* Lines up icon with text */
+    vertical-align: middle;
     text-decoration: none;
     border: var(--pico-outline-width) solid transparent;
     border-radius: var(--pico-border-radius);
