@@ -42,26 +42,15 @@ class Conversation(models.Model):
     system_prompt = models.TextField()
     query = models.TextField()
 
-    raw_response = models.JSONField()
-    structured_response = models.JSONField()
+    response_raw = models.JSONField()
+    response_title = models.TextField()
+    response_text = models.TextField()
 
     def __str__(self):
         return str(self.id)
 
     def get_absolute_url(self):
         return reverse("conversation", kwargs={"pk": self.id})
-
-    @property
-    def response_text(self):
-        return self.structured_response["text"]
-
-    @property
-    def title(self):
-        return self.structured_response["title"]
-
-    @property
-    def ok(self):
-        return bool(self.structured_response)
 
     class Meta:
         ordering = ["-timestamp"]

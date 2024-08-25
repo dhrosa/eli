@@ -3,7 +3,7 @@ from google.generativeai.types import HarmCategory, HarmBlockThreshold
 import json
 from django.conf import settings
 from openai import OpenAI
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from enum import StrEnum
 
 class AiModelName(StrEnum):
@@ -12,13 +12,25 @@ class AiModelName(StrEnum):
     Gemini15Flash = "Gemini 1.5 Flash"
 
 
+class ResponseFormat(BaseModel):
+    """Output schema for LLM JSON responses."""
+    title: str
+    text: str
+
+
 def fill_completion(conversation, model_name: AiModelName):
     conversation.ai_model_name = str(model_name)
     match model_name:
         case AiModelName.Gpt4oMini:
-            fill_openai_completion(conversation)
-        case AiModelName.Gemini:
-            fill_gemini_completion(conversation)
+            response, raw = openai_response(conversation)
+        case AiModelName.Gemini15Flash:
+            response, raw = gemini_response(conversation)
+
+    print(response)
+
+    conversation.response_raw = raw
+    conversation.response_title = response.title
+    conversation.response_text = response.text
 
 generativeai.configure(api_key=settings.GEMINI_API_KEY)
 
@@ -26,15 +38,15 @@ gemini_preamble = """
 Your response must be a JSON object with the following schema:
 
 Response = {
-  "text": str,
   "title": str,
+  "text": str,
 }
 
 For the "title" JSON field, generate a short sentence that summarizes this conversation.
 The response to the target audience should be placed in the JSON "text" field.
 """
 
-def fill_gemini_completion(conversation):
+def gemini_response(conversation):
     harm_categories = (
         HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
         HarmCategory.HARM_CATEGORY_HARASSMENT,
@@ -49,9 +61,12 @@ def fill_gemini_completion(conversation):
     )
 
     response = model.generate_content(conversation.query)
-    conversation.structured_response = json.loads(response.text)
     candidate = response.candidates[0]
-    conversation.raw_response = type(candidate).to_dict(candidate, use_integers_for_enums=False)
+
+    raw=type(candidate).to_dict(candidate, use_integers_for_enums=False)
+    return ResponseFormat(**json.loads(response.text)), raw
+
+
 
 openai_client = OpenAI()
 
@@ -62,11 +77,7 @@ Try not to literally refer to the word "analogy" in your title.
 The JSON field "text" should contain your response to the user's query.
 """
 
-class ResponseFormat(BaseModel):
-    title: str
-    text: str
-
-def fill_openai_completion(conversation):
+def openai_response(conversation):
     completion = openai_client.beta.chat.completions.parse(
         model="gpt-4o-mini",
         messages=[
@@ -75,6 +86,6 @@ def fill_openai_completion(conversation):
         ],
         response_format=ResponseFormat)
 
-    parsed = completion.choices[0].message.parsed
-    conversation.structured_response = parsed.model_dump(mode="json")
-    conversation.raw_response = completion.to_dict(mode="json")
+    response = completion.choices[0].message.parsed
+    raw = completion.to_dict(mode="json")
+    return response, raw

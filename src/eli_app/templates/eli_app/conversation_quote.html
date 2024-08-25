@@ -2,23 +2,19 @@
 {% load markdownify %}
 
 <article class="conversation">
-  <header>{{ object.title }}</header>
+  <header>{{ object.response_title }}</header>
   <blockquote>
     {{ object.query }}
     <footer>
       <cite>- {{ object.audience_name }} @ {{ object.timestamp }} ({{ object.timestamp|timesince}} ago)</td></cite>
     </footer>
   </blockquote>
-  {% if object.ok %}
   <blockquote>
     {{ object.response_text|markdownify|linebreaks }}
     <footer>
-      <cite>- ELI</cite>
+      <cite>- ELI ({{object.ai_model_name}})</cite>
     </footer>
   </blockquote>
-  {% else %}
-  <p>Error! Could not answer. See 'Details' below.</p>
-  {% endif %}
 
   <dialog>
     <article>
@@ -39,10 +35,8 @@
           {% endif %}
         </tbody>
       </table>
-      <h6>Structured Response</h6>
-      {{ object.structured_response | to_pretty_json }}
       <h6>Raw Response</h6>
-      {{ object.raw_response | to_pretty_json }}
+      {{ object.response_raw | to_pretty_json }}
       
     </article>
   </dialog>
