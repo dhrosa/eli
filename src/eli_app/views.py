@@ -8,8 +8,10 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
 from .forms import QueryForm
-from . import ai
+from . import ai, serializers
 from .models import Rule, Conversation, Audience
+
+from rest_framework import viewsets
 
 
 class QueryView(FormView):
@@ -39,6 +41,19 @@ class QueryView(FormView):
         context = self.get_context_data(**kwargs)
         context["conversation"] = conversation
         return self.render_to_response(context)
+
+
+class RuleViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Rule.objects.all()
+    serializer_class = serializers.RuleSerializer
+
+class AudienceViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Audience.objects.all()
+    serializer_class = serializers.AudienceSerializer
+
+class ConversationViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Conversation.objects.all()
+    serializer_class = serializers.ConversationSerializer
 
 
 class ConversationView(DetailView):

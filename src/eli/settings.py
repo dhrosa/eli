@@ -40,6 +40,7 @@ OPENAI_API_KEY = env.str("OPENAI_API_KEY")
 # Application definition
 
 INSTALLED_APPS = [
+    "rest_framework",
     "markdownify.apps.MarkdownifyConfig",
     "eli_app.apps.EliAppConfig",
     "django.contrib.admin",
