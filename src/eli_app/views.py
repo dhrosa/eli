@@ -37,7 +37,9 @@ class QueryView(FormView):
         conversation.save()
         context = self.get_context_data(**kwargs)
         context["conversation"] = conversation
-        print(conversation.title)
+
+        ai.fill_openai_completion(conversation)
+
         return self.render_to_response(context)
 
     def get_context_data(self, **kwargs):

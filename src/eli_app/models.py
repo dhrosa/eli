@@ -59,7 +59,7 @@ class Conversation(models.Model):
 
     @property
     def ok(self):
-        return self.raw_response["finish_reason"] == "STOP"
+        return bool(self.structured_response)
 
     class Meta:
         ordering = ["-timestamp"]
