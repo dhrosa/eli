@@ -1,6 +1,10 @@
 {% extends "eli_app/base.html" %}
 {% load json %}
 
+{% block head %}
+<meta property="og:title" content="{{ object.response_title }}"/>
+{% endblock %}
+
 {% block content %}
 {% include "eli_app/conversation_quote.html" %}
 
