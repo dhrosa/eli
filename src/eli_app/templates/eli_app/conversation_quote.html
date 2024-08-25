@@ -31,6 +31,7 @@
           <tr><th>ID</th><td>{{ object.id }}</td></tr>
           <tr><th>Timestamp</th><td>{{ object.timestamp|date:"r" }}</td></tr>
           <tr><th>Audience Name</th><td>{{ object.audience_name }}</td></tr>
+          <tr><th>AI Model</th><td>{{ object.ai_model_name }}</td>
           <tr><th>System Prompt</th><td>{{ object.system_prompt|linebreaks }}</td>
           <tr><th>Query</th><td>{{ object.query }}</td></tr>
           {% if object.ok %}

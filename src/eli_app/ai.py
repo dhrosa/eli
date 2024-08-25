@@ -4,7 +4,21 @@ import json
 from django.conf import settings
 from openai import OpenAI
 from pydantic import BaseModel
+from enum import StrEnum
 
+class AiModelName(StrEnum):
+    # Not using capital names to make ChatGPT names more readable.
+    Gpt4oMini = "GPT-4o mini"
+    Gemini15Flash = "Gemini 1.5 Flash"
+
+
+def fill_completion(conversation, model_name: AiModelName):
+    conversation.ai_model_name = str(model_name)
+    match model_name:
+        case AiModelName.Gpt4oMini:
+            fill_openai_completion(conversation)
+        case AiModelName.Gemini:
+            fill_gemini_completion(conversation)
 
 generativeai.configure(api_key=settings.GEMINI_API_KEY)
 
@@ -61,5 +75,6 @@ def fill_openai_completion(conversation):
         ],
         response_format=ResponseFormat)
 
-    print(completion.choices[0].message.parsed)
-    conversation.structured_response["openai"] = completion.to_dict(mode="json")
+    parsed = completion.choices[0].message.parsed
+    conversation.structured_response = parsed.model_dump(mode="json")
+    conversation.raw_response = completion.to_dict(mode="json")

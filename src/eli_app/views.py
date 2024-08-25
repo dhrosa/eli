@@ -33,13 +33,11 @@ class QueryView(FormView):
             system_prompt=system_prompt,
             query=query,
         )
-        ai.fill_gemini_completion(conversation)
+        ai.fill_completion(conversation, ai.AiModelName[data["ai_model"]])
         conversation.save()
+
         context = self.get_context_data(**kwargs)
         context["conversation"] = conversation
-
-        ai.fill_openai_completion(conversation)
-
         return self.render_to_response(context)
 
     def get_context_data(self, **kwargs):
