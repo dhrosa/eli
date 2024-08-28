@@ -10,6 +10,7 @@ services:
     volumes:
       - ./src:/code/src
       - static:/static
+    user: "${UID}:${GID}"
     command: "bash -c exit"
 
   migrate:
