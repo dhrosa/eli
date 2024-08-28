@@ -4,3 +4,4 @@ __pycache__
 *.env
 ssl
 db_data
+node_modules
