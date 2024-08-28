@@ -10,6 +10,7 @@ services:
     volumes:
       - ./src:/code/src
       - static:/static
+      - js-out:/js-out
     user: "${UID}:${GID}"
     command: "bash -c exit"
 
@@ -24,6 +25,8 @@ services:
     extends: django_base
     depends_on:
       migrate:
+        condition: service_completed_successfully
+      build-frontend:
         condition: service_completed_successfully
     command: "hatch run ./manage.py collectstatic --clear --no-input"
 
