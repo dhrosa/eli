@@ -12,7 +12,7 @@ function Conversation({data}) {
     return (
         <article className="conversation">
             <header>
-                <a class="material-icons" href="{data.url}">link</a>
+                <a class="material-icons" href={data.url}>link</a>
                 &nbsp;
                 {data.response_title}
             </header>
