@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function Quote({text, author}) {
     return (
         <blockquote>
@@ -17,7 +19,9 @@ function Conversation({data}) {
     return (
         <article className="conversation">
             <header>
-                <a class="material-icons" href={data.url}>link</a>
+                <Link to={data.url} className="material-icons">
+                    link
+                </Link>
                 &nbsp;
                 {data.response_title}
             </header>

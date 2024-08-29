@@ -7,7 +7,7 @@ function ConversationPage() {
     const [data, setData] = useState(null);
     useEffect(() => {
         const get = async () => {
-            const response = await fetch(`/api/conversations/${id}`);
+            const response = await fetch(`/api/conversations/${id}/`);
             setData(await response.json());
         };
         get().catch(console.error);

@@ -5,7 +5,7 @@ function ConversationList() {
     const [dataList, setDataList] = useState([]);
     useEffect(() => {
         const fetchList = async () => {
-            const data = await fetch("/api/conversations");
+            const data = await fetch("/api/conversations/");
             setDataList(await data.json());
         };
 
