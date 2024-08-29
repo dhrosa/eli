@@ -1,13 +1,5 @@
 import { useEffect, useState } from 'react';
 
-function Details({data}) {
-    return (
-        <details>
-            <summary>Details</summary>
-        </details>
-    );
-}
-
 function Conversation({data}) {
     return (
         <article className="conversation">
@@ -30,7 +22,6 @@ function Conversation({data}) {
                     <cite>- ELI ({data.ai_model_name})</cite>
                 </footer>
             </blockquote>
-            <Details data={data}/>
         </article>
     )
 }
