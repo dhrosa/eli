@@ -2,7 +2,10 @@
 const path = require('path');
 
 module.exports = {
-    entry: "/jsx/src/index.js",
+    entry: {
+        index: "/jsx/src/index.js",
+        ConversationList: "/jsx/src/ConversationList.js",
+    },
     output: {
         path:"/jsx/out/"
     },
@@ -23,7 +26,4 @@ module.exports = {
             }
         ]
     },
-    devServer: {
-        port: 3000
-    }
 };

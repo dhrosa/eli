@@ -1,6 +1,11 @@
 {% extends "eli_app/base.html" %}
 
+{% load static %}
+
 {% block content %}
+
+<div id="root"></div>
+
 <h2>Past Conversations</h2>
 {% for object in page_obj %}
 {% include "eli_app/conversation_quote.html" %}
@@ -21,4 +26,7 @@
     {% endif %}
   </span>
 </div>
+
+
+<script src="{% static 'jsx/main.js' %}"></script>
 {% endblock %}

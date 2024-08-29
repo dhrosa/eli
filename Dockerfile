@@ -6,11 +6,9 @@ RUN apt-get install --yes pipx libpq-dev python3-dev postgresql-client
 RUN addgroup django
 RUN adduser --disabled-password --gecos '' --ingroup django  django
 
-RUN mkdir -p /code/src
-RUN mkdir /static
+RUN mkdir -p /code/src /static /jsx-out
 
-RUN chown -R django /code
-RUN chown -R django /static
+RUN chown -R django /code /static /jsx-out
 
 USER django
 
