@@ -2,7 +2,7 @@ services:
   db:
     image: postgres:15
     volumes:
-      - ./db_data:/var/lib/postgresql/
+      - ./db_data:/var/lib/postgresql/data
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
       
@@ -15,11 +15,14 @@ services:
     env_file:
       - .env
     command: "bash -c exit"
+    init: true
     develop:
       watch:
         - action: sync+restart
           path: ./src
           target: /code/src
+          ignore:
+            - ./src/frontend
       
   migrate:
     extends: django_base
@@ -35,9 +38,9 @@ services:
         - action: sync+restart
           path: ./src/frontend
           target: /jsx/src
-        - action: rebuild
-          path: ./src/frontend/webpack.config.js
-          target: /jsx/webpack.config.js
+        # - action: rebuild
+        #   path: ./src/frontend/webpack.config.js
+        #   target: /jsx/webpack.config.js
     
   collectstatic:
     extends: django_base
@@ -45,9 +48,9 @@ services:
       - static:/static
       - jsx-out:/jsx-out
     depends_on:
-      migrate:
-        condition: service_completed_successfully
       build-frontend:
+        condition: service_completed_successfully
+      migrate:
         condition: service_completed_successfully
     command: "hatch run ./manage.py collectstatic --no-input"
 

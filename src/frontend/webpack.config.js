@@ -4,11 +4,12 @@ const path = require('path');
 module.exports = {
     entry: {
         index: "/jsx/src/index.js",
-        ConversationList: "/jsx/src/ConversationList.js",
+        ConversationListPage: "/jsx/src/ConversationListPage.js",
     },
     output: {
         path:"/jsx/out/"
     },
+    context: "/jsx/src/",
     module: {
         rules: [
             {
@@ -17,7 +18,7 @@ module.exports = {
                 use: {
                     loader: "babel-loader",
                     options: {
-                        presets: ['@babel/preset-env', '@babel/preset-react']
+                        presets: ['@babel/preset-env', ['@babel/preset-react', {"runtime": "automatic"}]]
                     }
                 }
             },

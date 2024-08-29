@@ -12,6 +12,10 @@ class AudienceSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ConversationSerializer(serializers.ModelSerializer):
+    url = serializers.SerializerMethodField()
+    def get_url(self, obj):
+        return obj.get_absolute_url()
+
     class Meta:
         model = models.Conversation
         fields = '__all__'
