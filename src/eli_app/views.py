@@ -11,7 +11,7 @@ from .forms import QueryForm
 from . import ai, serializers
 from .models import Rule, Conversation, Audience
 
-from rest_framework import viewsets
+from rest_framework import viewsets, views, mixins
 
 
 class QueryView(FormView):
@@ -68,3 +68,9 @@ class RuleListView(ListView):
 
 class AudienceListView(ListView):
     model = Audience
+
+class QueryViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+    serializer_class = serializers.QuerySerializer
+
+    def create(self, request):
+        pass
