@@ -8,12 +8,15 @@ services:
     env_file:
       - .env
     volumes:
-      - ./src:/code/src
       - static:/static
-      - js-out:/js-out
-    user: "${UID}:${GID}"
     command: "bash -c exit"
-
+    init: true
+    develop:
+      watch:
+        - action: sync+restart
+          path: ./src
+          target: /code/src
+      
   migrate:
     extends: django_base
     command: "hatch run ./migrate.sh"
@@ -23,22 +26,19 @@ services:
     depends_on:
       migrate:
         condition: service_completed_successfully
-      build-frontend:
-        condition: service_completed_successfully
-    command: "hatch run ./manage.py collectstatic --clear --no-input"
+    command: "hatch run ./manage.py collectstatic --no-input"
 
   django:
     extends: django_base
     depends_on:
-      collectstatic:
+      migrate:
         condition: service_completed_successfully
-    command: "hatch run ./entrypoint.sh"
+    command: "hatch run gunicorn --bind 0.0.0.0:3000 eli.wsgi:application"
 
   build-frontend:
     build : ./src/frontend
     volumes:
       - ./src/frontend/:/js/src/
-      - js-out:/js/out/
     command: "npm run build"
     
   nginx:
@@ -58,7 +58,7 @@ services:
       - ./db_data:/var/lib/postgresql/
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
-
+        
 secrets:
   django_settings:
     file: .env
@@ -66,4 +66,3 @@ secrets:
 
 volumes:
   static:
-  js-out:
