@@ -46,10 +46,7 @@ services:
     extends: django_base
     volumes:
       - static:/static
-      - jsx-out:/jsx-out
     depends_on:
-      build-frontend:
-        condition: service_completed_successfully
       migrate:
         condition: service_completed_successfully
     command: "hatch run ./manage.py collectstatic --no-input"
@@ -71,6 +68,7 @@ services:
       - django
     volumes:
       - static:/static
+      - jsx-out:/jsx-out
       - ./ssl:/ssl
         
 secrets:
