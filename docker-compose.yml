@@ -37,9 +37,12 @@ services:
 
   build-frontend:
     build : ./src/frontend
-    volumes:
-      - ./src/frontend/:/js/src/
     command: "npm run build"
+    develop:
+      watch:
+        - action: sync+restart
+          path: ./src/frontend
+          target: /js/src
     
   nginx:
     build: ./nginx

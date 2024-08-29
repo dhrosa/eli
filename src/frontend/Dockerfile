@@ -1,12 +1,15 @@
 FROM node
 
-RUN mkdir -p /js/out/
+RUN mkdir -p /jsx/out/
+RUN mkdir -p /jsx/src/
 
-WORKDIR /js
+WORKDIR /jsx/
 
-COPY package.json package-lock.json webpack.config.js .
-
+COPY package-lock.json package.json webpack.config.js .
 RUN chown -R node:node .
 
 USER node
+
 RUN npm install
+
+COPY . src

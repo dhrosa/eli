@@ -2,9 +2,9 @@
 const path = require('path');
 
 module.exports = {
-    entry: "/js/src/index.js",
+    entry: "src/index.js",
     output: {
-        path:"/js/out/"
+        path:"out/"
     },
     module: {
         rules: [
