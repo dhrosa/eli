@@ -1,4 +1,11 @@
 services:
+  db:
+    image: postgres:15
+    volumes:
+      - ./db_data:/var/lib/postgresql/
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+      
   django_base:
     build: .
     secrets:
@@ -7,10 +14,7 @@ services:
       ENV_PATH: /run/secrets/django_settings
     env_file:
       - .env
-    volumes:
-      - static:/static
     command: "bash -c exit"
-    init: true
     develop:
       watch:
         - action: sync+restart
@@ -20,11 +24,27 @@ services:
   migrate:
     extends: django_base
     command: "hatch run ./migrate.sh"
+
+  build-frontend:
+    build : ./src/frontend
+    volumes:
+      - jsx-out:/jsx/out
+    command: "npm run build"
+    develop:
+      watch:
+        - action: sync+restart
+          path: ./src/frontend
+          target: /jsx/src
     
   collectstatic:
     extends: django_base
+    volumes:
+      - static:/static
+      - jsx-out:/jsx-out
     depends_on:
       migrate:
+        condition: service_completed_successfully
+      build-frontend:
         condition: service_completed_successfully
     command: "hatch run ./manage.py collectstatic --no-input"
 
@@ -33,17 +53,9 @@ services:
     depends_on:
       migrate:
         condition: service_completed_successfully
+    stop_signal: SIGINT
     command: "hatch run gunicorn --bind 0.0.0.0:3000 eli.wsgi:application"
 
-  build-frontend:
-    build : ./src/frontend
-    command: "npm run build"
-    develop:
-      watch:
-        - action: sync+restart
-          path: ./src/frontend
-          target: /js/src
-    
   nginx:
     build: ./nginx
     ports:
@@ -54,13 +66,6 @@ services:
     volumes:
       - static:/static
       - ./ssl:/ssl
-
-  db:
-    image: postgres:15
-    volumes:
-      - ./db_data:/var/lib/postgresql/
-    environment:
-      POSTGRES_HOST_AUTH_METHOD: trust
         
 secrets:
   django_settings:
@@ -69,3 +74,4 @@ secrets:
 
 volumes:
   static:
+  jsx-out:
