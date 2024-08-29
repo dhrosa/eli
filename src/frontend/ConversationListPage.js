@@ -1,30 +1,5 @@
 import { useEffect, useState } from 'react';
-
-function Conversation({data}) {
-    return (
-        <article className="conversation">
-            <header>
-                <a class="material-icons" href={data.url}>link</a>
-                &nbsp;
-                {data.response_title}
-            </header>
-            <blockquote>
-                {data.query}
-                <footer>
-                    <cite>
-                        - {data.audience_name} @ {data.timestamp}
-                    </cite>
-                </footer>
-            </blockquote>
-            <blockquote>
-                {data.response_text}
-                <footer>
-                    <cite>- ELI ({data.ai_model_name})</cite>
-                </footer>
-            </blockquote>
-        </article>
-    )
-}
+import {Conversation} from './Conversation';
 
 function ConversationList() {
     const [dataList, setDataList] = useState([]);
