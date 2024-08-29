@@ -151,7 +151,3 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-# Bypass static serving from nginx
-if env.bool("USE_RUNSERVER", False):
-    STATIC_URL = "static-dev/"
