@@ -4,7 +4,6 @@ const path = require('path');
 module.exports = {
     entry: {
         index: "/jsx/src/index.js",
-        ConversationListPage: "/jsx/src/ConversationListPage.js",
     },
     output: {
         path:"/jsx/out/"
