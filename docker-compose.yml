@@ -16,10 +16,7 @@ services:
 
   migrate:
     extends: django_base
-    depends_on:
-      db:
-        condition: service_healthy
-    command: "hatch run ./manage.py migrate"
+    command: "hatch run ./migrate.sh"
     
   collectstatic:
     extends: django_base
@@ -61,12 +58,6 @@ services:
       - ./db_data:/var/lib/postgresql/
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 1s
-      retries: 100
-      start_period: 1s
-      timeout: 10s
 
 secrets:
   django_settings:
