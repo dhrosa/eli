@@ -8,6 +8,12 @@ function Quote({text, author}) {
 }
 
 function Conversation({data}) {
+    if (!data) {
+        return (
+            <article className="conversation" aria-busy="true">
+            </article>
+        );
+    }
     return (
         <article className="conversation">
             <header>
