@@ -44,7 +44,9 @@
       </nav>
     </header>
     <main class="container">
-      {% block content %}{% endblock %}
+      <div id="main">
+        <script src="{% static 'jsx/index.js' %}"></script>
+        </div>
     </main>
   </body>
 </html>

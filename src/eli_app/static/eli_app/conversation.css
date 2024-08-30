@@ -35,6 +35,6 @@ form {
     display: flex;
 }
 
-.query input[type="submit"] {
+.query button {
     flex-basis: max-content;
 }
