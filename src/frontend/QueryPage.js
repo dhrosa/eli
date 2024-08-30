@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState, useId, useRef } from 'react';
+import { useEffect, useState, useId } from 'react';
+import Cookies from 'js-cookie';
 
 function SelectOption({choice}) {
     return (
@@ -37,18 +38,17 @@ function QueryPage({data}) {
             get().catch(console.error);
         }, []);
 
-
-    const formRef = useRef();
-
-
     const onSubmit = async (event) => {
         // Prevent normal form submission request and reload.
         event.preventDefault();
-        
+
+        const headers = new Headers();
+        headers.append("X-CSRFToken", Cookies.get("csrftoken"));
         const formData = new FormData(event.currentTarget);
         const request = {
             method: "POST",
             body: formData,
+            headers: headers,
             
         };
         const response = await fetch("/api/query/", request);
@@ -58,7 +58,7 @@ function QueryPage({data}) {
     
     const id = useId();
     return (
-        <form onSubmit={onSubmit} ref={formRef}>
+        <form onSubmit={onSubmit}>
             <label htmlFor={"audience-" + id}>
                 Explain Like I'm A:
             </label>
