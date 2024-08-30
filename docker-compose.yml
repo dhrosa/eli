@@ -28,12 +28,12 @@ services:
     command: "npm run build"
     develop:
       watch:
-        - action: sync+restart
+        - action: sync
           path: ./src/frontend
           target: /jsx/src
-        # - action: rebuild
-        #   path: ./src/frontend/webpack.config.js
-        #   target: /jsx/webpack.config.js
+        - action: rebuild
+          path: ./src/frontend/webpack.config.js
+          target: /jsx/webpack.config.js
     
   collectstatic:
     extends: django_base

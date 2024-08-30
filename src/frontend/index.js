@@ -6,8 +6,6 @@ import {QueryPage} from './QueryPage';
 
 const root = createRoot(document.getElementById('main'));
 
-
-
 root.render(
     <>
         <BrowserRouter>
@@ -19,3 +17,4 @@ root.render(
         </BrowserRouter>
     </>
 )
+
