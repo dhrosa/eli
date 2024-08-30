@@ -24,6 +24,7 @@ class QuerySerializer(serializers.Serializer):
     audience = serializers.ChoiceField(choices=[])
     ai_model_name = serializers.ChoiceField([
         (m.name, m.value) for m in ai.AiModelName])
+    query = serializers.CharField()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
