@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState, useId } from 'react';
+import { useEffect, useState, useId, useRef } from 'react';
 
 function SelectOption({choice}) {
     return (
@@ -37,16 +37,28 @@ function QueryPage({data}) {
             get().catch(console.error);
         }, []);
 
-    const onSubmit = (event) => {
+
+    const formRef = useRef();
+
+
+    const onSubmit = async (event) => {
+        // Prevent normal form submission request and reload.
         event.preventDefault();
-        console.log(event);
-        const formData = new FormData(event.currentTarget);        
-        console.log(formData);
+        
+        const formData = new FormData(event.currentTarget);
+        const request = {
+            method: "POST",
+            body: formData,
+            
+        };
+        const response = await fetch("/api/query/", request);
+        console.log(response);
+        console.log(await response.json());
     };
     
     const id = useId();
     return (
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit} ref={formRef}>
             <label htmlFor={"audience-" + id}>
                 Explain Like I'm A:
             </label>
