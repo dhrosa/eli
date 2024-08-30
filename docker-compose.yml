@@ -16,13 +16,6 @@ services:
       - .env
     command: "bash -c exit"
     init: true
-    develop:
-      watch:
-        - action: sync+restart
-          path: ./src
-          target: /code/src
-          ignore:
-            - ./src/frontend
       
   migrate:
     extends: django_base
@@ -57,7 +50,14 @@ services:
       migrate:
         condition: service_completed_successfully
     stop_signal: SIGINT
-    command: "hatch run gunicorn --bind 0.0.0.0:3000 eli.wsgi:application"
+    command: "hatch run ./entrypoint.sh"
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: /code/src
+          ignore:
+            - ./src/frontend
 
   nginx:
     build: ./nginx
