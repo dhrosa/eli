@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState, useId } from 'react';
 
-function SelectOption(choice) {
+function SelectOption({choice}) {
     return (
         <option value={choice.value}>
             {choice.display_name}
@@ -10,9 +10,10 @@ function SelectOption(choice) {
 }
 
 function Select({id, name, choices}) {
+    const options = choices.map(c => <SelectOption key={c.value} choice={c}/>);
     return (
         <select id={id} name={name}>
-            { choices.map(SelectOption) }
+            { options }
         </select>
     );
 }
@@ -36,10 +37,6 @@ function QueryPage({data}) {
             get().catch(console.error);
         }, []);
 
-    const action = (event) => {
-        console.log(event);
-    };
-    
     const onSubmit = (event) => {
         event.preventDefault();
         console.log(event);
@@ -49,19 +46,19 @@ function QueryPage({data}) {
     
     const id = useId();
     return (
-        <form action={action} onSubmit={onSubmit}>
-            <label for={"audience-" + id}>
+        <form onSubmit={onSubmit}>
+            <label htmlFor={"audience-" + id}>
                 Explain Like I'm A:
             </label>
             <Select name="audience" id={"audience-" + id} choices={audienceChoices}/>
             
-            <label for={"ai-" + id}>
+            <label htmlFor={"ai-" + id}>
                 AI Model:
             </label>
             <Select name="ai_model_name" id={"ai-" + id} choices={aiModelChoices}/>
 
-            <div class="query">
-                <input name="query" type="text" autocomplete="off"/>
+            <div className="query">
+                <input name="query" type="text" autoComplete="off"/>
                 <button type="submit" className="material-icons contrast">send</button>
             </div>
         </form>
