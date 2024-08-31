@@ -43,8 +43,8 @@ function QueryPage({data}) {
         event.preventDefault();
 
         const headers = new Headers();
-        headers.append("X-CSRFToken", Cookies.get("csrftoken"));
         const formData = new FormData(event.currentTarget);
+        formData.audience = "dog";
         const request = {
             method: "POST",
             body: formData,
