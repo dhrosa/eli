@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState, useId } from 'react';
-import Cookies from 'js-cookie';
+import Api from './Api';
 
 function SelectOption({choice}) {
     return (
@@ -29,7 +29,7 @@ function QueryPage({data}) {
                 const request = {
                     method: "OPTIONS",
                 };
-                const response = await fetch("/api/query/", request);
+                const response = await Api("/api/query/", request);
                 const options = await response.json();
                 const fields = options.actions.POST;
                 setAiModelChoices(fields.ai_model_name.choices);
