@@ -51,7 +51,7 @@ function QueryPage({data}) {
             headers: headers,
             
         };
-        const response = await fetch("/api/query/", request);
+        const response = await Api("/api/query/", request);
         console.log(response);
         console.log(await response.json());
     };
