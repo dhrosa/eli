@@ -74,5 +74,6 @@ class QueryViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
 
     def create(self, request):
         d = serializers.QuerySerializer(data=request.data)
-        print(d.is_valid())
-        return response.Response(data=d.data)
+        print(d.is_valid(raise_exception=True))
+        print(d.errors);
+        return response.Response(data=d.validated_data)
