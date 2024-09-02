@@ -25,28 +25,7 @@
   </head>
 
   <body>
-    <header class="container">      
-      <nav>
-        <ul>
-          <li>
-            <a class="outline" href="{% url 'home' %}">
-              <hgroup><h1>ELI</h1><p>Explain Like I'm ...</p></hgroup>
-            </a>
-          </li>
-        </ul>
-        <ul>
-          <li><a class="contrast" href="{% url 'home' %}">Home</a></li>
-          <li><a class="contrast" href="{% url 'rule_list' %}">Rules</a></li>
-          <li><a class="contrast" href="{% url 'audience_list' %}">Audiences</a></li>
-          <li><a class="contrast" href="{% url 'conversation_list' %}">Conversations</a></li>
-          <li><a class="contrast material-icons" href="#" title="Toggle Light/Dark Mode" onclick="toggleTheme()">contrast</a>
-        </ul>
-      </nav>
-    </header>
-    <main class="container">
-      <div id="main">
-        <script src="{% static 'jsx/index.js' %}"></script>
-        </div>
-    </main>
+    <div id="root"/>
+    <script src="{% static 'jsx/index.js' %}"></script>
   </body>
 </html>
