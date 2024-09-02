@@ -1,5 +1,4 @@
-// webpack.config.js
-const path = require('path');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
     entry: {
@@ -9,6 +8,7 @@ module.exports = {
         path:"/jsx/out/"
     },
     context: "/jsx/src/",
+    plugins: [new MiniCssExtractPlugin()],
     module: {
         rules: [
             {
@@ -22,8 +22,14 @@ module.exports = {
                 }
             },
             {
-                
-            }
+                test: /\.s[ac]ss$/i,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    "css-loader",
+                    "postcss-loader",
+                    "sass-loader",                    
+                ],
+            },
         ]
     },
 };
