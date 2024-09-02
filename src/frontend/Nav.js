@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { ThemeButton } from './ThemeButton';
 
 function NavLink({href, label}) {
     return (
@@ -24,7 +25,7 @@ function Nav() {
                     <li><NavLink href="/audiences" label="Audiences"/></li>
                     <li><NavLink href="/rules" label="Rules"/></li>
                     <li><NavLink href="/conversations" label="Conversations"/></li>
-                    <li><a className="contrast material-icons" href="#" title="Toggle Light/Dark Mode" onClick={toggleTheme}>contrast</a></li>
+                    <li><ThemeButton/></li>
                 </ul>
             </nav>
         </header>
