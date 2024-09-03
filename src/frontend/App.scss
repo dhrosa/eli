@@ -1,3 +1,15 @@
+$family-primary: Inter,SF Pro,Segoe UI,Roboto,Oxygen,Ubuntu,Helvetica Neue,Helvetica,Arial,sans-serif;
+
+$family-code: Inconsolata,Hack,SF Mono,Roboto Mono,Source Code Pro,Ubuntu Mono,monospace;
+
+@use "bulma/sass/base";
+@use "bulma/sass/themes";
+@use "bulma/sass/elements/button";
+@use "bulma/sass/elements/title";
+@use "bulma/sass/components/navbar";
+
+@use "bulma/sass/layout/container";
+
 .material-icons {
     /* Lines up icon with text */
     vertical-align: middle;

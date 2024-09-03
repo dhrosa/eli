@@ -10,7 +10,7 @@ function App() {
     return (
         <>
             <Nav/>
-            <main className="container">
+            <main className="container section">
                 <Routes>
                     <Route path="/" element={<QueryPage />}/>
                     <Route path="/c" element={<ConversationListPage />}/>

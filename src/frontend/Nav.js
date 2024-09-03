@@ -3,32 +3,43 @@ import { ThemeButton } from './ThemeButton';
 
 function NavLink({href, label}) {
     return (
-        <Link to={href} className="contrast">
+        <Link to={href} className="navbar-item">
             {label}
         </Link>
     );
 }
 
+function HamburgerButton() {
+    return (
+        <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" is-active="true">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    )
+}
+
 function Nav() {
     return (
-        <header className="container">      
-            <nav>
-                <ul>
-                    <li>
-                        <Link to="/" className="outline">
-                            <hgroup><h1>ELI</h1><p>Explain Like I'm ...</p></hgroup>
-                        </Link>
-                    </li>
-                </ul>
-                <ul>
-                    <li><NavLink href="/" label="Home"/></li>
-                    <li><NavLink href="/audiences" label="Audiences"/></li>
-                    <li><NavLink href="/rules" label="Rules"/></li>
-                    <li><NavLink href="/conversations" label="Conversations"/></li>
-                    <li><ThemeButton/></li>
-                </ul>
-            </nav>
-        </header>
+        <nav role="navigation" aria-label="main navigation" className="navbar">
+            <div className="container">
+                <div className="navbar-brand">
+                    <Link to="/" className="navbar-item">
+                        <h1 className="title">ELI</h1>
+                    </Link>
+                    <HamburgerButton/>
+                </div>
+                <div className="navbar-menu">
+                    <div className="navbar-end">
+                        <NavLink href="/" label="Home"/>
+                        <NavLink href="/audiences" label="Audiences"/>
+                        <NavLink href="/rules" label="Rules"/>
+                        <NavLink href="/conversations" label="Conversations"/>
+                    </div>
+                </div>
+            </div>
+        </nav>
     );
 }
 
