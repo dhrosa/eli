@@ -11,6 +11,7 @@ function ThemeButton() {
 
     useEffect(() => {
         document.documentElement.dataset.theme = theme;
+        localStorage.setItem("data-theme", theme);
     });
 
     const toggle = () => {
