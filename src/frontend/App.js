@@ -1,3 +1,5 @@
+import "./App.scss";
+
 import { ConversationPage } from './ConversationPage';
 import { ConversationListPage } from './ConversationListPage';
 import { Routes, Route } from 'react-router-dom'
