@@ -17,12 +17,14 @@ function Select({ id, name, choices }) {
   );
 }
 
-function Field({ children }) {
-  return <div className="field">{children}</div>;
+function Field({ className, children }) {
+  className = "field " + (className || "");
+  return <div className={className}>{children}</div>;
 }
 
-function Control({ children }) {
-  return <div className="Control">{children}</div>;
+function Control({ className, children }) {
+  className = "control " + (className || "");
+  return <div className={className}>{children}</div>;
 }
 
 function Label({ children }) {
@@ -95,12 +97,18 @@ function Form() {
         <Help>LLM backend</Help>
       </Field>
 
-      <Field>
-        <Label>Query</Label>
+      <Field className="is-grouped is-grouped-right">
         <Control>
-          <textarea name="query" autoComplete="off" className="textarea" />
+          <input
+            name="query"
+            autoComplete="off"
+            className="input"
+            placeholder="Query. e.g. 'What is a cat?'"
+          />
         </Control>
-        <Help>Topic that ELI should explain. e.g. "What is a chair?"</Help>
+        <Control className="is-expanded">
+          <button className="button is-primary">Submit</button>
+        </Control>
       </Field>
     </form>
   );
