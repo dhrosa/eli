@@ -6,7 +6,8 @@ function InitialTheme() {
     return theme;
 }
 
-function ThemeButton() {
+function ThemeButton({className}) {
+    className = "material-icons " + (className ?? "");
     const [theme, setTheme] = useState(InitialTheme());
 
     useEffect(() => {
@@ -19,7 +20,7 @@ function ThemeButton() {
     };
         
     return (
-        <a className="contrast material-icons" href="#"
+        <a className={className} href="#"
            title="Toggle Light/Dark Mode"
            onClick={toggle}>
             {theme == "dark" ? "light_mode" : "dark_mode"}

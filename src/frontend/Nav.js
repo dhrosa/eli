@@ -51,7 +51,8 @@ function Nav() {
                     <NavLink href="/" label="Home"/>
                     <NavLink href="/audiences" label="Audiences"/>
                     <NavLink href="/rules" label="Rules"/>
-                        <NavLink href="/conversations" label="Conversations"/>
+                    <NavLink href="/conversations" label="Conversations"/>
+                    <ThemeButton className="navbar-item"/>
                 </div>
             </div>
         </nav>
