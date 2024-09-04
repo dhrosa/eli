@@ -8,16 +8,16 @@ import { Nav } from './Nav';
 
 function App() {
     return (
-        <>
+        <div className="container is-max-tablet">
             <Nav/>
-            <main className="container section">
+            <main>
                 <Routes>
                     <Route path="/" element={<QueryPage />}/>
                     <Route path="/c" element={<ConversationListPage />}/>
                     <Route path="/c/:id" element={<ConversationPage />}/>
                 </Routes>
             </main>
-        </>
+        </div>
     )
 }
 

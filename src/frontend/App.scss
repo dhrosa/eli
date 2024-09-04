@@ -7,46 +7,20 @@ $family-code: Inconsolata,Hack,SF Mono,Roboto Mono,Source Code Pro,Ubuntu Mono,m
 @use "bulma/sass/elements/button";
 @use "bulma/sass/elements/title";
 @use "bulma/sass/components/navbar";
+@use "bulma/sass/components/panel";
 
 @use "bulma/sass/layout/container";
 
-.material-icons {
-    /* Lines up icon with text */
-    vertical-align: middle;
-    text-decoration: none;
-    border: var(--pico-outline-width) solid transparent;
-    border-radius: var(--pico-border-radius);
-}
+@use "bulma/sass/form";
 
-.material-icons:hover {
-    border-color: var(--pico-primary-hover-underline);
-}
+// .material-icons {
+//     /* Lines up icon with text */
+//     vertical-align: middle;
+//     text-decoration: none;
+//     border: var(--pico-outline-width) solid transparent;
+//     border-radius: var(--pico-border-radius);
+// }
 
-.conversation footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.highlight pre {
-    margin-top: var(--pico-spacing);
-    margin-bottom: var(--pico-spacing);
-}
-
-.conversation dialog article {
-    max-width: calc(max(400px, 80%));
-}
-
-form {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.query {
-    flex-basis: 100%;
-    display: flex;
-}
-
-.query button {
-    flex-basis: max-content;
-}
+// .material-icons:hover {
+//     border-color: var(--pico-primary-hover-underline);
+// }

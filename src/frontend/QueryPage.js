@@ -13,13 +13,31 @@ function SelectOption({choice}) {
 function Select({id, name, choices}) {
     const options = choices.map(c => <SelectOption key={c.value} choice={c}/>);
     return (
-        <select id={id} name={name}>
-            { options }
-        </select>
+        <div className="select">
+            <select id={id} name={name}>
+                { options }
+            </select>
+        </div>
     );
 }
 
-function QueryPage({data}) {
+function Field({ children }) {
+    return <div className="field">{children}</div>;
+}
+
+function Control({ children }) {
+    return <div className="Control">{children}</div>;
+}
+
+function Label({children}) {
+    return <label className="label">{children}</label>;
+}
+
+function Help({children}) {
+    return <p className="help">{children}</p>;
+}
+
+function Form() {
     const [aiModelChoices, setAiModelChoices] = useState([]);
     const [audienceChoices, setAudienceChoices] = useState([]);
     
@@ -54,26 +72,41 @@ function QueryPage({data}) {
         const response = await Api("/api/query/", request);
         console.log(response);
         console.log(await response.json());
-    };
+       };
     
     const id = useId();
     return (
         <form onSubmit={onSubmit}>
-            <label htmlFor={"audience-" + id}>
-                Explain Like I'm A:
-            </label>
-            <Select name="audience" id={"audience-" + id} choices={audienceChoices}/>
-            
-            <label htmlFor={"ai-" + id}>
-                AI Model:
-            </label>
-            <Select name="ai_model_name" id={"ai-" + id} choices={aiModelChoices}/>
-
-            <div className="query">
-                <input name="query" type="text" autoComplete="off"/>
-                <button type="submit" className="material-icons contrast">send</button>
-            </div>
+            <Field>
+                <Label>Explain Like I'm A:</Label>
+                    <Control>
+                        <Select name="audience" id={"audience-" + id} choices={audienceChoices}/>
+                    </Control>
+                <Help>The target audience for ELI's responses.</Help>
+        </Field>
+        
+        <Field>
+            <Label>AI Model:</Label>
+            <Control>
+                <Select name="ai_model_name" id={"ai-" + id} choices={aiModelChoices}/>
+            </Control>
+            <Help>LLM backend</Help>
+        </Field>
+        
+        <Field>
+            <Label>Query</Label>
+            <Control>
+                <textarea name="query" autoComplete="off" className="textarea"/>
+            </Control>
+            <Help>Topic that ELI should explain. e.g. "What is a chair?"</Help>
+        </Field>
         </form>
+    );
+}
+
+function QueryPage() {
+    return (
+        <Form/>
     );
 }
 

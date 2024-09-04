@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ThemeButton } from './ThemeButton';
+import { useState } from 'react';
 
 function NavLink({href, label}) {
     return (
@@ -9,9 +10,13 @@ function NavLink({href, label}) {
     );
 }
 
-function HamburgerButton() {
+function HamburgerButton({onClick, isActive}) {
+    var classNames = "navbar-burger";
+    if (isActive) {
+        classNames += " is-active";
+    }
     return (
-        <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" is-active="true">
+        <a role="button" className={classNames} aria-label="menu" aria-expanded="false" onClick={onClick}>
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
@@ -21,22 +26,32 @@ function HamburgerButton() {
 }
 
 function Nav() {
+    const [menuActive, setMenuActive] = useState(false);
+    
+
+    const toggleMenu = () => {
+        setMenuActive(!menuActive);
+    };
+    var menuClasses = "navbar-menu";
+    if (menuActive) {
+        menuClasses += " is-active";
+    }
     return (
         <nav role="navigation" aria-label="main navigation" className="navbar">
-            <div className="container">
-                <div className="navbar-brand">
-                    <Link to="/" className="navbar-item">
-                        <h1 className="title">ELI</h1>
-                    </Link>
-                    <HamburgerButton/>
+            <div className="navbar-brand">
+                <Link to="/" className="navbar-item">
+                    <h1 className="title">ELI</h1>
+                </Link>
+                <HamburgerButton onClick={toggleMenu} isActive={menuActive}/>
+            </div>
+            <div className={menuClasses}>
+                <div className="navbar-start">
                 </div>
-                <div className="navbar-menu">
-                    <div className="navbar-end">
-                        <NavLink href="/" label="Home"/>
-                        <NavLink href="/audiences" label="Audiences"/>
-                        <NavLink href="/rules" label="Rules"/>
+                <div className="navbar-end">
+                    <NavLink href="/" label="Home"/>
+                    <NavLink href="/audiences" label="Audiences"/>
+                    <NavLink href="/rules" label="Rules"/>
                         <NavLink href="/conversations" label="Conversations"/>
-                    </div>
                 </div>
             </div>
         </nav>
