@@ -107,7 +107,7 @@ function Form() {
           />
         </Control>
         <Control className="is-expanded">
-          <button className="button is-primary">Submit</button>
+          <button className="button is-primary material-icons">send</button>
         </Control>
       </Field>
     </form>
