@@ -98,7 +98,7 @@ function Form() {
       </Field>
 
       <Field className="is-grouped is-grouped-right">
-        <Control>
+        <Control className="is-expanded">
           <input
             name="query"
             autoComplete="off"
@@ -106,7 +106,7 @@ function Form() {
             placeholder="Query. e.g. 'What is a cat?'"
           />
         </Control>
-        <Control className="is-expanded">
+        <Control>
           <button className="button is-primary material-icons">send</button>
         </Control>
       </Field>
