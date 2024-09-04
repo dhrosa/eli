@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Conversation } from "./Conversation";
+import Conversation from "./Conversation";
 
-function ConversationPage() {
+export default function () {
   const { id } = useParams();
   const [data, setData] = useState(null);
   useEffect(() => {
@@ -14,5 +14,3 @@ function ConversationPage() {
   }, []);
   return <Conversation data={data} />;
 }
-
-export { ConversationPage };

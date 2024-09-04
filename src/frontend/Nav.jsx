@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ThemeButton } from "./ThemeButton";
+import ThemeButton from "./ThemeButton";
 import { useState } from "react";
 
 function NavLink({ href, label }) {
@@ -31,7 +31,7 @@ function HamburgerButton({ onClick, isActive }) {
   );
 }
 
-function Nav() {
+export default function () {
   const [menuActive, setMenuActive] = useState(false);
 
   const toggleMenu = () => {
@@ -62,5 +62,3 @@ function Nav() {
     </nav>
   );
 }
-
-export { Nav };

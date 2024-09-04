@@ -8,7 +8,7 @@ function InitialTheme() {
   return theme;
 }
 
-function ThemeButton({ className }) {
+export default function ({ className }) {
   className = "material-icons " + (className ?? "");
   const [theme, setTheme] = useState(InitialTheme());
 
@@ -32,5 +32,3 @@ function ThemeButton({ className }) {
     </a>
   );
 }
-
-export { ThemeButton };

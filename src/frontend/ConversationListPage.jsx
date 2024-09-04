@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Conversation } from "./Conversation";
+import Conversation from "./Conversation";
 
 function ConversationList() {
   const [dataList, setDataList] = useState([]);
@@ -15,8 +15,6 @@ function ConversationList() {
   return <div>{tags}</div>;
 }
 
-function ConversationListPage() {
+export default function () {
   return <ConversationList />;
 }
-
-export { ConversationListPage };

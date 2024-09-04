@@ -1,12 +1,12 @@
 import "./App.scss";
 
-import { ConversationPage } from "./ConversationPage";
-import { ConversationListPage } from "./ConversationListPage";
+import ConversationPage from "./ConversationPage";
+import ConversationListPage from "./ConversationListPage";
 import { Routes, Route } from "react-router-dom";
-import { QueryPage } from "./QueryPage";
-import { Nav } from "./Nav";
+import QueryPage from "./QueryPage";
+import Nav from "./Nav";
 
-function App() {
+export default function () {
   return (
     <div className="container is-max-tablet">
       <Nav />
@@ -20,5 +20,3 @@ function App() {
     </div>
   );
 }
-
-export { App };

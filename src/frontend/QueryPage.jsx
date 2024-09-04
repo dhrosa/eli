@@ -106,8 +106,6 @@ function Form() {
   );
 }
 
-function QueryPage() {
+export default function () {
   return <Form />;
 }
-
-export { QueryPage };

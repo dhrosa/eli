@@ -11,7 +11,7 @@ function Quote({ text, author }) {
   );
 }
 
-function Conversation({ data }) {
+export default function ({ data }) {
   if (!data) {
     return <article className="conversation" aria-busy="true"></article>;
   }
@@ -32,5 +32,3 @@ function Conversation({ data }) {
     </article>
   );
 }
-
-export { Conversation };
