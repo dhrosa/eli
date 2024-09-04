@@ -1,6 +1,23 @@
-$family-primary: Inter,SF Pro,Segoe UI,Roboto,Oxygen,Ubuntu,Helvetica Neue,Helvetica,Arial,sans-serif;
+$family-primary:
+  Inter,
+  SF Pro,
+  Segoe UI,
+  Roboto,
+  Oxygen,
+  Ubuntu,
+  Helvetica Neue,
+  Helvetica,
+  Arial,
+  sans-serif;
 
-$family-code: Inconsolata,Hack,SF Mono,Roboto Mono,Source Code Pro,Ubuntu Mono,monospace;
+$family-code:
+  Inconsolata,
+  Hack,
+  SF Mono,
+  Roboto Mono,
+  Source Code Pro,
+  Ubuntu Mono,
+  monospace;
 
 @use "bulma/sass/base";
 @use "bulma/sass/themes";

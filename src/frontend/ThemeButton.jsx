@@ -1,31 +1,36 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 function InitialTheme() {
-    var theme = localStorage.getItem("data-theme");
-    theme ??= matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-    return theme;
+  var theme = localStorage.getItem("data-theme");
+  theme ??= matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+  return theme;
 }
 
-function ThemeButton({className}) {
-    className = "material-icons " + (className ?? "");
-    const [theme, setTheme] = useState(InitialTheme());
+function ThemeButton({ className }) {
+  className = "material-icons " + (className ?? "");
+  const [theme, setTheme] = useState(InitialTheme());
 
-    useEffect(() => {
-        document.documentElement.dataset.theme = theme;
-        localStorage.setItem("data-theme", theme);
-    });
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem("data-theme", theme);
+  });
 
-    const toggle = () => {
-        setTheme((theme == "dark") ? "light" : "dark");
-    };
-        
-    return (
-        <a className={className} href="#"
-           title="Toggle Light/Dark Mode"
-           onClick={toggle}>
-            {theme == "dark" ? "light_mode" : "dark_mode"}
-        </a>
-    );
+  const toggle = () => {
+    setTheme(theme == "dark" ? "light" : "dark");
+  };
+
+  return (
+    <a
+      className={className}
+      href="#"
+      title="Toggle Light/Dark Mode"
+      onClick={toggle}
+    >
+      {theme == "dark" ? "light_mode" : "dark_mode"}
+    </a>
+  );
 }
 
-export {ThemeButton};
+export { ThemeButton };
