@@ -19,26 +19,4 @@ $family-code:
   Ubuntu Mono,
   monospace;
 
-@use "bulma/sass/base";
-@use "bulma/sass/themes";
-@use "bulma/sass/elements/button";
-@use "bulma/sass/elements/title";
-@use "bulma/sass/components/card";
-@use "bulma/sass/components/navbar";
-@use "bulma/sass/components/panel";
-
-@use "bulma/sass/layout/container";
-
-@use "bulma/sass/form";
-
-// .material-icons {
-//     /* Lines up icon with text */
-//     vertical-align: middle;
-//     text-decoration: none;
-//     border: var(--pico-outline-width) solid transparent;
-//     border-radius: var(--pico-border-radius);
-// }
-
-// .material-icons:hover {
-//     border-color: var(--pico-primary-hover-underline);
-// }
+@use "bulma/sass";
