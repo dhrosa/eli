@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState, useId } from "react";
 import Api from "./Api";
+import Conversation from "./Conversation";
 
 function SelectOption({ choice }) {
   return <option value={choice.value}>{choice.display_name}</option>;
@@ -115,5 +116,14 @@ function Form() {
 }
 
 export default function () {
-  return <Form />;
+  return (
+    <>
+      <section className="section">
+        <Form />
+      </section>
+      <section className="section">
+        <Conversation />
+      </section>
+    </>
+  );
 }
