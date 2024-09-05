@@ -12,5 +12,9 @@ export default function () {
     };
     get().catch(console.error);
   }, []);
-  return <Conversation data={data} />;
+  return (
+    <section class="section">
+      <Conversation data={data} />
+    </section>
+  );
 }

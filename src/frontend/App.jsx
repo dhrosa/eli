@@ -8,7 +8,7 @@ import Nav from "./Nav";
 
 export default function () {
   return (
-    <div className="container is-max-tablet">
+    <div className="container">
       <Nav />
       <main>
         <Routes>

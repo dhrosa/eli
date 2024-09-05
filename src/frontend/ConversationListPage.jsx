@@ -12,7 +12,7 @@ function ConversationList() {
     fetchList().catch(console.error);
   }, []);
   const tags = dataList.map((c) => <Conversation data={c} key={c.id} />);
-  return <div>{tags}</div>;
+  return <section className="section">{tags}</section>;
 }
 
 export default function () {
