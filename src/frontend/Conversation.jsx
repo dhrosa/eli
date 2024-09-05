@@ -1,34 +1,53 @@
 import { Link } from "react-router-dom";
 
-function Quote({ text, author }) {
+function Quote({ author, text }) {
   return (
-    <blockquote>
-      {text}
-      <footer>
-        <cite>- {author}</cite>
-      </footer>
-    </blockquote>
+    <div className="content">
+      <p>
+        <strong>{author}</strong>
+        <br />
+        {text}
+        <br />
+      </p>
+    </div>
+  );
+}
+
+function Avatar() {
+  return (
+    <p className="image is-64x64">
+      <img src="https://bulma.io/assets/images/placeholders/64x64.png" />
+    </p>
+  );
+}
+
+function MediaObject({ children }) {
+  return (
+    <article className="media">
+      <figure className="media-left">
+        <Avatar />
+      </figure>
+      {children}
+    </article>
   );
 }
 
 export default function ({ data }) {
   return (
-      <div className="card">
-          <div className="card-header">
-              <p class="card-header-title">
-                  {data.response_title}
-                  <Link to={data.url} className="card-header-icon icon">
-                      <span className="material-icons">link</span>
-                  </Link>
-              </p>              
+    <MediaObject>
+      <div className="media-content">
+        <Quote author={data.audience_name} text={data.query} />
+        <MediaObject>
+          <div className="media-content">
+            <Quote author="ELI" text={data.response_text} />
           </div>
-          <div className="card-content">
-              <Quote text={data.query} author={data.audience_name} />
-              <Quote
-                  text={data.response_text}
-                  author={`ELI (${data.ai_model_name}})`}
-              />
-          </div>
+        </MediaObject>
       </div>
+      <div className="media-right">
+        <Link to={data.url} className="card-header-icon icon">
+          <span className="material-icons">link</span>
+        </Link>
+      </div>
+    </MediaObject>
   );
 }

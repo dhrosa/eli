@@ -53,9 +53,9 @@ export default function () {
         <div className="navbar-start"></div>
         <div className="navbar-end">
           <NavLink href="/" label="Home" />
-          <NavLink href="/audiences" label="Audiences" />
-          <NavLink href="/rules" label="Rules" />
-          <NavLink href="/c" label="Conversations" />
+          <NavLink href="/audiences/" label="Audiences" />
+          <NavLink href="/rules/" label="Rules" />
+          <NavLink href="/c/" label="Conversations" />
           <ThemeButton className="navbar-item" />
         </div>
       </div>

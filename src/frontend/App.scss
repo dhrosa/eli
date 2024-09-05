@@ -20,3 +20,7 @@ $family-code:
   monospace;
 
 @use "bulma/sass";
+
+.media-content .content {
+  min-height: 64px;
+}

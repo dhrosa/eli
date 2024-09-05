@@ -13,8 +13,8 @@ export default function () {
       <main>
         <Routes>
           <Route path="/" element={<QueryPage />} />
-          <Route path="/c" element={<ConversationListPage />} />
-          <Route path="/c/:id" element={<ConversationPage />} />
+          <Route path="/c/" element={<ConversationListPage />} />
+          <Route path="/c/:id/" element={<ConversationPage />} />
         </Routes>
       </main>
     </div>
