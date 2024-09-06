@@ -42,7 +42,7 @@ function CardHeader({ title, url }) {
     <div className="card-header">
       <p className="card-header-title">{title ?? "Loading..."}</p>
       <div className="card-header-icon">
-        <Link to={url} className={url ? "" : "is-skeleton"}>
+        <Link to={url} className={"icon " + (url ? "" : "is-skeleton")}>
           <span className="material-icons">link</span>
         </Link>
       </div>
