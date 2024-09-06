@@ -7,7 +7,7 @@ from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 router.register("query", views.QueryViewSet, basename="query")
 router.register("rules", views.RuleViewSet, basename="rule")
-router.register("audiences", views.RuleViewSet, basename="audience")
+router.register("audiences", views.AudienceViewSet, basename="audience")
 router.register("conversations", views.ConversationViewSet, basename="conversation")
 
 urlpatterns = [

@@ -4,6 +4,7 @@ import ConversationPage from "./ConversationPage";
 import ConversationListPage from "./ConversationListPage";
 import { Routes, Route } from "react-router-dom";
 import QueryPage from "./QueryPage";
+import AudiencesPage from "./AudiencesPage";
 import RulesPage from "./RulesPage";
 import Nav from "./Nav";
 
@@ -14,6 +15,7 @@ export default function () {
       <main>
         <Routes>
           <Route path="/" element={<QueryPage />} />
+          <Route path="/audiences/" element={<AudiencesPage />} />
           <Route path="/rules/" element={<RulesPage />} />
           <Route path="/c/" element={<ConversationListPage />} />
           <Route path="/c/:id/" element={<ConversationPage />} />
