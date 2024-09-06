@@ -37,22 +37,15 @@ function MediaContent({ children }) {
   return <div className="media-content">{children}</div>;
 }
 
-function MediaRight({ url }) {
-  const className = "media-right " + (url ? "" : "is-skeleton");
-  return (
-    <div className={className}>
-      <Link to={url} className="card-header-icon icon">
-        <span className="material-icons">link</span>
-      </Link>
-    </div>
-  );
-}
-
-function CardHeader({ title }) {
-  const contents = title ?? "Loading...";
+function CardHeader({ title, url }) {
   return (
     <div className="card-header">
-      <p className="card-header-title">{contents}</p>
+      <p className="card-header-title">{title ?? "Loading..."}</p>
+      <div className="card-header-icon">
+        <Link to={url} className={url ? "" : "is-skeleton"}>
+          <span className="material-icons">link</span>
+        </Link>
+      </div>
     </div>
   );
 }
@@ -60,7 +53,7 @@ function CardHeader({ title }) {
 export default function ({ data }) {
   return (
     <div className="card">
-      <CardHeader title={data?.response_title} />
+      <CardHeader title={data?.response_title} url={data?.url} />
       <div className="card-content">
         <Media>
           <MediaContent>
