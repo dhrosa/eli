@@ -1,11 +1,23 @@
 import { Link } from "react-router-dom";
 
-function Quote({ author, text }) {
+function Timestamp({ timestamp }) {
+  if (!timestamp) {
+    return false;
+  }
+  return (
+    <>
+      <small>&nbsp; @{timestamp}</small>
+    </>
+  );
+}
+
+function Quote({ author, text, timestamp }) {
   const skeletonClass = text ? "" : "is-skeleton";
   return (
     <div className={"content " + skeletonClass}>
       <p>
         <strong>{author}</strong>
+        <Timestamp timestamp={timestamp} />
         <br />
         {text}
         <br />
@@ -57,7 +69,11 @@ export default function ({ object }) {
       <div className="card-content">
         <Media>
           <MediaContent>
-            <Quote author={object?.audience_name} text={object?.query} />
+            <Quote
+              author={object?.audience_name}
+              text={object?.query}
+              timestamp={object?.timestamp}
+            />
             <Media>
               <MediaContent>
                 <Quote author="ELI" text={object?.response_text} />
