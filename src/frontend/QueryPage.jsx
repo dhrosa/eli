@@ -48,7 +48,7 @@ function SelectField({ label, name, id, choices, help }) {
   );
 }
 
-function Form({ aiModelChoices, audienceChoices }) {
+function Form({ aiModelChoices, audienceChoices, onResponse }) {
   const onSubmit = async (event) => {
     // Prevent normal form submission request and reload.
     event.preventDefault();
@@ -61,9 +61,8 @@ function Form({ aiModelChoices, audienceChoices }) {
       body: formData,
       headers: headers,
     };
-    const response = await Api("/api/query/", request);
-    console.log(response);
-    console.log(await response.json());
+      const response = await Api("/api/query/", request);
+      onResponse(await response.json());
   };
 
   const id = useId();
@@ -118,8 +117,12 @@ export default function() {
     };
     get().catch(console.error);
   }, []);
-    console.log(audienceChoices);
+    
+    const onResponse = (response) => {
+        console.log("response: ", response);
+    };
+    
   return (
-    <Form aiModelChoices={aiModelChoices} audienceChoices={audienceChoices} />
+      <Form aiModelChoices={aiModelChoices} audienceChoices={audienceChoices} onResponse={onResponse}/>
   );
 }

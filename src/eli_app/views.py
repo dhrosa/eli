@@ -16,35 +16,6 @@ from rest_framework import viewsets, views, mixins, response
 class DefaultView(TemplateView):
     template_name="eli_app/base.html"
 
-class QueryView(FormView):
-    template_name = "eli_app/query.html"
-    form_class = QueryForm
-
-    def get_initial(self):
-        return self.request.POST
-
-    def form_valid(self, form, **kwargs):
-        data = form.cleaned_data
-        query = data["query"]
-        audience = data["audience"]
-
-        system_prompt_lines = [r.text for r in Rule.objects.all()]
-        system_prompt_lines.append(audience.prompt)
-        system_prompt = "\n".join(system_prompt_lines)
-
-        conversation = Conversation(
-            audience_name=audience.name,
-            system_prompt=system_prompt,
-            query=query,
-        )
-        ai.fill_completion(conversation, ai.AiModelName[data["ai_model"]])
-        conversation.save()
-
-        context = self.get_context_data(**kwargs)
-        context["conversation"] = conversation
-        return self.render_to_response(context)
-
-
 class RuleViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Rule.objects.all()
     serializer_class = serializers.RuleSerializer
@@ -61,7 +32,22 @@ class QueryViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     serializer_class = serializers.QuerySerializer
 
     def create(self, request):
-        d = serializers.QuerySerializer(data=request.data)
-        print(d.is_valid(raise_exception=True))
-        print(d.errors);
-        return response.Response(data=d.validated_data)
+        input_data = serializers.QuerySerializer(data=request.data)
+        input_data.is_valid(raise_exception=True)
+
+        data = input_data.validated_data
+        audience = Audience.objects.get(pk=data["audience"])
+
+        system_prompt_lines = [r.text for r in Rule.objects.all()]
+        system_prompt_lines.append(audience.prompt)
+        system_prompt = "\n".join(system_prompt_lines)
+
+        conversation = Conversation(
+            audience_name=audience.name,
+            system_prompt=system_prompt,
+            query=data["query"],
+        )
+        ai.fill_completion(conversation, ai.AiModelName[data["ai_model_name"]])
+        conversation.save()
+
+        return response.Response(data=serializers.ConversationSerializer(conversation).data)

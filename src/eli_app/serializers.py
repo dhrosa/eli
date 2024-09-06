@@ -29,5 +29,5 @@ class QuerySerializer(serializers.Serializer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["audience"].choices = [
-            (str(a.id), a.name) for a in models.Audience.objects.all()
+            (a.id, a.name) for a in models.Audience.objects.all()
             ]
