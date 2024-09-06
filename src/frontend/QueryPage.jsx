@@ -36,24 +36,19 @@ function Help({ children }) {
   return <p className="help">{children}</p>;
 }
 
-function Form() {
-  const [aiModelChoices, setAiModelChoices] = useState([]);
-  const [audienceChoices, setAudienceChoices] = useState([]);
+function SelectField({ label, name, id, choices, help }) {
+  return (
+    <Field>
+      <Label>{label}</Label>
+      <Control>
+        <Select name={name} id={id} choices={choices} />
+      </Control>
+      <Help>{help}</Help>
+    </Field>
+  );
+}
 
-  useEffect(() => {
-    const get = async () => {
-      const request = {
-        method: "OPTIONS",
-      };
-      const response = await Api("/api/query/", request);
-      const options = await response.json();
-      const fields = options.actions.POST;
-      setAiModelChoices(fields.ai_model_name.choices);
-      setAudienceChoices(fields.audience.choices);
-    };
-    get().catch(console.error);
-  }, []);
-
+function Form({ aiModelChoices, audienceChoices }) {
   const onSubmit = async (event) => {
     // Prevent normal form submission request and reload.
     event.preventDefault();
@@ -74,29 +69,21 @@ function Form() {
   const id = useId();
   return (
     <form onSubmit={onSubmit}>
-      <Field>
-        <Label>Explain Like I'm A:</Label>
-        <Control>
-          <Select
-            name="audience"
-            id={"audience-" + id}
-            choices={audienceChoices}
-          />
-        </Control>
-        <Help>The target audience for ELI's responses.</Help>
-      </Field>
+      <SelectField
+        name="audience"
+        id={"audience-" + id}
+        choices={audienceChoices}
+        label="Explain Like I'm A:"
+        help="The target audience for ELI's responses."
+      />
 
-      <Field>
-        <Label>AI Model:</Label>
-        <Control>
-          <Select
-            name="ai_model_name"
-            id={"ai-" + id}
-            choices={aiModelChoices}
-          />
-        </Control>
-        <Help>LLM backend</Help>
-      </Field>
+      <SelectField
+        name="ai_model_name"
+        id={"ai-" + id}
+        choices={aiModelChoices}
+        label="AI Model:"
+        help="LLM backend"
+      />
 
       <Field className="is-grouped is-grouped-right">
         <Control className="is-expanded">
@@ -115,15 +102,24 @@ function Form() {
   );
 }
 
-export default function () {
+export default function() {
+  const [aiModelChoices, setAiModelChoices] = useState([]);
+  const [audienceChoices, setAudienceChoices] = useState([]);
+  useEffect(() => {
+    const get = async () => {
+      const request = {
+        method: "OPTIONS",
+      };
+      const response = await Api("/api/query/", request);
+      const options = await response.json();
+      const fields = options.actions.POST;
+      setAiModelChoices(fields.ai_model_name.choices);
+      setAudienceChoices(fields.audience.choices);
+    };
+    get().catch(console.error);
+  }, []);
+    console.log(audienceChoices);
   return (
-    <>
-      <section className="section">
-        <Form />
-      </section>
-      <section className="section">
-        <Conversation />
-      </section>
-    </>
+    <Form aiModelChoices={aiModelChoices} audienceChoices={audienceChoices} />
   );
 }
