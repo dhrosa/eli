@@ -48,21 +48,21 @@ function SelectField({ label, name, id, choices, help }) {
   );
 }
 
-function Form({ aiModelChoices, audienceChoices, onResponse }) {
+function Form({ aiModelChoices, audienceChoices, onPending, onResponse }) {
   const onSubmit = async (event) => {
+    onPending();
     // Prevent normal form submission request and reload.
     event.preventDefault();
 
     const headers = new Headers();
     const formData = new FormData(event.currentTarget);
-    formData.audience = "dog";
     const request = {
       method: "POST",
       body: formData,
       headers: headers,
     };
-      const response = await Api("/api/query/", request);
-      onResponse(await response.json());
+    const response = await Api("/api/query/", request);
+    onResponse(await response.json());
   };
 
   const id = useId();
@@ -101,9 +101,21 @@ function Form({ aiModelChoices, audienceChoices, onResponse }) {
   );
 }
 
-export default function() {
+function SubmittedConversation({ conversation, pending }) {
+  if (!pending && !conversation) {
+    return <></>;
+  }
+  console.log("submitted rendering: ", pending, conversation);
+  return <Conversation conversation={conversation} />;
+}
+
+export default function () {
+  console.log("query render!");
   const [aiModelChoices, setAiModelChoices] = useState([]);
   const [audienceChoices, setAudienceChoices] = useState([]);
+  const [conversation, setConversation] = useState(null);
+  const [pending, setPending] = useState(false);
+
   useEffect(() => {
     const get = async () => {
       const request = {
@@ -117,12 +129,42 @@ export default function() {
     };
     get().catch(console.error);
   }, []);
-    
-    const onResponse = (response) => {
-        console.log("response: ", response);
-    };
-    
+
+  useEffect(() => {
+    console.log("useEffect callback:", conversation);
+  }, [conversation, pending]);
+
+  const onPending = () => {
+    console.log("conversation before pending:", conversation);
+    setPending(true);
+    setConversation(null);
+  };
+
+  const onResponse = (response) => {
+    console.log("response: ", response);
+    console.log("conversation before response:", conversation);
+    setPending(false);
+    var cloned = structuredClone(response);
+    setConversation((prev) => {
+      console.log("setter callback prev:", prev);
+      console.log("response:", response);
+      return { ...response };
+    });
+  };
+
   return (
-      <Form aiModelChoices={aiModelChoices} audienceChoices={audienceChoices} onResponse={onResponse}/>
+    <>
+      <section className="section">
+        <Form
+          aiModelChoices={aiModelChoices}
+          audienceChoices={audienceChoices}
+          onPending={onPending}
+          onResponse={onResponse}
+        />
+      </section>
+      <section className="section">
+        <SubmittedConversation conversation={conversation} pending={pending} />
+      </section>
+    </>
   );
 }
