@@ -11,10 +11,10 @@ router.register("audiences", views.RuleViewSet, basename="audience")
 router.register("conversations", views.ConversationViewSet, basename="conversation")
 
 urlpatterns = [
-    path("", views.QueryView.as_view(), name="home"),
-    path("c/", views.ConversationListView.as_view(), name="conversation_list"),
-    path("c/<pk>/", views.ConversationListView.as_view(), name="conversation"),
-    path("rules/", views.RuleListView.as_view(), name="rule_list"),
-    path("audiences/", views.AudienceListView.as_view(), name="audience_list"),
+    path("", views.DefaultView.as_view(), name="home"),
+    path("c/", views.DefaultView.as_view(), name="conversation_list"),
+    path("c/<pk>/", views.DefaultView.as_view(), name="conversation"),
+    path("rules/", views.DefaultView.as_view(), name="rule_list"),
+    path("audiences/", views.DefaultView.as_view(), name="audience_list"),
     path("api/", include(router.urls)),
 ]

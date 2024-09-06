@@ -13,6 +13,8 @@ from .models import Rule, Conversation, Audience
 
 from rest_framework import viewsets, views, mixins, response
 
+class DefaultView(TemplateView):
+    template_name="eli_app/base.html"
 
 class QueryView(FormView):
     template_name = "eli_app/query.html"
@@ -54,20 +56,6 @@ class AudienceViewSet(viewsets.ReadOnlyModelViewSet):
 class ConversationViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Conversation.objects.all()
     serializer_class = serializers.ConversationSerializer
-
-
-class ConversationView(DetailView):
-    model = Conversation
-
-class ConversationListView(ListView):
-    model = Conversation
-    paginate_by = 10
-
-class RuleListView(ListView):
-    model = Rule
-
-class AudienceListView(ListView):
-    model = Audience
 
 class QueryViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     serializer_class = serializers.QuerySerializer
