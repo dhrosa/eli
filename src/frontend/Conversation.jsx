@@ -50,17 +50,17 @@ function CardHeader({ title, url }) {
   );
 }
 
-export default function ({ data }) {
+export default function ({ object }) {
   return (
     <div className="card">
-      <CardHeader title={data?.response_title} url={data?.url} />
+      <CardHeader title={object?.response_title} url={object?.url} />
       <div className="card-content">
         <Media>
           <MediaContent>
-            <Quote author={data?.audience_name} text={data?.query} />
+            <Quote author={object?.audience_name} text={object?.query} />
             <Media>
               <MediaContent>
-                <Quote author="ELI" text={data?.response_text} />
+                <Quote author="ELI" text={object?.response_text} />
               </MediaContent>
             </Media>
           </MediaContent>

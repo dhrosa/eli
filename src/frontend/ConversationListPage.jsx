@@ -11,7 +11,7 @@ function ConversationList() {
 
     fetchList().catch(console.error);
   }, []);
-  const tags = dataList.map((c) => <Conversation data={c} key={c.id} />);
+  const tags = dataList.map((c) => <Conversation object={c} key={c.id} />);
   return <section className="section">{tags}</section>;
 }
 

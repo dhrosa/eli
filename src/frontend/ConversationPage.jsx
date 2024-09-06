@@ -14,7 +14,7 @@ export default function () {
   }, []);
   return (
     <section class="section">
-      <Conversation data={data} />
+      <Conversation object={data} />
     </section>
   );
 }

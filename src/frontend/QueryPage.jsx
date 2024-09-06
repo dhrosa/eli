@@ -103,14 +103,12 @@ function Form({ aiModelChoices, audienceChoices, onPending, onResponse }) {
 
 function SubmittedConversation({ conversation, pending }) {
   if (!pending && !conversation) {
-    return <></>;
+    return false;
   }
-  console.log("submitted rendering: ", pending, conversation);
-  return <Conversation conversation={conversation} />;
+  return <Conversation object={conversation} />;
 }
 
 export default function () {
-  console.log("query render!");
   const [aiModelChoices, setAiModelChoices] = useState([]);
   const [audienceChoices, setAudienceChoices] = useState([]);
   const [conversation, setConversation] = useState(null);
@@ -130,26 +128,14 @@ export default function () {
     get().catch(console.error);
   }, []);
 
-  useEffect(() => {
-    console.log("useEffect callback:", conversation);
-  }, [conversation, pending]);
-
   const onPending = () => {
-    console.log("conversation before pending:", conversation);
     setPending(true);
     setConversation(null);
   };
 
   const onResponse = (response) => {
-    console.log("response: ", response);
-    console.log("conversation before response:", conversation);
     setPending(false);
-    var cloned = structuredClone(response);
-    setConversation((prev) => {
-      console.log("setter callback prev:", prev);
-      console.log("response:", response);
-      return { ...response };
-    });
+    setConversation(response);
   };
 
   return (
