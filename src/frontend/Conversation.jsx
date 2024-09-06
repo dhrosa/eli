@@ -48,18 +48,31 @@ function MediaRight({ url }) {
   );
 }
 
+function CardHeader({ title }) {
+  const contents = title ?? "Loading...";
+  return (
+    <div className="card-header">
+      <p className="card-header-title">{contents}</p>
+    </div>
+  );
+}
+
 export default function ({ data }) {
   return (
-    <Media>
-      <MediaContent>
-        <Quote author={data?.audience_name} text={data?.query} />
+    <div className="card">
+      <CardHeader title={data?.response_title} />
+      <div className="card-content">
         <Media>
           <MediaContent>
-            <Quote author="ELI" text={data?.response_text} />
+            <Quote author={data?.audience_name} text={data?.query} />
+            <Media>
+              <MediaContent>
+                <Quote author="ELI" text={data?.response_text} />
+              </MediaContent>
+            </Media>
           </MediaContent>
         </Media>
-      </MediaContent>
-      <MediaRight url={data?.url} />
-    </Media>
+      </div>
+    </div>
   );
 }
