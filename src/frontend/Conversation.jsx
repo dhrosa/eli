@@ -1,12 +1,21 @@
 import { Link } from "react-router-dom";
+const humanizeDuration = require("humanize-duration");
 
 function Timestamp({ timestamp }) {
   if (!timestamp) {
     return false;
   }
+  console.log(humanizeDuration);
+  const date = new Date(timestamp);
+  const duration = humanizeDuration(Date.now() - date.getTime(), {
+    largest: 1,
+    round: true,
+  });
   return (
     <>
-      <small>&nbsp; @{timestamp}</small>
+      <small>
+        &nbsp; {date.toLocaleString()} ({duration} ago)
+      </small>
     </>
   );
 }
