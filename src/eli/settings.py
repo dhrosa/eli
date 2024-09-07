@@ -42,6 +42,7 @@ OPENAI_API_KEY = env.str("OPENAI_API_KEY")
 INSTALLED_APPS = [
     "django_vite_plugin",
     "rest_framework",
+    'rest_framework.authtoken',
     "markdownify.apps.MarkdownifyConfig",
     "eli_app.apps.EliAppConfig",
     "django.contrib.admin",

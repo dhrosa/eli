@@ -3,6 +3,7 @@ from django.urls import path, re_path, include
 from . import views
 
 from rest_framework.routers import DefaultRouter
+from rest_framework.authtoken.views import obtain_auth_token
 
 router = DefaultRouter()
 router.register("query", views.QueryViewSet, basename="query")
@@ -17,4 +18,5 @@ urlpatterns = [
     path("rules/", views.DefaultView.as_view(), name="rule_list"),
     path("audiences/", views.DefaultView.as_view(), name="audience_list"),
     path("api/", include(router.urls)),
+    path("auth/", obtain_auth_token),
 ]
