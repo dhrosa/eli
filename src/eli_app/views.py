@@ -12,6 +12,21 @@ from . import ai, serializers
 from .models import Rule, Conversation, Audience
 
 from rest_framework import viewsets, views, mixins, response
+from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.views import ObtainAuthToken
+
+class TokenView(ObtainAuthToken):
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data,
+            context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return response.Response({
+            "token": token.key,
+            "username": user.username,
+            })
+
 
 class DefaultView(TemplateView):
     template_name="eli_app/base.html"
