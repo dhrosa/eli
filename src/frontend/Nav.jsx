@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import ThemeButton from "./ThemeButton";
+import LoginButton from "./LoginButton";
 import { useState } from "react";
 
 function NavLink({ href, label }) {
@@ -56,6 +57,7 @@ export default function () {
           <NavLink href="/audiences/" label="Audiences" />
           <NavLink href="/rules/" label="Rules" />
           <NavLink href="/c/" label="Conversations" />
+          <LoginButton className="navbar-item" />
           <ThemeButton className="navbar-item" />
         </div>
       </div>
