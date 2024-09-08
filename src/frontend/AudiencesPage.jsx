@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useReducer } from "react";
 import Api from "./Api";
 
 function AudienceRow({ audience }) {
@@ -71,18 +71,27 @@ function Form({ audience, onSuccess }) {
   );
 }
 
+function reducer(audiences, action) {
+  switch (action.type) {
+    case "set":
+      return action.value;
+    case "add":
+      return [...audiences, action.value];
+  }
+}
+
 export default function () {
-  const [audiences, setAudiences] = useState([]);
+  const [audiences, dispatch] = useReducer(reducer, []);
   useEffect(() => {
     const get = async () => {
       const response = await fetch("/api/audiences/");
-      setAudiences(await response.json());
+      dispatch({ type: "set", value: await response.json() });
     };
 
     get().catch(console.error);
   }, []);
   const onCreateSuccess = (audience) => {
-    setAudiences([...audiences, audience]);
+    dispatch({ type: "add", value: audience });
   };
   return (
     <>
