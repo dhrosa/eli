@@ -35,7 +35,7 @@ class RuleViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Rule.objects.all()
     serializer_class = serializers.RuleSerializer
 
-class AudienceViewSet(viewsets.ReadOnlyModelViewSet):
+class AudienceViewSet(viewsets.ModelViewSet):
     queryset = Audience.objects.all()
     serializer_class = serializers.AudienceSerializer
 
