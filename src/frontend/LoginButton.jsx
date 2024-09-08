@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Api from "./Api";
+import { UserDispatchContext, UserContext } from "./UserContext";
 
 import Cookie from "js-cookie";
 
@@ -13,10 +14,6 @@ async function parseResponse(response) {
   return {
     errors: value,
   };
-}
-
-function UserName() {
-  return Cookie.get("username") ?? "Anonymous";
 }
 
 function ErrorList({ items }) {
@@ -62,7 +59,7 @@ function Form({ onSuccess }) {
             type="text"
             name="username"
             placeholder="Username"
-            autocomplete="username"
+            autoComplete="username"
           />
         </div>
         <ErrorList items={errors?.username} />
@@ -74,7 +71,7 @@ function Form({ onSuccess }) {
             className="input"
             name="password"
             type="password"
-            autocomplete="current-password"
+            autoComplete="current-password"
           />
         </div>
         <ErrorList items={errors?.password} />
@@ -89,15 +86,32 @@ function Form({ onSuccess }) {
   );
 }
 
-function Modal({ children, isActive = false, onSuccess, onClose }) {
+function ExistingUserDialog({ user }) {
+  const userDispatch = useContext(UserDispatchContext);
+  const onSubmit = (event) => {
+    event.preventDefault();
+    userDispatch({ type: "logout" });
+  };
+  return (
+    <form onSubmit={onSubmit}>
+      <p>
+        Logged in as <strong>{user.username}</strong>
+      </p>
+      <button type="submit" class="button is-primary">
+        Log Out
+      </button>
+    </form>
+  );
+}
+
+function Modal({ children, isActive = false, onClose }) {
+  const user = useContext(UserContext);
+  var contents = user ? <ExistingUserDialog user={user} /> : children;
   const activeClass = isActive ? "is-active" : "";
   return (
     <div className={"modal " + activeClass}>
       <div className="modal-background" onClick={onClose} />
-      <div className="modal-content box">
-        <Form onSuccess={onSuccess} />
-        {children}
-      </div>
+      <div className="modal-content box">{contents}</div>
       <button
         className="modal-close is-large"
         onClick={onClose}
@@ -112,7 +126,7 @@ function SuccessMessage({ username }) {
     return false;
   }
   return (
-    <div class="notification is-success">
+    <div className="notification is-success">
       <p>
         Successfully logged in as <strong>{username}</strong>
       </p>
@@ -123,8 +137,13 @@ function SuccessMessage({ username }) {
 export default function ({ className }) {
   const [modalIsActive, setModalIsActive] = useState(false);
   const [successfulUsername, setSuccessfulUsername] = useState(null);
+  const userDispatch = useContext(UserDispatchContext);
   const onSuccess = ({ username, token }) => {
     setSuccessfulUsername(username);
+    userDispatch({
+      type: "login",
+      value: { username: username, token: token },
+    });
     setTimeout(() => {
       setModalIsActive(false);
       setSuccessfulUsername(null);
@@ -140,11 +159,8 @@ export default function ({ className }) {
       >
         person
       </a>
-      <Modal
-        isActive={modalIsActive}
-        onSuccess={onSuccess}
-        onClose={() => setModalIsActive(false)}
-      >
+      <Modal isActive={modalIsActive} onClose={() => setModalIsActive(false)}>
+        <Form onSuccess={onSuccess} />
         <SuccessMessage username={successfulUsername} />
       </Modal>
     </>
