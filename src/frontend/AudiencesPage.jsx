@@ -1,11 +1,23 @@
 import { useEffect, useState, useReducer } from "react";
 import Api from "./Api";
 
-function AudienceRow({ audience }) {
+function AudienceRow({ audience, dispatch }) {
+  const onDelete = async () => {
+    const id = audience.id;
+    const response = await Api(`/api/audiences/${id}/`, { method: "DELETE" });
+    if (response.ok) {
+      dispatch({ type: "remove", id: id });
+    }
+  };
   return (
     <tr>
       <th>{audience.name}</th>
       <td>{audience.prompt}</td>
+      <td>
+        <button className="button material-icons icon" onClick={onDelete}>
+          delete
+        </button>
+      </td>
     </tr>
   );
 }
@@ -23,7 +35,7 @@ function ErrorList({ items }) {
   );
 }
 
-function Form({ audience, onSuccess }) {
+function Form({ audience, dispatch, onSuccess }) {
   const [errors, setErrors] = useState(null);
 
   const onSubmit = async (event) => {
@@ -77,7 +89,10 @@ function reducer(audiences, action) {
       return action.value;
     case "add":
       return [...audiences, action.value];
+    case "remove":
+      return audiences.filter((a) => a.id != action.id);
   }
+  return audiences;
 }
 
 export default function () {
@@ -104,17 +119,18 @@ export default function () {
             <tr>
               <th>Audience Name</th>
               <th>Prompt</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {audiences.map((a) => (
-              <AudienceRow audience={a} key={a.name} />
+              <AudienceRow audience={a} key={a.name} dispatch={dispatch} />
             ))}
           </tbody>
         </table>
       </section>
       <section className="section">
-        <Form onSuccess={onCreateSuccess} />
+        <Form onSuccess={onCreateSuccess} dispatch={dispatch} />
       </section>
     </>
   );
