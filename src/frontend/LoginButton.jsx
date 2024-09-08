@@ -32,7 +32,7 @@ function ErrorList({ items }) {
   );
 }
 
-function Form() {
+function Form({ onSuccess }) {
   const [errors, setErrors] = useState(null);
 
   const onSubmit = async (event) => {
@@ -47,10 +47,13 @@ function Form() {
     const response = await Api("/token/", request);
     const data = await parseResponse(response);
     setErrors(data.errors);
+    if (data.success) {
+      onSuccess(data.success);
+    }
   };
 
   return (
-    <form className="form" onSubmit={onSubmit}>
+    <form className="form block" onSubmit={onSubmit}>
       <div className="field">
         <label className="label">Username</label>
         <div className="control">
@@ -59,6 +62,7 @@ function Form() {
             type="text"
             name="username"
             placeholder="Username"
+            autocomplete="username"
           />
         </div>
         <ErrorList items={errors?.username} />
@@ -66,7 +70,12 @@ function Form() {
       <div className="field">
         <label className="label">Password</label>
         <div className="control">
-          <input className="input" name="password" type="password" />
+          <input
+            className="input"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+          />
         </div>
         <ErrorList items={errors?.password} />
       </div>
@@ -80,21 +89,14 @@ function Form() {
   );
 }
 
-function LoginPanel() {
-  return (
-    <div className="box">
-      <Form />
-    </div>
-  );
-}
-
-function Modal({ isActive = false, onClose }) {
+function Modal({ children, isActive = false, onSuccess, onClose }) {
   const activeClass = isActive ? "is-active" : "";
   return (
     <div className={"modal " + activeClass}>
       <div className="modal-background" onClick={onClose} />
-      <div className="modal-content">
-        <LoginPanel />
+      <div className="modal-content box">
+        <Form onSuccess={onSuccess} />
+        {children}
       </div>
       <button
         className="modal-close is-large"
@@ -105,8 +107,29 @@ function Modal({ isActive = false, onClose }) {
   );
 }
 
+function SuccessMessage({ username }) {
+  if (!username) {
+    return false;
+  }
+  return (
+    <div class="notification is-success">
+      <p>
+        Successfully logged in as <strong>{username}</strong>
+      </p>
+    </div>
+  );
+}
+
 export default function ({ className }) {
   const [modalIsActive, setModalIsActive] = useState(false);
+  const [successfulUsername, setSuccessfulUsername] = useState(null);
+  const onSuccess = ({ username, token }) => {
+    setSuccessfulUsername(username);
+    setTimeout(() => {
+      setModalIsActive(false);
+      setSuccessfulUsername(null);
+    }, 2000);
+  };
   return (
     <>
       <a
@@ -117,7 +140,13 @@ export default function ({ className }) {
       >
         person
       </a>
-      <Modal isActive={modalIsActive} onClose={() => setModalIsActive(false)} />
+      <Modal
+        isActive={modalIsActive}
+        onSuccess={onSuccess}
+        onClose={() => setModalIsActive(false)}
+      >
+        <SuccessMessage username={successfulUsername} />
+      </Modal>
     </>
   );
 }

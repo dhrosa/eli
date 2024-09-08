@@ -5,7 +5,6 @@ function Timestamp({ timestamp }) {
   if (!timestamp) {
     return false;
   }
-  console.log(humanizeDuration);
   const date = new Date(timestamp);
   const duration = humanizeDuration(Date.now() - date.getTime(), {
     largest: 1,
