@@ -94,10 +94,10 @@ function ExistingUserDialog({ user }) {
   };
   return (
     <form onSubmit={onSubmit}>
-      <p>
+      <p className="block">
         Logged in as <strong>{user.username}</strong>
       </p>
-      <button type="submit" class="button is-primary">
+      <button type="submit" className="button is-primary">
         Log Out
       </button>
     </form>
