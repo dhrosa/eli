@@ -20,6 +20,7 @@ $family-code:
   monospace;
 
 @use "bulma/sass";
+@use "bulma/sass/utilities/mixins" as mixins;
 
 .media-content .content {
   min-height: 64px;
@@ -27,4 +28,8 @@ $family-code:
 
 .rule-list {
   list-style: inherit;
+}
+
+.is-loading {
+  @include mixins.loader;
 }
