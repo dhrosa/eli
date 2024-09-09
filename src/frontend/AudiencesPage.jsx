@@ -119,6 +119,7 @@ function reducer(audiences, action) {
 
 export default function () {
   const [audiences, dispatch] = useReducer(reducer, []);
+  const [createModalActive, setCreateModalActive] = useState(false);
   useEffect(() => {
     const get = async () => {
       const response = await fetch("/api/audiences/");
@@ -128,6 +129,7 @@ export default function () {
     get().catch(console.error);
   }, []);
   const onCreateSuccess = (audience) => {
+    setCreateModalActive(false);
     dispatch({ type: "add", value: audience });
   };
   return (
@@ -150,10 +152,19 @@ export default function () {
             ))}
           </tbody>
         </table>
+        <button
+          className="button is-primary"
+          onClick={() => setCreateModalActive(true)}
+        >
+          Create New Audience
+        </button>
       </section>
-      <section className="section">
-        <Form onSuccess={onCreateSuccess} dispatch={dispatch} />
-      </section>
+      <Modal
+        active={createModalActive}
+        onClose={() => setCreateModalActive(false)}
+      >
+        <Form onSuccess={onCreateSuccess} />
+      </Modal>
     </>
   );
 }
