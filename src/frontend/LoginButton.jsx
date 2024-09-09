@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import Api from "./Api";
 import { UserDispatchContext, UserContext } from "./UserContext";
 import Modal from "./Modal";
+import ErrorList from "./ErrorList";
 
 import Cookie from "js-cookie";
 
@@ -15,19 +16,6 @@ async function parseResponse(response) {
   return {
     errors: value,
   };
-}
-
-function ErrorList({ items }) {
-  if (!items) {
-    return false;
-  }
-  return (
-    <ul className="has-text-danger">
-      {items.map((e) => (
-        <li className="help">{e}</li>
-      ))}
-    </ul>
-  );
 }
 
 function Form({ onSuccess }) {
@@ -63,7 +51,7 @@ function Form({ onSuccess }) {
             autoComplete="username"
           />
         </div>
-        <ErrorList items={errors?.username} />
+        <ErrorList errors={errors?.username} />
       </div>
       <div className="field">
         <label className="label">Password</label>
@@ -75,14 +63,14 @@ function Form({ onSuccess }) {
             autoComplete="current-password"
           />
         </div>
-        <ErrorList items={errors?.password} />
+        <ErrorList errors={errors?.password} />
       </div>
       <div className="control">
         <button className="button is-primary" type="submit">
           Log In
         </button>
       </div>
-      <ErrorList items={errors?.non_field_errors} />
+      <ErrorList errors={errors?.non_field_errors} />
     </form>
   );
 }

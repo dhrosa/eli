@@ -1,5 +1,6 @@
 import { useEffect, useState, useReducer } from "react";
 import Api from "./Api";
+import ErrorList from "./ErrorList";
 
 function AudienceRow({ audience, dispatch }) {
   const onDelete = async () => {
@@ -19,19 +20,6 @@ function AudienceRow({ audience, dispatch }) {
         </button>
       </td>
     </tr>
-  );
-}
-
-function ErrorList({ items }) {
-  if (!items) {
-    return false;
-  }
-  return (
-    <ul className="has-text-danger">
-      {items.map((e) => (
-        <li className="help">{e}</li>
-      ))}
-    </ul>
   );
 }
 
@@ -62,7 +50,7 @@ function Form({ audience, dispatch, onSuccess }) {
         <div className="control">
           <input type="text" className="input" name="name" />
         </div>
-        <ErrorList items={errors?.name} />
+        <ErrorList errors={errors?.name} />
       </div>
 
       <div className="field">
@@ -70,7 +58,7 @@ function Form({ audience, dispatch, onSuccess }) {
         <div className="control">
           <textarea className="textarea" name="prompt" />
         </div>
-        <ErrorList items={errors?.prompt} />
+        <ErrorList errors={errors?.prompt} />
       </div>
 
       <div className="control">
@@ -78,7 +66,7 @@ function Form({ audience, dispatch, onSuccess }) {
           Submit
         </button>
       </div>
-      <ErrorList items={errors?.non_field_errors} />
+      <ErrorList errors={errors?.non_field_errors} />
     </form>
   );
 }
