@@ -1,8 +1,14 @@
 import { useEffect, useState, useReducer } from "react";
 import Api from "./Api";
 import ErrorList from "./ErrorList";
+import Modal from "./Modal";
 
 function AudienceRow({ audience, dispatch }) {
+  const [editActive, setEditActive] = useState(false);
+  const onEditSuccess = (newAudience) => {
+    setEditActive(false);
+    dispatch({ type: "update", value: newAudience });
+  };
   const onDelete = async () => {
     const id = audience.id;
     const response = await Api(`/api/audiences/${id}/`, { method: "DELETE" });
@@ -15,25 +21,38 @@ function AudienceRow({ audience, dispatch }) {
       <th>{audience.name}</th>
       <td>{audience.prompt}</td>
       <td>
+        <button
+          className="button material-icons icon"
+          onClick={() => setEditActive(true)}
+        >
+          edit
+        </button>
         <button className="button material-icons icon" onClick={onDelete}>
           delete
         </button>
+        <Modal active={editActive} onClose={() => setEditActive(false)}>
+          <Form audience={audience} onSuccess={onEditSuccess} />
+        </Modal>
       </td>
     </tr>
   );
 }
 
-function Form({ audience, dispatch, onSuccess }) {
+function Form({ audience, onSuccess }) {
   const [errors, setErrors] = useState(null);
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const request = {
+    var request = {
       method: "POST",
       body: new FormData(event.currentTarget),
     };
-    const response = await Api("/api/audiences/", request);
+    var url = "/api/audiences/";
+    if (audience) {
+      url += audience.id + "/";
+      request.method = "PUT";
+    }
+    const response = await Api(url, request);
     const json = await response.json();
     console.log(json);
     if (response.ok) {
@@ -48,7 +67,12 @@ function Form({ audience, dispatch, onSuccess }) {
       <div className="field">
         <label className="label">Name</label>
         <div className="control">
-          <input type="text" className="input" name="name" />
+          <input
+            type="text"
+            className="input"
+            name="name"
+            defaultValue={audience?.name}
+          />
         </div>
         <ErrorList errors={errors?.name} />
       </div>
@@ -56,7 +80,11 @@ function Form({ audience, dispatch, onSuccess }) {
       <div className="field">
         <label className="label">Prompt</label>
         <div className="control">
-          <textarea className="textarea" name="prompt" />
+          <textarea
+            className="textarea"
+            name="prompt"
+            defaultValue={audience?.prompt}
+          />
         </div>
         <ErrorList errors={errors?.prompt} />
       </div>
@@ -72,6 +100,7 @@ function Form({ audience, dispatch, onSuccess }) {
 }
 
 function reducer(audiences, action) {
+  console.log(audiences, action);
   switch (action.type) {
     case "set":
       return action.value;
@@ -79,6 +108,11 @@ function reducer(audiences, action) {
       return [...audiences, action.value];
     case "remove":
       return audiences.filter((a) => a.id != action.id);
+    case "update":
+      return audiences.map((a) =>
+        a.id === action.value.id ? action.value : a,
+      );
+    default:
   }
   return audiences;
 }
@@ -112,7 +146,7 @@ export default function () {
           </thead>
           <tbody>
             {audiences.map((a) => (
-              <AudienceRow audience={a} key={a.name} dispatch={dispatch} />
+              <AudienceRow audience={a} key={a.id} dispatch={dispatch} />
             ))}
           </tbody>
         </table>
