@@ -2,9 +2,8 @@ import { useState, useContext } from "react";
 import Api from "./Api";
 import { UserDispatchContext, UserContext } from "./UserContext";
 import Modal from "./Modal";
-import ErrorList from "./ErrorList";
 
-import Cookie from "js-cookie";
+import { Control, Field, Label, ErrorList, SubmitButton, Input } from "./Form";
 
 async function parseResponse(response) {
   const value = await response.json();
@@ -24,7 +23,6 @@ function Form({ onSuccess }) {
   const onSubmit = async (event) => {
     event.preventDefault();
     const headers = new Headers();
-    const formData = new FormData(event.currentTarget);
     const request = {
       method: "POST",
       headers: headers,
@@ -40,36 +38,32 @@ function Form({ onSuccess }) {
 
   return (
     <form className="form block" onSubmit={onSubmit}>
-      <div className="field">
-        <label className="label">Username</label>
-        <div className="control">
-          <input
-            className="input"
+      <Field>
+        <Label>Username</Label>
+        <Control>
+          <Input
             type="text"
             name="username"
             placeholder="Username"
             autoComplete="username"
           />
-        </div>
+        </Control>
         <ErrorList errors={errors?.username} />
-      </div>
-      <div className="field">
-        <label className="label">Password</label>
-        <div className="control">
-          <input
-            className="input"
+      </Field>
+      <Field>
+        <Label>Password</Label>
+        <Control>
+          <Input
             name="password"
             type="password"
             autoComplete="current-password"
           />
-        </div>
+        </Control>
         <ErrorList errors={errors?.password} />
-      </div>
-      <div className="control">
-        <button className="button is-primary" type="submit">
-          Log In
-        </button>
-      </div>
+      </Field>
+      <Control>
+        <SubmitButton>Log In</SubmitButton>
+      </Control>
       <ErrorList errors={errors?.non_field_errors} />
     </form>
   );
@@ -86,9 +80,7 @@ function ExistingUserDialog({ user }) {
       <p className="block">
         Logged in as <strong>{user.username}</strong>
       </p>
-      <button type="submit" className="button is-primary">
-        Log Out
-      </button>
+      <SubmitButton>Log Out</SubmitButton>
     </form>
   );
 }

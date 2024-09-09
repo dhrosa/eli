@@ -3,6 +3,8 @@ import { useEffect, useState, useId } from "react";
 import Api from "./Api";
 import Conversation from "./Conversation";
 
+import { Control, Field, Label, Help } from "./Form";
+
 function SelectOption({ choice }) {
   return <option value={choice.value}>{choice.display_name}</option>;
 }
@@ -16,24 +18,6 @@ function Select({ id, name, choices }) {
       </select>
     </div>
   );
-}
-
-function Field({ className, children }) {
-  className = "field " + (className || "");
-  return <div className={className}>{children}</div>;
-}
-
-function Control({ className, children }) {
-  className = "control " + (className || "");
-  return <div className={className}>{children}</div>;
-}
-
-function Label({ children }) {
-  return <label className="label">{children}</label>;
-}
-
-function Help({ children }) {
-  return <p className="help">{children}</p>;
 }
 
 function SelectField({ label, name, id, choices, help }) {

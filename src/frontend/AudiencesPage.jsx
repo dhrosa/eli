@@ -1,7 +1,8 @@
 import { useEffect, useState, useReducer } from "react";
 import Api from "./Api";
-import ErrorList from "./ErrorList";
 import Modal from "./Modal";
+
+import { Control, Field, Label, ErrorList, SubmitButton, Input } from "./Form";
 
 function AudienceRow({ audience, dispatch }) {
   const [editActive, setEditActive] = useState(false);
@@ -16,6 +17,7 @@ function AudienceRow({ audience, dispatch }) {
       dispatch({ type: "remove", id: id });
     }
   };
+
   return (
     <tr>
       <th>{audience.name}</th>
@@ -64,36 +66,34 @@ function Form({ audience, onSuccess }) {
   };
   return (
     <form className="form block" onSubmit={onSubmit}>
-      <div className="field">
-        <label className="label">Name</label>
-        <div className="control">
+      <Field>
+        <Label>Name</Label>
+        <Control>
           <input
             type="text"
             className="input"
             name="name"
             defaultValue={audience?.name}
           />
-        </div>
+        </Control>
         <ErrorList errors={errors?.name} />
-      </div>
+      </Field>
 
-      <div className="field">
-        <label className="label">Prompt</label>
-        <div className="control">
+      <Field>
+        <Label>Prompt</Label>
+        <Control>
           <textarea
             className="textarea"
             name="prompt"
             defaultValue={audience?.prompt}
           />
-        </div>
+        </Control>
         <ErrorList errors={errors?.prompt} />
-      </div>
+      </Field>
 
-      <div className="control">
-        <button className="button is-primary" type="submit">
-          Submit
-        </button>
-      </div>
+      <Control>
+        <SubmitButton>{audience ? "Update" : "Create"}</SubmitButton>
+      </Control>
       <ErrorList errors={errors?.non_field_errors} />
     </form>
   );
