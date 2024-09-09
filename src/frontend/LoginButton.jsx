@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import Api from "./Api";
 import { UserDispatchContext, UserContext } from "./UserContext";
+import Modal from "./Modal";
 
 import Cookie from "js-cookie";
 
@@ -104,23 +105,6 @@ function ExistingUserDialog({ user }) {
   );
 }
 
-function Modal({ children, isActive = false, onClose }) {
-  const user = useContext(UserContext);
-  var contents = user ? <ExistingUserDialog user={user} /> : children;
-  const activeClass = isActive ? "is-active" : "";
-  return (
-    <div className={"modal " + activeClass}>
-      <div className="modal-background" onClick={onClose} />
-      <div className="modal-content box">{contents}</div>
-      <button
-        className="modal-close is-large"
-        onClick={onClose}
-        aria-label="close"
-      />
-    </div>
-  );
-}
-
 function SuccessMessage({ username }) {
   if (!username) {
     return false;
@@ -137,6 +121,7 @@ function SuccessMessage({ username }) {
 export default function ({ className }) {
   const [modalIsActive, setModalIsActive] = useState(false);
   const [successfulUsername, setSuccessfulUsername] = useState(null);
+  const user = useContext(UserContext);
   const userDispatch = useContext(UserDispatchContext);
   const onSuccess = ({ username, token }) => {
     setSuccessfulUsername(username);
@@ -149,6 +134,17 @@ export default function ({ className }) {
       setSuccessfulUsername(null);
     }, 2000);
   };
+
+  var body = (
+    <>
+      <Form onSuccess={onSuccess} />
+      <SuccessMessage username={successfulUsername} />
+    </>
+  );
+  if (user) {
+    body = <ExistingUserDialog user={user} />;
+  }
+
   return (
     <>
       <a
@@ -159,9 +155,8 @@ export default function ({ className }) {
       >
         person
       </a>
-      <Modal isActive={modalIsActive} onClose={() => setModalIsActive(false)}>
-        <Form onSuccess={onSuccess} />
-        <SuccessMessage username={successfulUsername} />
+      <Modal active={modalIsActive} onClose={() => setModalIsActive(false)}>
+        {body}
       </Modal>
     </>
   );
