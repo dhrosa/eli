@@ -56,7 +56,6 @@ function Form({ audience, onSuccess }) {
     }
     const response = await Api(url, request);
     const json = await response.json();
-    console.log(json);
     if (response.ok) {
       setErrors(null);
       onSuccess(json);
@@ -69,12 +68,7 @@ function Form({ audience, onSuccess }) {
       <Field>
         <Label>Name</Label>
         <Control>
-          <input
-            type="text"
-            className="input"
-            name="name"
-            defaultValue={audience?.name}
-          />
+          <Input name="name" defaultValue={audience?.name} />
         </Control>
         <ErrorList errors={errors?.name} />
       </Field>
@@ -100,7 +94,6 @@ function Form({ audience, onSuccess }) {
 }
 
 function reducer(audiences, action) {
-  console.log(audiences, action);
   switch (action.type) {
     case "set":
       return action.value;

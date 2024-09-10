@@ -33,3 +33,18 @@ $family-code:
 .is-loading {
   @include mixins.loader;
 }
+
+.notification-list {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  z-index: 1000;
+}
+
+.notification-list .notification {
+  opacity: 80%;
+  width: fit-content;
+}

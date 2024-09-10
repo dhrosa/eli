@@ -27,7 +27,7 @@ export function ErrorList({ errors }) {
 
 export function SubmitButton({ children = "Submit", className }) {
   return (
-    <button type="submit" className={className}>
+    <button type="submit" className={"button is-primary " + className}>
       {children}
     </button>
   );

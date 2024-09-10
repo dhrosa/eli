@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { NotifyContext, Success } from "./Notification";
 
 function RuleRow({ rule }) {
   return (
@@ -11,6 +12,7 @@ function RuleRow({ rule }) {
 
 export default function () {
   const [rules, setRules] = useState([]);
+  const notify = useContext(NotifyContext);
   useEffect(() => {
     const get = async () => {
       const response = await fetch("/api/rules/");
@@ -19,6 +21,9 @@ export default function () {
     };
 
     get().catch(console.error);
+  }, []);
+  useEffect(() => {
+    notify(Success("meow"));
   }, []);
   return (
     <section className="section">
