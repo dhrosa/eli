@@ -3,41 +3,38 @@ import { createContext, useContext } from "react";
 export const NotificationContext = createContext(null);
 export const NotifyContext = createContext(null);
 
-function RenderedNotification({ notification }) {
-  const className = `notification is-${notification.level}`;
-  return <div className={className}>{notification.contents}</div>;
+function RenderedNotification({ level, children }) {
+  const className = `notification is-${level}`;
+  return <div className={className}>{children}</div>;
 }
 
 export function RenderedNotificationList() {
-  const state = useContext(NotificationContext);
-  const children = Array.from(
-    (state ? state.items : []).map((n) => (
-      <RenderedNotification key={n.id} notification={n} />
-    )),
-  );
+  const notifications = useContext(NotificationContext);
+  const children = notifications.map((n) => (
+    <RenderedNotification key={n.id} level={n.level}>
+      {n.contents}
+    </RenderedNotification>
+  ));
   return <div className="notification-list">{children}</div>;
 }
 
-export function Success(contents) {
-  return { action: "add", level: "success", contents: contents };
+var current_id = 0;
+
+export function Send(notify, { level, contents, duration = 1000 }) {
+  const id = current_id++;
+  notify({ action: "add", id: id, level: level, contents: contents });
+  setTimeout(() => {
+    notify({ action: "remove", id: id });
+  }, duration);
 }
 
-export function notificationReducer(state, event) {
-  if (!state) {
-    state = { items: [], next_id: 0 };
-  }
-  switch (event.action) {
+export function notificationReducer(notifications, n) {
+  switch (n.action) {
     case "add":
-      return {
-        items: [...state.items, { ...event, next_id: state.next_id }],
-        next_id: state.next_id + 1,
-      };
+      return [...notifications, n];
     case "remove":
-      return {
-        items: state.items.filter((n) => n.id !== event.id),
-        next_id: state.next_id,
-      };
+      return notifications.filter((x) => x.id !== n.id);
     default:
-      return state;
+      return notifications;
   }
 }

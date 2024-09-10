@@ -19,7 +19,7 @@ import {
 
 export default function () {
   const [user, dispatch] = useReducer(userReducer, initialUser());
-  const [notifications, notify] = useReducer(notificationReducer, null);
+  const [notifications, notify] = useReducer(notificationReducer, []);
 
   return (
     <NotificationContext.Provider value={notifications}>

@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { NotifyContext, Success } from "./Notification";
+import { NotifyContext, Send } from "./Notification";
 
 function RuleRow({ rule }) {
   return (
@@ -23,7 +23,7 @@ export default function () {
     get().catch(console.error);
   }, []);
   useEffect(() => {
-    notify(Success("meow"));
+    Send(notify, { level: "success", contents: "meow" });
   }, []);
   return (
     <section className="section">
