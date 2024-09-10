@@ -4,7 +4,8 @@ export const NotificationContext = createContext(null);
 export const NotifyContext = createContext(null);
 
 function RenderedNotification({ notification }) {
-  return <div className="notification">{notification.contents}</div>;
+  const className = `notification is-${notification.level}`;
+  return <div className={className}>{notification.contents}</div>;
 }
 
 export function RenderedNotificationList() {
