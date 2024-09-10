@@ -15,13 +15,11 @@ export function ErrorList({ errors }) {
     return null;
   }
   return (
-    <div className="notification is-danger">
       <ul>
         {errors.map((error) => (
-          <li>{error}</li>
+          <li><small className="has-text-danger">{error}</small></li>
         ))}
       </ul>
-    </div>
   );
 }
 

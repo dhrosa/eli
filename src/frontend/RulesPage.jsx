@@ -1,5 +1,4 @@
-import { useEffect, useState, useContext } from "react";
-import { NotifyContext, Send } from "./Notification";
+import { useEffect, useState } from "react";
 
 function RuleRow({ rule }) {
   return (
@@ -12,7 +11,6 @@ function RuleRow({ rule }) {
 
 export default function () {
   const [rules, setRules] = useState([]);
-  const notify = useContext(NotifyContext);
   useEffect(() => {
     const get = async () => {
       const response = await fetch("/api/rules/");
@@ -21,9 +19,6 @@ export default function () {
     };
 
     get().catch(console.error);
-  }, []);
-  useEffect(() => {
-    Send(notify, { level: "success", contents: "meow" });
   }, []);
   return (
     <section className="section">
@@ -37,7 +32,7 @@ export default function () {
         </thead>
         <tbody>
           {rules.map((r) => (
-            <RuleRow rule={r} key={r.id} />
+            <RuleRow rule={r} key={r.name} />
           ))}
         </tbody>
       </table>

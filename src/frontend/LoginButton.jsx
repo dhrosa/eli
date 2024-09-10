@@ -4,6 +4,7 @@ import { UserDispatchContext, UserContext } from "./UserContext";
 import Modal from "./Modal";
 
 import { Control, Field, Label, ErrorList, SubmitButton, Input } from "./Form";
+import { Send, NotifyContext} from "./Notification";
 
 async function parseResponse(response) {
   const value = await response.json();
@@ -69,11 +70,12 @@ function Form({ onSuccess }) {
   );
 }
 
-function ExistingUserDialog({ user }) {
+function ExistingUserDialog({ user, notify }) {
   const userDispatch = useContext(UserDispatchContext);
   const onSubmit = (event) => {
     event.preventDefault();
     userDispatch({ type: "logout" });
+    Send(notify, { level: "info", contents: "Logged out successfully"});
   };
   return (
     <form onSubmit={onSubmit}>
@@ -85,44 +87,26 @@ function ExistingUserDialog({ user }) {
   );
 }
 
-function SuccessMessage({ username }) {
-  if (!username) {
-    return false;
-  }
-  return (
-    <div className="notification is-success">
-      <p>
-        Successfully logged in as <strong>{username}</strong>
-      </p>
-    </div>
-  );
-}
-
 export default function ({ className }) {
   const [modalIsActive, setModalIsActive] = useState(false);
-  const [successfulUsername, setSuccessfulUsername] = useState(null);
+  const notify = useContext(NotifyContext);
   const user = useContext(UserContext);
   const userDispatch = useContext(UserDispatchContext);
   const onSuccess = ({ username, token }) => {
-    setSuccessfulUsername(username);
     userDispatch({
       type: "login",
       value: { username: username, token: token },
     });
-    setTimeout(() => {
+    Send(notify, { level: "success", contents:
+      <p>Logged in successfully as <strong>username</strong></p>});
       setModalIsActive(false);
-      setSuccessfulUsername(null);
-    }, 2000);
   };
 
   var body = (
-    <>
       <Form onSuccess={onSuccess} />
-      <SuccessMessage username={successfulUsername} />
-    </>
   );
   if (user) {
-    body = <ExistingUserDialog user={user} />;
+    body = <ExistingUserDialog user={user} notify={notify}/>;
   }
 
   return (

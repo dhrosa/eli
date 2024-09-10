@@ -1,10 +1,11 @@
-import { useEffect, useState, useReducer } from "react";
+import { useEffect, useState, useReducer, useContext } from "react";
 import Api from "./Api";
 import Modal from "./Modal";
 
 import { Control, Field, Label, ErrorList, SubmitButton, Input } from "./Form";
+import { Send, NotifyContext } from "./Notification";
 
-function AudienceRow({ audience, dispatch }) {
+function AudienceRow({ audience, dispatch, notify }) {
   const [editActive, setEditActive] = useState(false);
   const onEditSuccess = (newAudience) => {
     setEditActive(false);
@@ -15,6 +16,7 @@ function AudienceRow({ audience, dispatch }) {
     const response = await Api(`/api/audiences/${id}/`, { method: "DELETE" });
     if (response.ok) {
       dispatch({ type: "remove", id: id });
+      Send(notify, { level: "success", contents: <p>Deleted audience: "<strong>{audience.name}</strong></p> })
     }
   };
 
@@ -113,6 +115,7 @@ function reducer(audiences, action) {
 export default function () {
   const [audiences, dispatch] = useReducer(reducer, []);
   const [createModalActive, setCreateModalActive] = useState(false);
+  const notify = useContext(NotifyContext);
   useEffect(() => {
     const get = async () => {
       const response = await fetch("/api/audiences/");
@@ -124,6 +127,10 @@ export default function () {
   const onCreateSuccess = (audience) => {
     setCreateModalActive(false);
     dispatch({ type: "add", value: audience });
+    Send(notify, { level: "success",
+    contents: <p>Created audience: <strong>{audience.name}</strong></p>
+    }
+    );
   };
   return (
     <>
@@ -141,7 +148,7 @@ export default function () {
           </thead>
           <tbody>
             {audiences.map((a) => (
-              <AudienceRow audience={a} key={a.id} dispatch={dispatch} />
+              <AudienceRow audience={a} key={a.id} dispatch={dispatch} notify={notify}/>
             ))}
           </tbody>
         </table>
