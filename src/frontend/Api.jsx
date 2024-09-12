@@ -17,7 +17,10 @@ class Model {
   async call(urlSuffix, method, data, parseJson = true) {
     const request = {
       method: method,
-      body: data,
+      body: JSON.stringify(data),
+      headers: new Headers({
+        "Content-Type": "application/json",
+      }),
     };
     const response = await Call(this.baseUrl + urlSuffix, request);
     if (!parseJson) {
@@ -44,7 +47,6 @@ class Model {
   }
 
   async update(data) {
-    console.log(data);
     return this.call(`${data.id}/`, "PUT", data);
   }
 

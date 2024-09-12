@@ -52,16 +52,17 @@ function AudienceRow({ audience, dispatch, notify }) {
 
 function Form({ audience, onSuccess }) {
   const [errors, setErrors] = useState(null);
-  const formRef = useRef();
 
   const onSubmit = async (event) => {
-    console.log("audience", audience, "event", event);
     event.preventDefault();
-    const data = new FormData(formRef.current);
-    debugger;
-    const response = audience
-      ? await Api.Audience.update(data)
-      : await Api.Audience.create(data);
+    const formData = new FormData(event.target);
+    const newAudience = {
+      ...audience,
+      ...Object.fromEntries(formData.entries()),
+    };
+    const response = audience.id
+      ? await Api.Audience.update(newAudience)
+      : await Api.Audience.create(newAudience);
     if (response.value) {
       setErrors(null);
       onSuccess(response.value);
@@ -71,7 +72,7 @@ function Form({ audience, onSuccess }) {
   };
 
   return (
-    <form className="form block" onSubmit={onSubmit} ref={formRef}>
+    <form className="form block" onSubmit={onSubmit}>
       <Field>
         <Label>Name</Label>
         <Control>
@@ -101,7 +102,6 @@ function Form({ audience, onSuccess }) {
 }
 
 function reducer(audiences, action) {
-  console.log("audiences", audiences, "action", action);
   switch (action.type) {
     case "set":
       return action.value;
