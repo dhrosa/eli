@@ -1,5 +1,5 @@
-import { useEffect, useState, useReducer, useContext } from "react";
-import Api from "./Api";
+import { useEffect, useState, useReducer, useContext, useRef } from "react";
+import * as Api from "./Api";
 import Modal from "./Modal";
 
 import { Control, Field, Label, ErrorList, SubmitButton, Input } from "./Form";
@@ -13,11 +13,19 @@ function AudienceRow({ audience, dispatch, notify }) {
   };
   const onDelete = async () => {
     const id = audience.id;
-    const response = await Api(`/api/audiences/${id}/`, { method: "DELETE" });
-    if (response.ok) {
-      dispatch({ type: "remove", id: id });
-      Send(notify, { level: "success", contents: <p>Deleted audience: "<strong>{audience.name}</strong></p> })
+    const response = await Api.Audience.delete(id);
+    if (response.errors) {
+      return;
     }
+    dispatch({ type: "remove", id: id });
+    Send(notify, {
+      level: "success",
+      contents: (
+        <p>
+          Deleted audience: <strong>{audience.name}</strong>
+        </p>
+      ),
+    });
   };
 
   return (
@@ -44,29 +52,26 @@ function AudienceRow({ audience, dispatch, notify }) {
 
 function Form({ audience, onSuccess }) {
   const [errors, setErrors] = useState(null);
+  const formRef = useRef();
 
   const onSubmit = async (event) => {
+    console.log("audience", audience, "event", event);
     event.preventDefault();
-    var request = {
-      method: "POST",
-      body: new FormData(event.currentTarget),
-    };
-    var url = "/api/audiences/";
-    if (audience) {
-      url += audience.id + "/";
-      request.method = "PUT";
-    }
-    const response = await Api(url, request);
-    const json = await response.json();
-    if (response.ok) {
+    const data = new FormData(formRef.current);
+    debugger;
+    const response = audience
+      ? await Api.Audience.update(data)
+      : await Api.Audience.create(data);
+    if (response.value) {
       setErrors(null);
-      onSuccess(json);
+      onSuccess(response.value);
     } else {
-      setErrors(json);
+      setErrors(response.error);
     }
   };
+
   return (
-    <form className="form block" onSubmit={onSubmit}>
+    <form className="form block" onSubmit={onSubmit} ref={formRef}>
       <Field>
         <Label>Name</Label>
         <Control>
@@ -96,6 +101,7 @@ function Form({ audience, onSuccess }) {
 }
 
 function reducer(audiences, action) {
+  console.log("audiences", audiences, "action", action);
   switch (action.type) {
     case "set":
       return action.value;
@@ -105,7 +111,7 @@ function reducer(audiences, action) {
       return audiences.filter((a) => a.id != action.id);
     case "update":
       return audiences.map((a) =>
-        a.id === action.value.id ? action.value : a,
+        a.id === action.value.id ? action.value : a
       );
     default:
   }
@@ -127,10 +133,14 @@ export default function () {
   const onCreateSuccess = (audience) => {
     setCreateModalActive(false);
     dispatch({ type: "add", value: audience });
-    Send(notify, { level: "success",
-    contents: <p>Created audience: <strong>{audience.name}</strong></p>
-    }
-    );
+    Send(notify, {
+      level: "success",
+      contents: (
+        <p>
+          Created audience: <strong>{audience.name}</strong>
+        </p>
+      ),
+    });
   };
   return (
     <>
@@ -148,7 +158,12 @@ export default function () {
           </thead>
           <tbody>
             {audiences.map((a) => (
-              <AudienceRow audience={a} key={a.id} dispatch={dispatch} notify={notify}/>
+              <AudienceRow
+                audience={a}
+                key={a.id}
+                dispatch={dispatch}
+                notify={notify}
+              />
             ))}
           </tbody>
         </table>

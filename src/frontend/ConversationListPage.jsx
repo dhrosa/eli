@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import Conversation from "./Conversation";
+import * as Api from "./Api";
 
 function ConversationList() {
   const [dataList, setDataList] = useState([]);
   useEffect(() => {
     const fetchList = async () => {
-      const data = await fetch("/api/conversations/");
-      setDataList(await data.json());
+      setDataList(await Api.Conversation.list());
     };
 
     fetchList().catch(console.error);
@@ -16,5 +16,6 @@ function ConversationList() {
 }
 
 export default function () {
-  return <ConversationList />;
+  return
+  <ConversationList />;
 }

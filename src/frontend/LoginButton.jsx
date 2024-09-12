@@ -4,7 +4,7 @@ import { UserDispatchContext, UserContext } from "./UserContext";
 import Modal from "./Modal";
 
 import { Control, Field, Label, ErrorList, SubmitButton, Input } from "./Form";
-import { Send, NotifyContext} from "./Notification";
+import { Send, NotifyContext } from "./Notification";
 
 async function parseResponse(response) {
   const value = await response.json();
@@ -70,15 +70,9 @@ function Form({ onSuccess }) {
   );
 }
 
-function ExistingUserDialog({ user, notify }) {
-  const userDispatch = useContext(UserDispatchContext);
-  const onSubmit = (event) => {
-    event.preventDefault();
-    userDispatch({ type: "logout" });
-    Send(notify, { level: "info", contents: "Logged out successfully"});
-  };
+function ExistingUserDialog({ user, onSuccess }) {
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSuccess}>
       <p className="block">
         Logged in as <strong>{user.username}</strong>
       </p>
@@ -92,22 +86,37 @@ export default function ({ className }) {
   const notify = useContext(NotifyContext);
   const user = useContext(UserContext);
   const userDispatch = useContext(UserDispatchContext);
-  const onSuccess = ({ username, token }) => {
+
+  const onLoginSuccess = ({ username, token }) => {
     userDispatch({
       type: "login",
       value: { username: username, token: token },
     });
-    Send(notify, { level: "success", contents:
-      <p>Logged in successfully as <strong>username</strong></p>});
-      setModalIsActive(false);
+    Send(notify, {
+      level: "success",
+      contents: (
+        <p>
+          Logged in successfully as <strong>username</strong>
+        </p>
+      ),
+    });
+    setModalIsActive(false);
   };
 
-  var body = (
-      <Form onSuccess={onSuccess} />
+  const onLogoutSuccess = () => {
+    userDispatch({ type: "logout" });
+    Send(notify, {
+      level: "success",
+      contents: <p>Logged out successfully</p>,
+    });
+    setModalIsActive(false);
+  };
+
+  const body = user ? (
+    <ExistingUserDialog user={user} onSuccess={onLogoutSuccess} />
+  ) : (
+    <Form onSuccess={onLoginSuccess} />
   );
-  if (user) {
-    body = <ExistingUserDialog user={user} notify={notify}/>;
-  }
 
   return (
     <>
