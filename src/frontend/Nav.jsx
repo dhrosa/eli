@@ -12,14 +12,10 @@ function NavLink({ href, label }) {
 }
 
 function HamburgerButton({ onClick, isActive }) {
-  var classNames = "navbar-burger";
-  if (isActive) {
-    classNames += " is-active";
-  }
   return (
     <a
       role="button"
-      className={classNames}
+      className={"navbar-burger " + (isActive ? "is-active" : "")}
       aria-label="menu"
       aria-expanded="false"
       onClick={onClick}
@@ -38,10 +34,6 @@ export default function () {
   const toggleMenu = () => {
     setMenuActive(!menuActive);
   };
-  var menuClasses = "navbar-menu";
-  if (menuActive) {
-    menuClasses += " is-active";
-  }
   return (
     <nav role="navigation" aria-label="main navigation" className="navbar">
       <div className="navbar-brand">
@@ -50,7 +42,7 @@ export default function () {
         </Link>
         <HamburgerButton onClick={toggleMenu} isActive={menuActive} />
       </div>
-      <div className={menuClasses}>
+      <div className={"navbar-menu " + (menuActive ? "is-active" : "")}>
         <div className="navbar-start"></div>
         <div className="navbar-end">
           <NavLink href="/" label="Home" />

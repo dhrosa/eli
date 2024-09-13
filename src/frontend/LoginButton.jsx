@@ -1,5 +1,4 @@
 import { useState, useContext } from "react";
-import Api from "./Api";
 import { UserDispatchContext, UserContext } from "./UserContext";
 import Modal from "./Modal";
 
@@ -18,18 +17,18 @@ async function parseResponse(response) {
   };
 }
 
-function Form({ onSuccess }) {
-  const [errors, setErrors] = useState(null);
+function Form({ user, onSuccess }) {
+  if (user) {
+    return false;
+  }
+  const [errors, setErrors] = useState([]);
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    const headers = new Headers();
-    const request = {
+    const response = await fetch("/token/", {
       method: "POST",
-      headers: headers,
-      body: new FormData(event.currentTarget),
-    };
-    const response = await Api("/token/", request);
+      body: new FormData(event.target),
+    });
     const data = await parseResponse(response);
     setErrors(data.errors);
     if (data.success) {
@@ -71,6 +70,9 @@ function Form({ onSuccess }) {
 }
 
 function ExistingUserDialog({ user, onSuccess }) {
+  if (!user) {
+    return false;
+  }
   return (
     <form onSubmit={onSuccess}>
       <p className="block">
@@ -112,12 +114,6 @@ export default function ({ className }) {
     setModalIsActive(false);
   };
 
-  const body = user ? (
-    <ExistingUserDialog user={user} onSuccess={onLogoutSuccess} />
-  ) : (
-    <Form onSuccess={onLoginSuccess} />
-  );
-
   return (
     <>
       <a
@@ -129,7 +125,8 @@ export default function ({ className }) {
         person
       </a>
       <Modal active={modalIsActive} onClose={() => setModalIsActive(false)}>
-        {body}
+        <ExistingUserDialog user={user} onSuccess={onLogoutSuccess} />
+        <Form user={user} onSuccess={onLoginSuccess} />
       </Modal>
     </>
   );

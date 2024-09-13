@@ -8,11 +8,12 @@ function SelectOption({ choice }) {
 }
 
 function Select({ id, name, choices }) {
-  const options = choices.map((c) => <SelectOption key={c.value} choice={c} />);
   return (
     <div className="select">
       <select id={id} name={name}>
-        {options}
+        {choices.map((c) => (
+          <SelectOption key={c.value} choice={c} />
+        ))}
       </select>
     </div>
   );
@@ -35,12 +36,10 @@ function Form({ aiModelChoices, audienceChoices, onPending, onResponse }) {
     onPending();
     event.preventDefault();
 
-    const formData = new FormData(event.currentTarget);
-    const request = {
+    const response = await fetch("/api/query/", {
       method: "POST",
-      body: formData,
-    };
-    const response = await fetch("/api/query/", request);
+      body: new FormData(event.target),
+    });
     onResponse(await response.json());
   };
 

@@ -9,7 +9,6 @@ function InitialTheme() {
 }
 
 export default function ({ className }) {
-  className = "material-icons " + (className ?? "");
   const [theme, setTheme] = useState(InitialTheme());
 
   useEffect(() => {
@@ -23,7 +22,7 @@ export default function ({ className }) {
 
   return (
     <a
-      className={className}
+      className={"material-icons " + className}
       href="#"
       title="Toggle Light/Dark Mode"
       onClick={toggle}

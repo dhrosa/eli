@@ -4,18 +4,20 @@ export const NotificationContext = createContext(null);
 export const NotifyContext = createContext(null);
 
 function RenderedNotification({ level, children }) {
-  const className = `notification is-${level}`;
-  return <div className={className}>{children}</div>;
+  return <div className={"notification is-" + level}>{children}</div>;
 }
 
 export function RenderedNotificationList() {
   const notifications = useContext(NotificationContext);
-  const children = notifications.map((n) => (
-    <RenderedNotification key={n.id} level={n.level}>
-      {n.contents}
-    </RenderedNotification>
-  ));
-  return <div className="notification-list">{children}</div>;
+  return (
+    <div className="notification-list">
+      {notifications.map((n) => (
+        <RenderedNotification key={n.id} level={n.level}>
+          {n.contents}
+        </RenderedNotification>
+      ))}
+    </div>
+  );
 }
 
 var current_id = 0;

@@ -52,7 +52,6 @@ function initialUser() {
 }
 
 function userReducer(user, action) {
-  console.log(user, action);
   switch (action.type) {
     case "login": {
       Cookie.set("eli-user", JSON.stringify(action.value));

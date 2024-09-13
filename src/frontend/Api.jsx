@@ -13,21 +13,16 @@ class Model {
     parseJson = true,
     user = null,
   }) {
-    var headers = new Headers({
-      "Content-Type": "application/json",
-    });
-    var body;
-    if (method != "GET") {
-      headers.append("Authorization", `Token ${user.token}`);
-      body = JSON.stringify(data);
+    var headers = { "Content-Type": "application/json" };
+    if (user) {
+      headers.Authorization = `Token ${user.token}`;
     }
 
-    const request = {
+    const response = await fetch(this.baseUrl + urlSuffix, {
       method: method,
-      body: body,
       headers: headers,
-    };
-    const response = await fetch(this.baseUrl + urlSuffix, request);
+      body: data ? JSON.stringify(data) : null,
+    });
     if (!parseJson) {
       return { value: "value" };
     }

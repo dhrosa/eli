@@ -11,18 +11,15 @@ function Timestamp({ timestamp }) {
     round: true,
   });
   return (
-    <>
-      <small>
-        &nbsp; {date.toLocaleString()} ({duration} ago)
-      </small>
-    </>
+    <small>
+      &nbsp; {date.toLocaleString()} ({duration} ago)
+    </small>
   );
 }
 
 function Quote({ author, text, timestamp }) {
-  const skeletonClass = text ? "" : "is-skeleton";
   return (
-    <div className={"content " + skeletonClass}>
+    <div className={"content " + (text ? "" : "is-skeleton")}>
       <p>
         <strong>{author}</strong>
         <Timestamp timestamp={timestamp} />
