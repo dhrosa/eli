@@ -1,6 +1,4 @@
-import { Link } from "react-router-dom";
 import { useEffect, useState, useId } from "react";
-import Api from "./Api";
 import Conversation from "./Conversation";
 
 import { Control, Field, Label, Help } from "./Form";
@@ -35,17 +33,14 @@ function SelectField({ label, name, id, choices, help }) {
 function Form({ aiModelChoices, audienceChoices, onPending, onResponse }) {
   const onSubmit = async (event) => {
     onPending();
-    // Prevent normal form submission request and reload.
     event.preventDefault();
 
-    const headers = new Headers();
     const formData = new FormData(event.currentTarget);
     const request = {
       method: "POST",
       body: formData,
-      headers: headers,
     };
-    const response = await Api("/api/query/", request);
+    const response = await fetch("/api/query/", request);
     onResponse(await response.json());
   };
 
@@ -100,10 +95,7 @@ export default function () {
 
   useEffect(() => {
     const get = async () => {
-      const request = {
-        method: "OPTIONS",
-      };
-      const response = await Api("/api/query/", request);
+      const response = await fetch("/api/query/", { method: "OPTIONS" });
       const options = await response.json();
       const fields = options.actions.POST;
       setAiModelChoices(fields.ai_model_name.choices);

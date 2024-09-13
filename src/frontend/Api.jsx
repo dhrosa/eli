@@ -1,13 +1,4 @@
-import Cookie from "js-cookie";
-import { useContext } from "react";
-
-function Call(resource, request) {
-  request.headers ??= new Headers();
-  // request.headers.set("X-CSRFToken", Cookie.get("csrftoken"));
-  return fetch(resource, request);
-}
-
-export default Call;
+export default {};
 
 class Model {
   constructor(type) {
@@ -28,9 +19,7 @@ class Model {
     var body;
     if (method != "GET") {
       headers.append("Authorization", `Token ${user.token}`);
-      body = JSON.stringify({
-        ...data,
-      });
+      body = JSON.stringify(data);
     }
 
     const request = {
@@ -38,7 +27,7 @@ class Model {
       body: body,
       headers: headers,
     };
-    const response = await Call(this.baseUrl + urlSuffix, request);
+    const response = await fetch(this.baseUrl + urlSuffix, request);
     if (!parseJson) {
       return { value: "value" };
     }
@@ -51,7 +40,6 @@ class Model {
   }
 
   async list() {
-    console.log("hello");
     return this.call({});
   }
 
