@@ -27,7 +27,6 @@ export function Send(notify, { level, contents, duration = 1000 }) {
     notify({ action: "remove", id: id });
   }, duration);
 }
-
 export function notificationReducer(notifications, n) {
   switch (n.action) {
     case "add":

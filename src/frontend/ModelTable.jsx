@@ -17,6 +17,19 @@ export default function ({ model, fields }) {
     get().catch(console.error);
   }, []);
 
+  const onCreateSuccess = (newItem) => {
+    setCreateModalActive(false);
+    dispatch({ type: "add", value: newItem });
+    Send(notify, {
+      level: "success",
+      contents: (
+        <p>
+          Created {model.type}: <strong>{newItem.name}</strong>
+        </p>
+      ),
+    });
+  };
+
   return (
     <section className="section">
       <table className="table">
@@ -41,6 +54,18 @@ export default function ({ model, fields }) {
           ))}
         </tbody>
       </table>
+      <button
+        className="button is-primary"
+        onClick={() => setCreateModalActive(true)}
+      >
+        Create New {model.type}
+      </button>
+      <Modal
+        active={createModalActive}
+        onClose={() => setCreateModalActive(false)}
+      >
+        <Form model={model} fields={fields} onSuccess={onCreateSuccess} />
+      </Modal>
     </section>
   );
 }
@@ -50,6 +75,14 @@ function Row({ model, fields, item, dispatch, notify }) {
   const onEditSuccess = (newItem) => {
     setEditActive(false);
     dispatch({ type: "update", value: newItem });
+    Send(notify, {
+      level: "success",
+      contents: (
+        <p>
+          Updated {model.type}: <strong>{newItem.name}</strong>
+        </p>
+      ),
+    });
   };
 
   const onDelete = async () => {
@@ -98,14 +131,14 @@ function Row({ model, fields, item, dispatch, notify }) {
   );
 }
 
-function Form({ model, item, onSuccess, fields, notify }) {
+function Form({ model, item, onSuccess, fields }) {
   const [errors, setErrors] = useState(null);
 
   const onSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const newItem = { ...item, ...Object.fromEntries(formData.entries()) };
-    const response = item.id
+    const response = item?.id
       ? await model.update(newItem)
       : await model.create(newItem);
     if (response.value) {
@@ -127,8 +160,9 @@ function Form({ model, item, onSuccess, fields, notify }) {
         />
       ))}
       <Control>
-        <SubmitButton>{item.id ? "Update" : "Create"}</SubmitButton>
+        <SubmitButton>{item?.id ? "Update" : "Create"}</SubmitButton>
       </Control>
+      <ErrorList errors={errors?.non_field_errors} />
     </form>
   );
 }
@@ -152,6 +186,7 @@ function ModelField({ field, errors, item }) {
             defaultValue={item?.[field.name]}
           />
         )}
+        <ErrorList errors={errors?.[field.name]} />
       </Control>
     </Field>
   );
