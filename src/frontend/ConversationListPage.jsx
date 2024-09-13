@@ -6,7 +6,8 @@ function ConversationList() {
   const [dataList, setDataList] = useState([]);
   useEffect(() => {
     const fetchList = async () => {
-      setDataList(await Api.Conversation.list());
+      const response = await Api.Conversation.list();
+      setDataList(response.value);
     };
 
     fetchList().catch(console.error);
@@ -16,6 +17,5 @@ function ConversationList() {
 }
 
 export default function () {
-  return
-  <ConversationList />;
+  return <ConversationList />;
 }
