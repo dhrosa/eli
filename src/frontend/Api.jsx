@@ -1,8 +1,9 @@
 import Cookie from "js-cookie";
+import { useContext } from "react";
 
 function Call(resource, request) {
   request.headers ??= new Headers();
-  request.headers.set("X-CSRFToken", Cookie.get("csrftoken"));
+  // request.headers.set("X-CSRFToken", Cookie.get("csrftoken"));
   return fetch(resource, request);
 }
 
@@ -14,13 +15,28 @@ class Model {
     this.baseUrl = `/api/${type}s/`;
   }
 
-  async call(urlSuffix, method, data, parseJson = true) {
+  async call({
+    urlSuffix = "",
+    method = "GET",
+    data = null,
+    parseJson = true,
+    user = null,
+  }) {
+    var headers = new Headers({
+      "Content-Type": "application/json",
+    });
+    var body;
+    if (method != "GET") {
+      headers.append("Authorization", `Token ${user.token}`);
+      body = JSON.stringify({
+        ...data,
+      });
+    }
+
     const request = {
       method: method,
-      body: JSON.stringify(data),
-      headers: new Headers({
-        "Content-Type": "application/json",
-      }),
+      body: body,
+      headers: headers,
     };
     const response = await Call(this.baseUrl + urlSuffix, request);
     if (!parseJson) {
@@ -35,24 +51,37 @@ class Model {
   }
 
   async list() {
-    return this.call("", "GET");
+    console.log("hello");
+    return this.call({});
   }
 
   async detail(id) {
-    return this.call(`${id}/`, "GET");
+    return this.call({
+      urlSuffix: `${id}/`,
+    });
   }
 
-  async create(data) {
-    return this.call("", "POST", data);
+  async create(data, user) {
+    return this.call({ method: "POST", data: data, user: user });
   }
 
-  async update(data) {
-    return this.call(`${data.id}/`, "PUT", data);
+  async update(data, user) {
+    return this.call({
+      urlSuffix: `${data.id}/`,
+      method: "PUT",
+      data: data,
+      user: user,
+    });
   }
 
-  async delete(id) {
-    const parseJson = false;
-    return await this.call(`${id}/`, "DELETE", {}, parseJson);
+  async delete(id, user) {
+    return this.call({
+      urlSuffix: `${id}/`,
+      method: "DELETE",
+      data: data,
+      parseJson: false,
+      user: user,
+    });
   }
 }
 

@@ -1,6 +1,7 @@
 import { useEffect, useReducer, useState, useContext } from "react";
 import { Send, NotifyContext } from "./Notification";
 import Modal from "./Modal";
+import { UserContext } from "./UserContext";
 
 import { Field, Label, Control, ErrorList, SubmitButton, Input } from "./Form";
 
@@ -71,6 +72,7 @@ export default function ({ model, fields }) {
 }
 
 function Row({ model, fields, item, dispatch, notify }) {
+  const user = useContext(UserContext);
   const [editActive, setEditActive] = useState(false);
   const onEditSuccess = (newItem) => {
     setEditActive(false);
@@ -87,7 +89,7 @@ function Row({ model, fields, item, dispatch, notify }) {
 
   const onDelete = async () => {
     const id = item.id;
-    const response = await model.delete(id);
+    const response = await model.delete(id, user);
     if (response.error) {
       console.error(response.error);
     }
@@ -132,15 +134,21 @@ function Row({ model, fields, item, dispatch, notify }) {
 }
 
 function Form({ model, item, onSuccess, fields }) {
+  const user = useContext(UserContext);
   const [errors, setErrors] = useState(null);
 
   const onSubmit = async (event) => {
     event.preventDefault();
+    if (!user) {
+      setErrors({
+        non_field_errors: ["You must be logged in to perform this action."],
+      });
+    }
     const formData = new FormData(event.target);
     const newItem = { ...item, ...Object.fromEntries(formData.entries()) };
     const response = item?.id
-      ? await model.update(newItem)
-      : await model.create(newItem);
+      ? await model.update(newItem, user)
+      : await model.create(newItem, user);
     if (response.value) {
       setErrors(null);
       onSuccess(response.value);

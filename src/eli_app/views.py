@@ -12,6 +12,7 @@ from . import ai, serializers
 from .models import Rule, Conversation, Audience
 
 from rest_framework import viewsets, views, mixins, response
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 
@@ -27,17 +28,18 @@ class TokenView(ObtainAuthToken):
             "username": user.username,
             })
 
-
 class DefaultView(TemplateView):
     template_name="eli_app/base.html"
 
 class RuleViewSet(viewsets.ModelViewSet):
     queryset = Rule.objects.all()
     serializer_class = serializers.RuleSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 class AudienceViewSet(viewsets.ModelViewSet):
     queryset = Audience.objects.all()
     serializer_class = serializers.AudienceSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 class ConversationViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Conversation.objects.all()
