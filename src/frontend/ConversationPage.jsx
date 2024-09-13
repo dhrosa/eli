@@ -1,10 +1,8 @@
-import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Conversation from "./Conversation";
 import * as Api from "./Api";
 
 export default function () {
-  const { id } = useParams();
   const [data, setData] = useState(null);
   useEffect(() => {
     const get = async () => {
