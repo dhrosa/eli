@@ -31,7 +31,7 @@ class TokenView(ObtainAuthToken):
 class DefaultView(TemplateView):
     template_name="eli_app/base.html"
 
-class RuleViewSet(viewsets.ReadOnlyModelViewSet):
+class RuleViewSet(viewsets.ModelViewSet):
     queryset = Rule.objects.all()
     serializer_class = serializers.RuleSerializer
 

@@ -19,7 +19,7 @@ function RuleRow({ rule, dispatch, notify }) {
   const onDelete = async () => {
     const id = rule.id;
     const response = await Api.Rule.delete(id);
-    if (response.errors) {
+    if (response.error) {
       return;
     }
     dispatch({ type: "remove", id: id });
@@ -56,11 +56,15 @@ function RuleRow({ rule, dispatch, notify }) {
 }
 
 export default function () {
-  return <ModelTable model={Api.Rule} 
-    fields= {[
-      {name: "name", label: "Name", widget: "text"},
-      {name: "text", label: "Prompt", widget: "textarea"},
-    ]} />;
+  return (
+    <ModelTable
+      model={Api.Rule}
+      fields={[
+        { name: "name", label: "Name", widget: "text" },
+        { name: "text", label: "Prompt", widget: "textarea" },
+      ]}
+    />
+  );
   const [rules, dispatch] = useReducer(reducer, []);
   const [createModalActive, setCreateModalActive] = useState(false);
   const notify = useContext(NotifyContext);

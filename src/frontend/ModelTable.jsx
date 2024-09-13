@@ -14,7 +14,6 @@ export default function ({ model, fields }) {
       const response = await model.list();
       dispatch({ type: "set", value: response.value });
     };
-
     get().catch(console.error);
   }, []);
 
@@ -56,8 +55,8 @@ function Row({ model, fields, item, dispatch, notify }) {
   const onDelete = async () => {
     const id = item.id;
     const response = await model.delete(id);
-    if (response.errors) {
-      console.error(response.errors);
+    if (response.error) {
+      console.error(response.error);
     }
     dispatch({ type: "remove", id: id });
     Send(notify, {
@@ -167,7 +166,7 @@ function reducer(items, action) {
     case "remove":
       return items.filter((a) => a.id != action.id);
     case "update":
-      return items.map((a) => (x.id === action.value.id ? action.value : x));
+      return items.map((x) => (x.id === action.value.id ? action.value : x));
     default:
   }
   return items;
