@@ -2,6 +2,9 @@ import { Control, Label } from "./Form";
 import { useEffect, useState, useContext, useReducer } from "react";
 import { Send, NotifyContext } from "./Notification";
 import Modal from "./Modal";
+import ModelTable from "./ModelTable";
+
+import * as Api from "./Api";
 
 function Form() {
   return false;
@@ -53,6 +56,11 @@ function RuleRow({ rule, dispatch, notify }) {
 }
 
 export default function () {
+  return <ModelTable model={Api.Rule} 
+    fields= {[
+      {name: "name", label: "Name", widget: "text"},
+      {name: "text", label: "Prompt", widget: "textarea"},
+    ]} />;
   const [rules, dispatch] = useReducer(reducer, []);
   const [createModalActive, setCreateModalActive] = useState(false);
   const notify = useContext(NotifyContext);
