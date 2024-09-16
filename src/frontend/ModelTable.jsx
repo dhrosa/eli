@@ -5,7 +5,7 @@ import { UserContext } from "./UserContext";
 
 import { Field, Label, Control, ErrorList, SubmitButton, Input } from "./Form";
 
-export default function ({ model, fields }) {
+export default function ModelTable({ model, fields }) {
   const [items, dispatch] = useReducer(reducer, []);
   const [createModalActive, setCreateModalActive] = useState(false);
   const notify = useContext(NotifyContext);

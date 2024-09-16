@@ -1,11 +1,13 @@
-export default function ({ errors }) {
+export default function ErrorList({ errors }) {
   if (!errors) {
     return false;
   }
   return (
     <ul className="has-text-danger">
-      {errors.map((e) => (
-        <li className="help">{e}</li>
+      {errors.map((e, i) => (
+        <li key={i} className="help">
+          {e}
+        </li>
       ))}
     </ul>
   );

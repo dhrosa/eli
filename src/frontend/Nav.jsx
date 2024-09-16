@@ -28,7 +28,7 @@ function HamburgerButton({ onClick, isActive }) {
   );
 }
 
-export default function () {
+export default function Nav() {
   const [menuActive, setMenuActive] = useState(false);
 
   const toggleMenu = () => {

@@ -16,8 +16,8 @@ export function ErrorList({ errors }) {
   }
   return (
     <ul>
-      {errors.map((error) => (
-        <li>
+      {errors.map((error, i) => (
+        <li key={i}>
           <small className="has-text-danger">{error}</small>
         </li>
       ))}

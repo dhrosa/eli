@@ -17,7 +17,7 @@ import {
   RenderedNotificationList,
 } from "./Notification";
 
-export default function () {
+export default function App() {
   const [user, dispatch] = useReducer(userReducer, initialUser());
   const [notifications, notify] = useReducer(notificationReducer, []);
 

@@ -61,7 +61,6 @@ class Model {
     return this.call({
       urlSuffix: `${id}/`,
       method: "DELETE",
-      data: data,
       parseJson: false,
       user: user,
     });

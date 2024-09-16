@@ -86,7 +86,7 @@ function SubmittedConversation({ conversation, pending }) {
   return <Conversation object={conversation} />;
 }
 
-export default function () {
+export default function QueryPage() {
   const [aiModelChoices, setAiModelChoices] = useState([]);
   const [audienceChoices, setAudienceChoices] = useState([]);
   const [conversation, setConversation] = useState(null);

@@ -83,7 +83,7 @@ function ExistingUserDialog({ user, onSuccess }) {
   );
 }
 
-export default function ({ className }) {
+export default function LoginButton({ className }) {
   const [modalIsActive, setModalIsActive] = useState(false);
   const notify = useContext(NotifyContext);
   const user = useContext(UserContext);

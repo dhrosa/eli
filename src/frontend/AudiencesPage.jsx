@@ -2,7 +2,7 @@ import ModelTable from "./ModelTable";
 
 import * as Api from "./Api";
 
-export default function () {
+export default function AudiencesPage() {
   return (
     <ModelTable
       model={Api.Audience}

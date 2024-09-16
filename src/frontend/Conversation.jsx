@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+/* global require */
 const humanizeDuration = require("humanize-duration");
 
 function Timestamp({ timestamp }) {
@@ -67,7 +68,7 @@ function CardHeader({ title, url }) {
   );
 }
 
-export default function ({ object }) {
+export default function Conversation({ object }) {
   return (
     <div className="card">
       <CardHeader title={object?.response_title} url={object?.url} />

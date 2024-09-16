@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Conversation from "./Conversation";
 import * as Api from "./Api";
 
-export default function () {
+export default function ConversationListPage() {
   const [conversations, setConversations] = useState([]);
   useEffect(() => {
     const fetchList = async () => {

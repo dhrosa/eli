@@ -2,7 +2,7 @@ import ModelTable from "./ModelTable";
 
 import * as Api from "./Api";
 
-export default function () {
+export default function RulesPage() {
   return (
     <ModelTable
       model={Api.Rule}

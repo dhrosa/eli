@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export default function ({ children, active, onClose }) {
+export default function Modal({ children, active, onClose }) {
   useEffect(() => {
     const onEscape = (event) => {
       if (event.key === "Escape") {
