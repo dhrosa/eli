@@ -1,6 +1,19 @@
+import { User } from "./UserContext";
+
 export default {};
 
+interface CallArgs {
+  urlSuffix?: string;
+  method?: string;
+  data?: object;
+  parseJson?: boolean;
+  user?: User;
+}
+
 class Model {
+  type: string;
+  baseUrl: string;
+
   constructor(type) {
     this.type = type;
     this.baseUrl = `/api/${type}s/`;
@@ -9,13 +22,15 @@ class Model {
   async call({
     urlSuffix = "",
     method = "GET",
-    data = null,
     parseJson = true,
-    user = null,
-  }) {
-    var headers = { "Content-Type": "application/json" };
+    data,
+    user,
+  }: CallArgs) {
+    var headers = new Headers();
+    headers.set("Content-Type", "application/json");
+
     if (user) {
-      headers.Authorization = `Token ${user.token}`;
+      headers.set("Authorization", `Token ${user.token}`);
     }
 
     const response = await fetch(this.baseUrl + urlSuffix, {

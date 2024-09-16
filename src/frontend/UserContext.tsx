@@ -11,7 +11,7 @@ interface UserAction {
 }
 
 interface UserDispatch {
-  (user: User | null, action: UserAction): void;
+  (action: UserAction): void;
 }
 
 export const UserContext = createContext<User | null>(null);

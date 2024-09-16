@@ -3,7 +3,7 @@ import Conversation from "./Conversation";
 import * as Api from "./Api";
 
 export default function ConversationListPage() {
-  const [conversations, setConversations] = useState([]);
+  const [conversations, setConversations] = useState<any[]>([]);
   useEffect(() => {
     const fetchList = async () => {
       const response = await Api.Conversation.list();

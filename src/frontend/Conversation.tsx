@@ -82,7 +82,11 @@ export default function Conversation({ object }) {
             />
             <Media>
               <MediaContent>
-                <Quote author="ELI" text={object?.response_text} />
+                <Quote
+                  author="ELI"
+                  text={object?.response_text}
+                  timestamp={object?.timestamp}
+                />
               </MediaContent>
             </Media>
           </MediaContent>

@@ -1,4 +1,4 @@
-export default function ErrorList({ errors }) {
+export default function ErrorList({ errors }: { errors: string[] }) {
   if (!errors) {
     return false;
   }

@@ -125,7 +125,6 @@ function Row({ model, fields, item, dispatch, notify }) {
             fields={fields}
             item={item}
             onSuccess={onEditSuccess}
-            notify={notify}
           />
         </Modal>
       </td>
@@ -133,9 +132,21 @@ function Row({ model, fields, item, dispatch, notify }) {
   );
 }
 
-function Form({ model, item, onSuccess, fields }) {
+type Field = { name: string; label: string; widget: string };
+
+function Form({
+  model,
+  item,
+  onSuccess,
+  fields,
+}: {
+  model: any;
+  item?: any;
+  onSuccess: (newItem: any) => void;
+  fields: Field[];
+}) {
   const user = useContext(UserContext);
-  const [errors, setErrors] = useState(null);
+  const [errors, setErrors] = useState<any>(null);
 
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -200,7 +211,10 @@ function ModelField({ field, errors, item }) {
   );
 }
 
-function reducer(items, action) {
+function reducer(
+  items: any[],
+  action: { id?: number; type: string; value?: any }
+) {
   switch (action.type) {
     case "set":
       return action.value;

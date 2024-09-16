@@ -21,7 +21,7 @@ function Form({ user, onSuccess }) {
   if (user) {
     return false;
   }
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState<any>({});
 
   const onSubmit = async (event) => {
     event.preventDefault();
