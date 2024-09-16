@@ -7,7 +7,7 @@ module.exports = {
   },
   context: "/jsx/src/",
   resolve: {
-    extensions: ["", ".js", ".jsx"],
+    extensions: ["", ".js", ".jsx", ".ts",".tsx",],
   },
   module: {
     rules: [
@@ -28,6 +28,10 @@ module.exports = {
         test: /\.s[ac]ss$/i,
         use: ["style-loader", "css-loader", "sass-loader"],
       },
+      {
+        test: /\.(ts|tsx)$/,
+        loader: "ts-loader",
+      }
     ],
   },
 };

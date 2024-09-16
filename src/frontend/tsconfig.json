@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "esModuleInterop": true,
+        "jsx": "react-jsx",
+        "strictNullChecks": true,
+        "moduleResolution": "bundler"
+    }
+}
