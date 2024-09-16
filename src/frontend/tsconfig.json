@@ -4,6 +4,6 @@
     "esModuleInterop": true,
     "jsx": "react-jsx",
     "strictNullChecks": true,
-    "moduleResolution": "bundler"
+    "moduleResolution": "Node"
   }
 }
