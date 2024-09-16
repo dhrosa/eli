@@ -1,18 +1,18 @@
-module.exports = {
+export default {
   entry: {
-    index: "/jsx/src/index.jsx",
+    index: "/jsx/src/index.tsx",
   },
   output: {
     path: "/jsx/out/",
   },
   context: "/jsx/src/",
   resolve: {
-    extensions: ["", ".js", ".jsx", ".ts",".tsx",],
+    extensions: ["", ".js", ".jsx", ".ts", ".tsx"],
   },
   module: {
     rules: [
       {
-        test: /\.?jsx$/,
+        test: /\.?tsx$/,
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",
@@ -31,7 +31,7 @@ module.exports = {
       {
         test: /\.(ts|tsx)$/,
         loader: "ts-loader",
-      }
+      },
     ],
   },
 };

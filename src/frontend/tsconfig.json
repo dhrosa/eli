@@ -1,9 +1,9 @@
 {
-    "compilerOptions": {
-        "target": "es6",
-        "esModuleInterop": true,
-        "jsx": "react-jsx",
-        "strictNullChecks": true,
-        "moduleResolution": "bundler"
-    }
+  "compilerOptions": {
+    "target": "ESNext",
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "strictNullChecks": true,
+    "moduleResolution": "bundler"
+  }
 }

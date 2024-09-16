@@ -3,7 +3,7 @@ import { BrowserRouter } from "react-router-dom";
 import { StrictMode } from "react";
 import App from "./App";
 
-createRoot(document.getElementById("root")).render(
+createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
     <StrictMode>
       <App />
