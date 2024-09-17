@@ -4,7 +4,7 @@ import Modal from "./Modal";
 import { Model } from "./Api";
 import { UserContext } from "./UserContext";
 
-import { Field, Label, Control, ErrorList, SubmitButton, Input } from "./Form";
+import { Field, Label, Control, ErrorList, SubmitButton } from "./Form";
 
 export default function ModelTable({
   model,
@@ -219,7 +219,8 @@ function ModelField({
       <Label>{field.label}</Label>
       <Control>
         {field.widget == "text" && (
-          <Input
+          <input
+            className="input"
             type={field.widget}
             name={field.name}
             defaultValue={item?.[field.name]}

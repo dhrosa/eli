@@ -53,7 +53,7 @@ export function SubmitButton({
   );
 }
 
-export function Input({ type, ...rest }: { type?: "string" }) {
+export function Input({ type, ...rest }: { type?: string }) {
   return <input className="input" type={type ?? "text"} {...rest} />;
 }
 
