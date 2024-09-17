@@ -1,11 +1,18 @@
 import { useEffect, useReducer, useState, useContext } from "react";
-import { Send, NotifyContext, Level } from "./Notification";
+import { Send, NotifyContext, Level, NotifyFunction } from "./Notification";
 import Modal from "./Modal";
+import { Model } from "./Api";
 import { UserContext } from "./UserContext";
 
 import { Field, Label, Control, ErrorList, SubmitButton, Input } from "./Form";
 
-export default function ModelTable({ model, fields }) {
+export default function ModelTable({
+  model,
+  fields,
+}: {
+  model: Model;
+  fields: FieldDescription[];
+}) {
   const [items, dispatch] = useReducer(reducer, []);
   const [createModalActive, setCreateModalActive] = useState(false);
   const notify = useContext(NotifyContext);
@@ -18,7 +25,7 @@ export default function ModelTable({ model, fields }) {
     get().catch(console.error);
   }, []);
 
-  const onCreateSuccess = (newItem) => {
+  const onCreateSuccess = (newItem: any) => {
     setCreateModalActive(false);
     dispatch({ type: "add", value: newItem });
     Send(notify, {
@@ -43,7 +50,7 @@ export default function ModelTable({ model, fields }) {
           </tr>
         </thead>
         <tbody>
-          {items.map((item) => (
+          {items.map((item: any) => (
             <Row
               key={item.id}
               model={model}
@@ -71,10 +78,22 @@ export default function ModelTable({ model, fields }) {
   );
 }
 
-function Row({ model, fields, item, dispatch, notify }) {
+function Row({
+  model,
+  fields,
+  item,
+  dispatch,
+  notify,
+}: {
+  model: Model;
+  fields: FieldDescription[];
+  item: any;
+  dispatch: any;
+  notify: NotifyFunction;
+}) {
   const user = useContext(UserContext);
   const [editActive, setEditActive] = useState(false);
-  const onEditSuccess = (newItem) => {
+  const onEditSuccess = (newItem: any) => {
     setEditActive(false);
     dispatch({ type: "update", value: newItem });
     Send(notify, {
@@ -89,7 +108,7 @@ function Row({ model, fields, item, dispatch, notify }) {
 
   const onDelete = async () => {
     const id = item.id;
-    const response = await model.delete(id, user);
+    const response = await model.delete(id, user || undefined);
     if (response.error) {
       console.error(response.error);
     }
@@ -132,7 +151,7 @@ function Row({ model, fields, item, dispatch, notify }) {
   );
 }
 
-type Field = { name: string; label: string; widget: string };
+type FieldDescription = { name: string; label: string; widget: string };
 
 function Form({
   model,
@@ -143,12 +162,12 @@ function Form({
   model: any;
   item?: any;
   onSuccess: (newItem: any) => void;
-  fields: Field[];
+  fields: FieldDescription[];
 }) {
   const user = useContext(UserContext);
   const [errors, setErrors] = useState<any>(null);
 
-  const onSubmit = async (event) => {
+  const onSubmit = async (event: any) => {
     event.preventDefault();
     if (!user) {
       setErrors({
@@ -186,7 +205,15 @@ function Form({
   );
 }
 
-function ModelField({ field, errors, item }) {
+function ModelField({
+  field,
+  errors,
+  item,
+}: {
+  field: FieldDescription;
+  errors: any;
+  item: any;
+}) {
   return (
     <Field>
       <Label>{field.label}</Label>

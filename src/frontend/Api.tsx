@@ -10,7 +10,7 @@ interface CallArgs {
   user?: User;
 }
 
-class Model {
+export class Model {
   type: string;
   baseUrl: string;
 
@@ -63,7 +63,7 @@ class Model {
     return this.call({ method: "POST", data: data, user: user });
   }
 
-  async update(data: any, user: User) {
+  async update(data: any, user?: User) {
     return this.call({
       urlSuffix: `${data.id}/`,
       method: "PUT",
@@ -72,7 +72,7 @@ class Model {
     });
   }
 
-  async delete(id: string, user: User) {
+  async delete(id: string, user?: User) {
     return this.call({
       urlSuffix: `${id}/`,
       method: "DELETE",
