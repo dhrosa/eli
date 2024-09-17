@@ -26,7 +26,7 @@ export class Model {
     data,
     user,
   }: CallArgs) {
-    var headers = new Headers();
+    const headers = new Headers();
     headers.set("Content-Type", "application/json");
 
     if (user) {

@@ -53,8 +53,8 @@ export function SubmitButton({
   );
 }
 
-export function Input({ type = "text", ...props }) {
-  return <input type={type} className="input" {...props} />;
+export function Input({ type, ...rest }: { type?: "string" }) {
+  return <input className="input" type={type ?? "text"} {...rest} />;
 }
 
 export function Help({ children }: { children: ReactNode }) {

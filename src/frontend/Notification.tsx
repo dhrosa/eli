@@ -63,7 +63,7 @@ export function RenderedNotificationList() {
   );
 }
 
-var current_id = 0;
+let current_id = 0;
 
 export function Send(
   notify: NotifyFunction,

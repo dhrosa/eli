@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 function InitialTheme() {
-  var theme = localStorage.getItem("data-theme");
+  let theme = localStorage.getItem("data-theme");
   theme ??= matchMedia("(prefers-color-scheme: dark)").matches
     ? "dark"
     : "light";
