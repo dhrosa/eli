@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import { UserDispatchContext, UserContext, User } from "./UserContext";
 import Modal from "./Modal";
 
-import { Control, Field, Label, ErrorList, SubmitButton, Input } from "./Form";
+import { Control, Field, Label, ErrorList, SubmitButton } from "./Form";
 import { Send, NotifyContext, Level } from "./Notification";
 
 async function parseResponse(response: any) {
@@ -47,7 +47,8 @@ function Form({
       <Field>
         <Label>Username</Label>
         <Control>
-          <Input
+          <input
+            className="input"
             type="text"
             name="username"
             placeholder="Username"
@@ -59,7 +60,8 @@ function Form({
       <Field>
         <Label>Password</Label>
         <Control>
-          <Input
+          <input
+            className="input"
             name="password"
             type="password"
             autoComplete="current-password"
