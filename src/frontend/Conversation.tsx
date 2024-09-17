@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
+import { ReactNode } from "react";
 /* global require */
 const humanizeDuration = require("humanize-duration");
 
-function Timestamp({ timestamp }) {
+function Timestamp({ timestamp }: { timestamp: string }) {
   if (!timestamp) {
     return false;
   }
@@ -18,7 +19,15 @@ function Timestamp({ timestamp }) {
   );
 }
 
-function Quote({ author, text, timestamp }) {
+function Quote({
+  author,
+  text,
+  timestamp,
+}: {
+  author: string;
+  text: string;
+  timestamp: string;
+}) {
   return (
     <div className={"content " + (text ? "" : "is-skeleton")}>
       <p>
@@ -40,7 +49,7 @@ function Avatar() {
   );
 }
 
-function Media({ children }) {
+function Media({ children }: { children: ReactNode }) {
   return (
     <article className="media">
       <figure className="media-left">
@@ -51,16 +60,16 @@ function Media({ children }) {
   );
 }
 
-function MediaContent({ children }) {
+function MediaContent({ children }: { children: ReactNode }) {
   return <div className="media-content">{children}</div>;
 }
 
-function CardHeader({ title, url }) {
+function CardHeader({ title, url }: { title?: string; url?: string }) {
   return (
     <div className="card-header">
       <p className="card-header-title">{title ?? "Loading..."}</p>
       <div className="card-header-icon">
-        <Link to={url} className={"icon " + (url ? "" : "is-skeleton")}>
+        <Link to={url ?? ""} className={"icon " + (url ? "" : "is-skeleton")}>
           <span className="material-icons">link</span>
         </Link>
       </div>
@@ -68,7 +77,7 @@ function CardHeader({ title, url }) {
   );
 }
 
-export default function Conversation({ object }) {
+export default function Conversation({ object }: { object: any }) {
   return (
     <div className="card">
       <CardHeader title={object?.response_title} url={object?.url} />

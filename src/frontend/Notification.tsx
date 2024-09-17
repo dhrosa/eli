@@ -1,7 +1,7 @@
 import { createContext, useContext, ReactNode } from "react";
 
 export const NotificationContext = createContext<Notification[]>([]);
-export const NotifyContext = createContext<NotifyFunction>(() => { });
+export const NotifyContext = createContext<NotifyFunction>(() => {});
 
 export enum Level {
   INFO = "info",
@@ -9,7 +9,6 @@ export enum Level {
   WARNING = "warning",
   DANGER = "danger",
 }
-
 
 interface SendArgs {
   level: Level;
@@ -19,7 +18,7 @@ interface SendArgs {
 
 interface Notification {
   id: number;
-  level: "info" | "success" | "warning" | "danger";
+  level: Level;
   contents: ReactNode;
 }
 
@@ -37,11 +36,17 @@ interface RemoveAction {
 
 type NotifyAction = AddAction | RemoveAction;
 
-interface NotifyFunction {
+export interface NotifyFunction {
   (a: NotifyAction): void;
 }
 
-function RenderedNotification({ level, children }) {
+function RenderedNotification({
+  level,
+  children,
+}: {
+  level: Level;
+  children: ReactNode;
+}) {
   return <div className={"notification is-" + level}>{children}</div>;
 }
 
@@ -60,7 +65,10 @@ export function RenderedNotificationList() {
 
 var current_id = 0;
 
-export function Send(notify: NotifyFunction, { level, contents, duration = 1000 }: SendArgs) {
+export function Send(
+  notify: NotifyFunction,
+  { level, contents, duration = 1000 }: SendArgs
+) {
   const id = current_id++;
   notify({ action: "add", id: id, level: level, contents: contents });
 
@@ -68,7 +76,10 @@ export function Send(notify: NotifyFunction, { level, contents, duration = 1000 
     notify({ action: "remove", id: id });
   }, duration);
 }
-export function notificationReducer(notifications: Notification[], n: NotifyAction): Notification[] {
+export function notificationReducer(
+  notifications: Notification[],
+  n: NotifyAction
+): Notification[] {
   switch (n.action) {
     case "add":
       return [...notifications, n];

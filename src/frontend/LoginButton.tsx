@@ -1,11 +1,11 @@
 import { useState, useContext } from "react";
-import { UserDispatchContext, UserContext } from "./UserContext";
+import { UserDispatchContext, UserContext, User } from "./UserContext";
 import Modal from "./Modal";
 
 import { Control, Field, Label, ErrorList, SubmitButton, Input } from "./Form";
 import { Send, NotifyContext, Level } from "./Notification";
 
-async function parseResponse(response) {
+async function parseResponse(response: any) {
   const value = await response.json();
   if (response.ok) {
     return {
@@ -17,13 +17,19 @@ async function parseResponse(response) {
   };
 }
 
-function Form({ user, onSuccess }) {
+function Form({
+  user,
+  onSuccess,
+}: {
+  user: User | null;
+  onSuccess: (user: User) => void;
+}) {
   if (user) {
     return false;
   }
   const [errors, setErrors] = useState<any>({});
 
-  const onSubmit = async (event) => {
+  const onSubmit = async (event: any) => {
     event.preventDefault();
     const response = await fetch("/token/", {
       method: "POST",
@@ -69,7 +75,13 @@ function Form({ user, onSuccess }) {
   );
 }
 
-function ExistingUserDialog({ user, onSuccess }) {
+function ExistingUserDialog({
+  user,
+  onSuccess,
+}: {
+  user: User | null;
+  onSuccess: any;
+}) {
   if (!user) {
     return false;
   }
@@ -83,13 +95,19 @@ function ExistingUserDialog({ user, onSuccess }) {
   );
 }
 
-export default function LoginButton({ className }) {
+export default function LoginButton({ className }: { className?: string }) {
   const [modalIsActive, setModalIsActive] = useState(false);
   const notify = useContext(NotifyContext);
   const user = useContext(UserContext);
   const userDispatch = useContext(UserDispatchContext);
 
-  const onLoginSuccess = ({ username, token }) => {
+  const onLoginSuccess = ({
+    username,
+    token,
+  }: {
+    username: string;
+    token: string;
+  }) => {
     userDispatch({
       type: "login",
       value: { username: username, token: token },

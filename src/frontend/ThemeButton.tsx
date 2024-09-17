@@ -7,8 +7,7 @@ function InitialTheme() {
     : "light";
   return theme;
 }
-
-export default function ThemeButton({ className }) {
+export default function ThemeButton({ className }: { className: string }) {
   const [theme, setTheme] = useState(InitialTheme());
 
   useEffect(() => {

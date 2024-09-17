@@ -7,7 +7,12 @@ import QueryPage from "./QueryPage";
 import AudiencesPage from "./AudiencesPage";
 import RulesPage from "./RulesPage";
 import Nav from "./Nav";
-import { UserContext, UserDispatchContext, userReducer, initialUser } from "./UserContext";
+import {
+  UserContext,
+  UserDispatchContext,
+  userReducer,
+  initialUser,
+} from "./UserContext";
 import { useReducer } from "react";
 import {
   notificationReducer,

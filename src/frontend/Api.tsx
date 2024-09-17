@@ -14,7 +14,7 @@ class Model {
   type: string;
   baseUrl: string;
 
-  constructor(type) {
+  constructor(type: string) {
     this.type = type;
     this.baseUrl = `/api/${type}s/`;
   }
@@ -53,17 +53,17 @@ class Model {
     return this.call({});
   }
 
-  async detail(id) {
+  async detail(id: string) {
     return this.call({
       urlSuffix: `${id}/`,
     });
   }
 
-  async create(data, user) {
+  async create(data: any, user: User) {
     return this.call({ method: "POST", data: data, user: user });
   }
 
-  async update(data, user) {
+  async update(data: any, user: User) {
     return this.call({
       urlSuffix: `${data.id}/`,
       method: "PUT",
@@ -72,7 +72,7 @@ class Model {
     });
   }
 
-  async delete(id, user) {
+  async delete(id: string, user: User) {
     return this.call({
       urlSuffix: `${id}/`,
       method: "DELETE",

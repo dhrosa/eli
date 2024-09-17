@@ -57,6 +57,6 @@ export function Input({ type = "text", ...props }) {
   return <input type={type} className="input" {...props} />;
 }
 
-export function Help({ children }) {
+export function Help({ children }: { children: ReactNode }) {
   return <p className="help">{children}</p>;
 }

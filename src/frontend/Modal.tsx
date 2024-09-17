@@ -1,8 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, ReactNode } from "react";
 
-export default function Modal({ children, active, onClose }) {
+export default function Modal({
+  children,
+  active,
+  onClose,
+}: {
+  children: ReactNode;
+  active: boolean;
+  onClose: () => void;
+}) {
   useEffect(() => {
-    const onEscape = (event) => {
+    const onEscape = (event: any) => {
       if (event.key === "Escape") {
         onClose();
       }

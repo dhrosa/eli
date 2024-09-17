@@ -3,11 +3,24 @@ import Conversation from "./Conversation";
 
 import { Control, Field, Label, Help } from "./Form";
 
-function SelectOption({ choice }) {
+interface Choice {
+  value: string;
+  display_name: string;
+}
+
+function SelectOption({ choice }: { choice: Choice }) {
   return <option value={choice.value}>{choice.display_name}</option>;
 }
 
-function Select({ id, name, choices }) {
+function Select({
+  id,
+  name,
+  choices,
+}: {
+  id: string;
+  name: string;
+  choices: Choice[];
+}) {
   return (
     <div className="select">
       <select id={id} name={name}>
@@ -19,7 +32,19 @@ function Select({ id, name, choices }) {
   );
 }
 
-function SelectField({ label, name, id, choices, help }) {
+function SelectField({
+  label,
+  name,
+  id,
+  choices,
+  help,
+}: {
+  label: string;
+  name: string;
+  id: string;
+  choices: Choice[];
+  help: string;
+}) {
   return (
     <Field>
       <Label>{label}</Label>
@@ -31,8 +56,18 @@ function SelectField({ label, name, id, choices, help }) {
   );
 }
 
-function Form({ aiModelChoices, audienceChoices, onPending, onResponse }) {
-  const onSubmit = async (event) => {
+function Form({
+  aiModelChoices,
+  audienceChoices,
+  onPending,
+  onResponse,
+}: {
+  aiModelChoices: Choice[];
+  audienceChoices: Choice[];
+  onPending: () => void;
+  onResponse: (response: any) => any;
+}) {
+  const onSubmit = async (event: any) => {
     onPending();
     event.preventDefault();
 
@@ -79,7 +114,13 @@ function Form({ aiModelChoices, audienceChoices, onPending, onResponse }) {
   );
 }
 
-function SubmittedConversation({ conversation, pending }) {
+function SubmittedConversation({
+  conversation,
+  pending,
+}: {
+  conversation: any;
+  pending: boolean;
+}) {
   if (!pending && !conversation) {
     return false;
   }
@@ -108,7 +149,7 @@ export default function QueryPage() {
     setConversation(null);
   };
 
-  const onResponse = (response) => {
+  const onResponse = (response: any) => {
     setPending(false);
     setConversation(response);
   };
