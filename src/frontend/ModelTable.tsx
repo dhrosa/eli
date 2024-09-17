@@ -1,5 +1,5 @@
 import { useEffect, useReducer, useState, useContext } from "react";
-import { Send, NotifyContext } from "./Notification";
+import { Send, NotifyContext, Level } from "./Notification";
 import Modal from "./Modal";
 import { UserContext } from "./UserContext";
 
@@ -22,7 +22,7 @@ export default function ModelTable({ model, fields }) {
     setCreateModalActive(false);
     dispatch({ type: "add", value: newItem });
     Send(notify, {
-      level: "success",
+      level: Level.SUCCESS,
       contents: (
         <p>
           Created {model.type}: <strong>{newItem.name}</strong>
@@ -78,7 +78,7 @@ function Row({ model, fields, item, dispatch, notify }) {
     setEditActive(false);
     dispatch({ type: "update", value: newItem });
     Send(notify, {
-      level: "success",
+      level: Level.SUCCESS,
       contents: (
         <p>
           Updated {model.type}: <strong>{newItem.name}</strong>
@@ -95,7 +95,7 @@ function Row({ model, fields, item, dispatch, notify }) {
     }
     dispatch({ type: "remove", id: id });
     Send(notify, {
-      level: "success",
+      level: Level.SUCCESS,
       contents: (
         <p>
           Deleted {model.type}: <strong>{item.name}</strong>

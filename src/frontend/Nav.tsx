@@ -3,7 +3,7 @@ import ThemeButton from "./ThemeButton";
 import LoginButton from "./LoginButton";
 import { useState } from "react";
 
-function NavLink({ href, label }) {
+function NavLink({ href, label }: { href: string, label: string }) {
   return (
     <Link to={href} className="navbar-item">
       {label}
@@ -11,7 +11,7 @@ function NavLink({ href, label }) {
   );
 }
 
-function HamburgerButton({ onClick, isActive }) {
+function HamburgerButton({ onClick, isActive }: { onClick: () => void, isActive: boolean }) {
   return (
     <a
       role="button"

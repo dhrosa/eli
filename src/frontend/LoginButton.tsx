@@ -3,7 +3,7 @@ import { UserDispatchContext, UserContext } from "./UserContext";
 import Modal from "./Modal";
 
 import { Control, Field, Label, ErrorList, SubmitButton, Input } from "./Form";
-import { Send, NotifyContext } from "./Notification";
+import { Send, NotifyContext, Level } from "./Notification";
 
 async function parseResponse(response) {
   const value = await response.json();
@@ -95,7 +95,7 @@ export default function LoginButton({ className }) {
       value: { username: username, token: token },
     });
     Send(notify, {
-      level: "success",
+      level: Level.SUCCESS,
       contents: (
         <p>
           Logged in successfully as <strong>username</strong>
@@ -108,7 +108,7 @@ export default function LoginButton({ className }) {
   const onLogoutSuccess = () => {
     userDispatch({ type: "logout" });
     Send(notify, {
-      level: "success",
+      level: Level.SUCCESS,
       contents: <p>Logged out successfully</p>,
     });
     setModalIsActive(false);

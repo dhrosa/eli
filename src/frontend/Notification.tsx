@@ -3,7 +3,13 @@ import { createContext, useContext, ReactNode } from "react";
 export const NotificationContext = createContext<Notification[]>([]);
 export const NotifyContext = createContext<NotifyFunction>(() => { });
 
-type Level = "info" | "success" | "warning" | "danger";
+export enum Level {
+  INFO = "info",
+  SUCCESS = "success",
+  WARNING = "warning",
+  DANGER = "danger",
+}
+
 
 interface SendArgs {
   level: Level;

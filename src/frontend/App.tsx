@@ -7,9 +7,8 @@ import QueryPage from "./QueryPage";
 import AudiencesPage from "./AudiencesPage";
 import RulesPage from "./RulesPage";
 import Nav from "./Nav";
-import { UserContext, UserDispatchContext, User } from "./UserContext";
+import { UserContext, UserDispatchContext, userReducer, initialUser } from "./UserContext";
 import { useReducer } from "react";
-import Cookies from "js-cookie";
 import {
   notificationReducer,
   NotificationContext,
@@ -44,22 +43,4 @@ export default function App() {
       </NotifyContext.Provider>
     </NotificationContext.Provider>
   );
-}
-
-function initialUser(): User | null {
-  const encoded = Cookies.get("eli-user");
-  return encoded ? JSON.parse(encoded) : null;
-}
-
-function userReducer(user, action) {
-  switch (action.type) {
-    case "login": {
-      Cookies.set("eli-user", JSON.stringify(action.value));
-      return action.value;
-    }
-    case "logout": {
-      Cookies.remove("eli-user");
-      return null;
-    }
-  }
 }
