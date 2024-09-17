@@ -65,7 +65,7 @@ export class Model {
 
   async update(data: any, user?: User) {
     return this.call({
-      urlSuffix: `${data.id}/`,
+      urlSuffix: `${data.id as string}/`,
       method: "PUT",
       data: data,
       user: user,

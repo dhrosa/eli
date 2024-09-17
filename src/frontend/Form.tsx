@@ -25,9 +25,6 @@ export function Label({ children }: { children: ReactNode }) {
 }
 
 export function ErrorList({ errors }: { errors: string[] }) {
-  if (!errors) {
-    return null;
-  }
   return (
     <ul>
       {errors.map((error, i) => (

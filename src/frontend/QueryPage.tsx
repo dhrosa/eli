@@ -80,7 +80,11 @@ function Form({
 
   const id = useId();
   return (
-    <form onSubmit={onSubmit}>
+    <form
+      onSubmit={(e: any) => {
+        void onSubmit(e);
+      }}
+    >
       <SelectField
         name="audience"
         id={"audience-" + id}
@@ -141,7 +145,9 @@ export default function QueryPage() {
       setAiModelChoices(fields.ai_model_name.choices);
       setAudienceChoices(fields.audience.choices);
     };
-    get().catch(console.error);
+    get().catch((e: unknown) => {
+      console.error(e);
+    });
   }, []);
 
   const onPending = () => {

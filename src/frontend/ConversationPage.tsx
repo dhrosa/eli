@@ -9,7 +9,9 @@ export default function ConversationPage() {
       const response = await Api.Conversation.list();
       setData(response.value);
     };
-    get().catch(console.error);
+    get().catch((e: unknown) => {
+      console.error(e);
+    });
   }, []);
   return (
     <section className="section">

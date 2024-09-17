@@ -22,7 +22,9 @@ export default function ModelTable({
       const response = await model.list();
       dispatch({ type: "set", value: response.value });
     };
-    get().catch(console.error);
+    get().catch((e: unknown) => {
+      console.error(e);
+    });
   }, []);
 
   const onCreateSuccess = (newItem: any) => {
@@ -64,13 +66,17 @@ export default function ModelTable({
       </table>
       <button
         className="button is-primary"
-        onClick={() => setCreateModalActive(true)}
+        onClick={() => {
+          setCreateModalActive(true);
+        }}
       >
         Create New {model.type}
       </button>
       <Modal
         active={createModalActive}
-        onClose={() => setCreateModalActive(false)}
+        onClose={() => {
+          setCreateModalActive(false);
+        }}
       >
         <Form model={model} fields={fields} onSuccess={onCreateSuccess} />
       </Modal>
@@ -131,14 +137,21 @@ function Row({
       <td>
         <button
           className="button material-icons icon"
-          onClick={() => setEditActive(true)}
+          onClick={() => {
+            setEditActive(true);
+          }}
         >
           edit
         </button>
         <button className="button material-icons icon" onClick={onDelete}>
           delete
         </button>
-        <Modal active={editActive} onClose={() => setEditActive(false)}>
+        <Modal
+          active={editActive}
+          onClose={() => {
+            setEditActive(false);
+          }}
+        >
           <Form
             model={model}
             fields={fields}

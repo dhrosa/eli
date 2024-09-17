@@ -6,5 +6,6 @@
     "strictNullChecks": true,
     "moduleResolution": "Node",
     "strict": true
-  }
+  },
+  "include": ["*.tsx"]
 }

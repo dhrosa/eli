@@ -140,11 +140,18 @@ export default function LoginButton({ className }: { className?: string }) {
         className={"material-icons " + (className ?? "")}
         href="#"
         title="Log In"
-        onClick={() => setModalIsActive(true)}
+        onClick={() => {
+          setModalIsActive(true);
+        }}
       >
         person
       </a>
-      <Modal active={modalIsActive} onClose={() => setModalIsActive(false)}>
+      <Modal
+        active={modalIsActive}
+        onClose={() => {
+          setModalIsActive(false);
+        }}
+      >
         <ExistingUserDialog user={user} onSuccess={onLogoutSuccess} />
         <Form user={user} onSuccess={onLoginSuccess} />
       </Modal>

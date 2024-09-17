@@ -10,7 +10,9 @@ export default function ConversationListPage() {
       setConversations(response.value);
     };
 
-    fetchList().catch(console.error);
+    fetchList().catch((e: unknown) => {
+      console.error(e);
+    });
   }, []);
   return (
     <section className="section">
