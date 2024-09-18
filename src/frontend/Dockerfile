@@ -4,8 +4,9 @@ RUN mkdir -p /jsx/out /jsx/src
 
 WORKDIR /jsx
 
-COPY package-lock.json package.json webpack.config.js .
+COPY package-lock.json package.json webpack.config.js ./
 RUN chown -R node:node .
+
 
 USER node
 
