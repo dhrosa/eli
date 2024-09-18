@@ -79,7 +79,7 @@ function EliQuote() {
   );
 }
 
-function Avatar() {
+function EliAvatar() {
   return (
     <p className="image is-64x64">
       <img src="https://bulma.io/assets/images/placeholders/64x64.png" />
@@ -111,16 +111,14 @@ function UserAvatar() {
 
 function Media({
   children,
-  isUser = false,
+  avatar,
 }: {
   children: ReactNode;
-  isUser?: boolean;
+  avatar: ReactNode;
 }) {
   return (
     <article className="media">
-      <figure className="media-left">
-        {isUser ? <UserAvatar /> : <Avatar />}
-      </figure>
+      <figure className="media-left">{avatar}</figure>
       {children}
     </article>
   );
@@ -153,10 +151,10 @@ export default function Conversation({ object }: { object: any }) {
       <div className="card">
         <CardHeader />
         <div className="card-content">
-          <Media isUser={true}>
+          <Media avatar={<UserAvatar />}>
             <MediaContent>
               <UserQuote />
-              <Media>
+              <Media avatar={<EliAvatar />}>
                 <MediaContent>
                   <EliQuote />
                 </MediaContent>
