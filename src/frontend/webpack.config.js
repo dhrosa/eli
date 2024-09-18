@@ -1,3 +1,5 @@
+import CopyPlugin from "copy-webpack-plugin";
+
 export default {
   entry: {
     index: "/jsx/src/index.tsx",
@@ -34,4 +36,14 @@ export default {
       },
     ],
   },
+  plugins: [
+    new CopyPlugin({
+      patterns: [
+        {
+          from: "/jsx/interfaces/256 x 256/",
+          to: "/jsx/out/assets/avatars/256x256/",
+        },
+      ],
+    }),
+  ],
 };
