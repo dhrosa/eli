@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ReactNode } from "react";
-/* global require */
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const humanizeDuration = require("humanize-duration");
 
 function Timestamp({ timestamp }: { timestamp: string }) {
@@ -8,6 +8,7 @@ function Timestamp({ timestamp }: { timestamp: string }) {
     return false;
   }
   const date = new Date(timestamp);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   const duration = humanizeDuration(Date.now() - date.getTime(), {
     largest: 1,
     round: true,

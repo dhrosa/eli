@@ -59,7 +59,7 @@ export class Model {
     });
   }
 
-  async create(data: any, user: User) {
+  async create(data: any, user?: User) {
     return this.call({ method: "POST", data: data, user: user });
   }
 

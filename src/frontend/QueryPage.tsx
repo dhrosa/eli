@@ -1,4 +1,4 @@
-import { useEffect, useState, useId } from "react";
+import { useEffect, useState, useId, FormEvent } from "react";
 import Conversation from "./Conversation";
 
 import { Control, Field, Label, Help } from "./Form";
@@ -67,24 +67,20 @@ function Form({
   onPending: () => void;
   onResponse: (response: any) => any;
 }) {
-  const onSubmit = async (event: any) => {
+  const onSubmit = async (event: FormEvent) => {
     onPending();
     event.preventDefault();
 
     const response = await fetch("/api/query/", {
       method: "POST",
-      body: new FormData(event.target),
+      body: new FormData(event.target as HTMLFormElement),
     });
     onResponse(await response.json());
   };
 
   const id = useId();
   return (
-    <form
-      onSubmit={(e: any) => {
-        void onSubmit(e);
-      }}
-    >
+    <form onSubmit={onSubmit}>
       <SelectField
         name="audience"
         id={"audience-" + id}

@@ -1,11 +1,11 @@
-import { useState, useContext } from "react";
+import { useState, useContext, FormEventHandler, FormEvent } from "react";
 import { UserDispatchContext, UserContext, User } from "./UserContext";
 import Modal from "./Modal";
 
 import { Control, Field, Label, ErrorList, SubmitButton } from "./Form";
 import { Send, NotifyContext, Level } from "./Notification";
 
-async function parseResponse(response: any) {
+async function parseResponse(response: Response) {
   const value = await response.json();
   if (response.ok) {
     return {
@@ -29,11 +29,11 @@ function Form({
   }
   const [errors, setErrors] = useState<any>({});
 
-  const onSubmit = async (event: any) => {
+  const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
     const response = await fetch("/token/", {
       method: "POST",
-      body: new FormData(event.target),
+      body: new FormData(event.target as HTMLFormElement),
     });
     const data = await parseResponse(response);
     setErrors(data.errors);
@@ -43,7 +43,7 @@ function Form({
   };
 
   return (
-    <form className="form block" onSubmit={onSubmit}>
+    <form className="form block" onSubmit={onSubmit as FormEventHandler}>
       <Field>
         <Label>Username</Label>
         <Control>

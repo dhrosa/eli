@@ -1,10 +1,16 @@
-import { useEffect, useReducer, useState, useContext } from "react";
+import { useEffect, useReducer, useState, useContext, FormEvent } from "react";
 import { Send, NotifyContext, Level, NotifyFunction } from "./Notification";
 import Modal from "./Modal";
 import { Model } from "./Api";
 import { UserContext } from "./UserContext";
 
 import { Field, Label, Control, ErrorList, SubmitButton } from "./Form";
+
+interface Item {
+  id: string;
+  name: string;
+  [key: string]: any;
+}
 
 export default function ModelTable({
   model,
@@ -27,7 +33,7 @@ export default function ModelTable({
     });
   }, []);
 
-  const onCreateSuccess = (newItem: any) => {
+  const onCreateSuccess = (newItem: Item) => {
     setCreateModalActive(false);
     dispatch({ type: "add", value: newItem });
     Send(notify, {
@@ -52,7 +58,7 @@ export default function ModelTable({
           </tr>
         </thead>
         <tbody>
-          {items.map((item: any) => (
+          {items.map((item: Item) => (
             <Row
               key={item.id}
               model={model}
@@ -93,13 +99,13 @@ function Row({
 }: {
   model: Model;
   fields: FieldDescription[];
-  item: any;
-  dispatch: any;
+  item: Item;
+  dispatch: (action: Action) => void;
   notify: NotifyFunction;
 }) {
   const user = useContext(UserContext);
   const [editActive, setEditActive] = useState(false);
-  const onEditSuccess = (newItem: any) => {
+  const onEditSuccess = (newItem: Item) => {
     setEditActive(false);
     dispatch({ type: "update", value: newItem });
     Send(notify, {
@@ -172,22 +178,22 @@ function Form({
   onSuccess,
   fields,
 }: {
-  model: any;
-  item?: any;
-  onSuccess: (newItem: any) => void;
+  model: Model;
+  item?: Item;
+  onSuccess: (newItem: Item) => void;
   fields: FieldDescription[];
 }) {
-  const user = useContext(UserContext);
+  const user = useContext(UserContext) ?? undefined;
   const [errors, setErrors] = useState<any>(null);
 
-  const onSubmit = async (event: any) => {
+  const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
     if (!user) {
       setErrors({
         non_field_errors: ["You must be logged in to perform this action."],
       });
     }
-    const formData = new FormData(event.target);
+    const formData = new FormData(event.target as HTMLFormElement);
     const newItem = { ...item, ...Object.fromEntries(formData.entries()) };
     const response = item?.id
       ? await model.update(newItem, user)
@@ -252,17 +258,36 @@ function ModelField({
   );
 }
 
-function reducer(
-  items: any[],
-  action: { id?: number; type: string; value?: any }
-) {
+interface SetAction {
+  type: "set";
+  value: Item[];
+}
+
+interface AddAction {
+  type: "add";
+  value: Item;
+}
+
+interface RemoveAction {
+  type: "remove";
+  id: string;
+}
+
+interface UpdateAction {
+  type: "update";
+  value: Item;
+}
+
+type Action = SetAction | AddAction | RemoveAction | UpdateAction;
+
+function reducer(items: Item[], action: Action) {
   switch (action.type) {
     case "set":
       return action.value;
     case "add":
       return [...items, action.value];
     case "remove":
-      return items.filter((a) => a.id != action.id);
+      return items.filter((a) => a.id != action.id.toString());
     case "update":
       return items.map((x) => (x.id === action.value.id ? action.value : x));
     default:

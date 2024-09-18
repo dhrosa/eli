@@ -25,12 +25,10 @@ export default [
     rules: {
       "react/react-in-jsx-scope": "off",
       "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/no-require-imports": "off",
       "@typescript-eslint/no-unsafe-member-access": "off",
       "@typescript-eslint/no-unsafe-assignment": "off",
       "@typescript-eslint/no-unsafe-argument": "off",
       "@typescript-eslint/no-unsafe-return": "off",
-      "@typescript-eslint/no-unsafe-call": "off",
       /* Allow async functions to be used for void-returning event handlers. */
       "@typescript-eslint/no-misused-promises": [
         "error",
