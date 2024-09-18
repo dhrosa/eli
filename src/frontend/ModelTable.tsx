@@ -1,10 +1,27 @@
-import { useEffect, useReducer, useState, useContext, FormEvent } from "react";
+import {
+  useEffect,
+  useReducer,
+  useState,
+  useContext,
+  FormEvent,
+  createContext,
+} from "react";
 import { Send, NotifyContext, Level, NotifyFunction } from "./Notification";
 import Modal from "./Modal";
 import { Model } from "./Api";
-import { UserContext } from "./UserContext";
+import { User, UserContext } from "./UserContext";
 
 import { Field, Label, Control, ErrorList, SubmitButton } from "./Form";
+
+interface Shared {
+  model: Model;
+  fields: FieldDescription[];
+  dispatch: (action: Action) => void;
+  notify: NotifyFunction;
+  user: User | null;
+}
+
+const SharedContext = createContext<Shared>({} as Shared);
 
 interface Item {
   id: string;
@@ -24,6 +41,14 @@ export default function ModelTable({
   const [items, dispatch] = useReducer(reducer, []);
   const [createModalActive, setCreateModalActive] = useState(false);
   const notify = useContext(NotifyContext);
+
+  const shared: Shared = {
+    model: model,
+    fields: fields,
+    dispatch: dispatch,
+    notify: notify,
+    user: user,
+  };
 
   useEffect(() => {
     const get = async () => {
@@ -49,66 +74,49 @@ export default function ModelTable({
   };
 
   return (
-    <section className="section">
-      <table className="table">
-        <thead>
-          <tr>
-            {fields.map((field) => (
-              <th key={field.name}>{field.label}</th>
+    <SharedContext.Provider value={shared}>
+      <section className="section">
+        <table className="table">
+          <thead>
+            <tr>
+              {fields.map((field) => (
+                <th key={field.name}>{field.label}</th>
+              ))}
+              {user && <th>Actions</th>}
+            </tr>
+          </thead>
+          <tbody>
+            {items.map((item: Item) => (
+              <Row key={item.id} item={item} />
             ))}
-            {user && <th>Actions</th>}
-          </tr>
-        </thead>
-        <tbody>
-          {items.map((item: Item) => (
-            <Row
-              key={item.id}
-              model={model}
-              item={item}
-              fields={fields}
-              dispatch={dispatch}
-              notify={notify}
-            />
-          ))}
-        </tbody>
-      </table>
-      {user && (
-        <button
-          className="button is-primary"
-          onClick={() => {
-            setCreateModalActive(true);
+          </tbody>
+        </table>
+        {user && (
+          <button
+            className="button is-primary"
+            onClick={() => {
+              setCreateModalActive(true);
+            }}
+          >
+            Create New {model.type}
+          </button>
+        )}
+        <Modal
+          active={createModalActive}
+          onClose={() => {
+            setCreateModalActive(false);
           }}
         >
-          Create New {model.type}
-        </button>
-      )}
-      <Modal
-        active={createModalActive}
-        onClose={() => {
-          setCreateModalActive(false);
-        }}
-      >
-        <Form model={model} fields={fields} onSuccess={onCreateSuccess} />
-      </Modal>
-    </section>
+          <Form onSuccess={onCreateSuccess} />
+        </Modal>
+      </section>
+    </SharedContext.Provider>
   );
 }
 
-function Row({
-  model,
-  fields,
-  item,
-  dispatch,
-  notify,
-}: {
-  model: Model;
-  fields: FieldDescription[];
-  item: Item;
-  dispatch: (action: Action) => void;
-  notify: NotifyFunction;
-}) {
-  const user = useContext(UserContext);
+function Row({ item }: { item: Item }) {
   const [editActive, setEditActive] = useState(false);
+  const { model, fields, dispatch, notify, user } = useContext(SharedContext);
   const onEditSuccess = (newItem: Item) => {
     setEditActive(false);
     dispatch({ type: "update", value: newItem });
@@ -163,12 +171,7 @@ function Row({
               setEditActive(false);
             }}
           >
-            <Form
-              model={model}
-              fields={fields}
-              item={item}
-              onSuccess={onEditSuccess}
-            />
+            <Form item={item} onSuccess={onEditSuccess} />
           </Modal>
         </td>
       )}
@@ -179,17 +182,13 @@ function Row({
 type FieldDescription = { name: string; label: string; widget: string };
 
 function Form({
-  model,
   item,
   onSuccess,
-  fields,
 }: {
-  model: Model;
   item?: Item;
   onSuccess: (newItem: Item) => void;
-  fields: FieldDescription[];
 }) {
-  const user = useContext(UserContext) ?? undefined;
+  const { user, model, fields } = useContext(SharedContext);
   const [errors, setErrors] = useState<any>(null);
 
   const onSubmit = async (event: FormEvent) => {
@@ -202,8 +201,8 @@ function Form({
     const formData = new FormData(event.target as HTMLFormElement);
     const newItem = { ...item, ...Object.fromEntries(formData.entries()) };
     const response = item?.id
-      ? await model.update(newItem, user)
-      : await model.create(newItem, user);
+      ? await model.update(newItem, user || undefined)
+      : await model.create(newItem, user || undefined);
     if (response.value) {
       setErrors(null);
       onSuccess(response.value);
