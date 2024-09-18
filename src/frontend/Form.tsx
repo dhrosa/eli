@@ -1,5 +1,20 @@
 import { ReactNode } from "react";
 
+export function ErrorList({ errors }: { errors?: string[] }) {
+  if (!errors) {
+    return false;
+  }
+  return (
+    <ul className="has-text-danger">
+      {errors.map((e, i) => (
+        <li key={i} className="help">
+          {e}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export function Field({
   children,
   className,
@@ -22,18 +37,6 @@ export function Control({
 
 export function Label({ children }: { children: ReactNode }) {
   return <label className="label">{children}</label>;
-}
-
-export function ErrorList({ errors }: { errors: string[] }) {
-  return (
-    <ul>
-      {errors.map((error, i) => (
-        <li key={i}>
-          <small className="has-text-danger">{error}</small>
-        </li>
-      ))}
-    </ul>
-  );
 }
 
 export function SubmitButton({
