@@ -101,7 +101,7 @@ function UserAvatar() {
   const count = 100;
   const index = (hash(conversation.id) % count) + 1;
   const indexStr = index.toString().padStart(3, "0");
-  const url = `/static/jsx/assets/interfaces/${indexStr}.jpg`;
+  const url = `/static/jsx/assets/avatars/256x256/${indexStr}.jpg`;
   return (
     <p className="image is-64x64">
       <img src={url} />

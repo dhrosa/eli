@@ -50,3 +50,7 @@ $family-code:
   opacity: 80%;
   width: fit-content;
 }
+
+.media-left img {
+  clip-path: circle(50%);
+}
