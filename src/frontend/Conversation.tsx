@@ -87,11 +87,39 @@ function Avatar() {
   );
 }
 
-function Media({ children }: { children: ReactNode }) {
+function hash(str: string) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+  }
+  return hash >>> 0;
+}
+
+function UserAvatar() {
+  const conversation = useContext(ConversationContext);
+  const count = 100;
+  const index = (hash(conversation.id) % count) + 1;
+  const indexStr = index.toString().padStart(3, "0");
+  const url = `/static/jsx/assets/interfaces/${indexStr}.jpg`;
+  return (
+    <p className="image is-64x64">
+      <img src={url} />
+    </p>
+  );
+}
+
+function Media({
+  children,
+  isUser = false,
+}: {
+  children: ReactNode;
+  isUser?: boolean;
+}) {
   return (
     <article className="media">
       <figure className="media-left">
-        <Avatar />
+        {isUser ? <UserAvatar /> : <Avatar />}
       </figure>
       {children}
     </article>
@@ -125,7 +153,7 @@ export default function Conversation({ object }: { object: any }) {
       <div className="card">
         <CardHeader />
         <div className="card-content">
-          <Media>
+          <Media isUser={true}>
             <MediaContent>
               <UserQuote />
               <Media>
