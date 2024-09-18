@@ -1,7 +1,22 @@
 import { Link } from "react-router-dom";
-import { ReactNode } from "react";
+import { ReactNode, useContext, createContext } from "react";
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const humanizeDuration = require("humanize-duration");
+
+interface ConversationData {
+  id: string;
+  url: string;
+  audience_name: string;
+  ai_model_name: string;
+  query: string;
+  timestamp: string;
+  response_title: string;
+  response_text: string;
+}
+
+const ConversationContext = createContext<ConversationData>(
+  {} as ConversationData
+);
 
 function Timestamp({ timestamp }: { timestamp: string }) {
   if (!timestamp) {
@@ -30,7 +45,7 @@ function Quote({
   timestamp: string;
 }) {
   return (
-    <div className={"content " + (text ? "" : "is-skeleton")}>
+    <div className="content">
       <p>
         <strong>{author}</strong>
         <Timestamp timestamp={timestamp} />
@@ -39,6 +54,28 @@ function Quote({
         <br />
       </p>
     </div>
+  );
+}
+
+function UserQuote() {
+  const conversation = useContext(ConversationContext);
+  return (
+    <Quote
+      author={conversation.audience_name}
+      text={conversation.query}
+      timestamp={conversation.timestamp}
+    />
+  );
+}
+
+function EliQuote() {
+  const conversation = useContext(ConversationContext);
+  return (
+    <Quote
+      author="ELI"
+      text={conversation.response_text}
+      timestamp={conversation.timestamp}
+    />
   );
 }
 
@@ -65,12 +102,13 @@ function MediaContent({ children }: { children: ReactNode }) {
   return <div className="media-content">{children}</div>;
 }
 
-function CardHeader({ title, url }: { title?: string; url?: string }) {
+function CardHeader() {
+  const conversation = useContext(ConversationContext);
   return (
     <div className="card-header">
-      <p className="card-header-title">{title ?? "Loading..."}</p>
+      <p className="card-header-title">{conversation.response_title}</p>
       <div className="card-header-icon">
-        <Link to={url ?? ""} className={"icon " + (url ? "" : "is-skeleton")}>
+        <Link to={conversation.url} className="icon">
           <span className="material-icons">link</span>
         </Link>
       </div>
@@ -79,29 +117,26 @@ function CardHeader({ title, url }: { title?: string; url?: string }) {
 }
 
 export default function Conversation({ object }: { object: any }) {
+  if (!object) {
+    return <div className="skeleton-block" />;
+  }
   return (
-    <div className="card">
-      <CardHeader title={object?.response_title} url={object?.url} />
-      <div className="card-content">
-        <Media>
-          <MediaContent>
-            <Quote
-              author={object?.audience_name}
-              text={object?.query}
-              timestamp={object?.timestamp}
-            />
-            <Media>
-              <MediaContent>
-                <Quote
-                  author="ELI"
-                  text={object?.response_text}
-                  timestamp={object?.timestamp}
-                />
-              </MediaContent>
-            </Media>
-          </MediaContent>
-        </Media>
+    <ConversationContext.Provider value={object as ConversationData}>
+      <div className="card">
+        <CardHeader />
+        <div className="card-content">
+          <Media>
+            <MediaContent>
+              <UserQuote />
+              <Media>
+                <MediaContent>
+                  <EliQuote />
+                </MediaContent>
+              </Media>
+            </MediaContent>
+          </Media>
+        </div>
       </div>
-    </div>
+    </ConversationContext.Provider>
   );
 }
