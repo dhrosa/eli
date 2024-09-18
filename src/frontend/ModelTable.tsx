@@ -8,6 +8,7 @@ import { Field, Label, Control, ErrorList, SubmitButton } from "./Form";
 
 interface Item {
   id: string;
+
   name: string;
   [key: string]: any;
 }
@@ -19,6 +20,7 @@ export default function ModelTable({
   model: Model;
   fields: FieldDescription[];
 }) {
+  const user = useContext(UserContext);
   const [items, dispatch] = useReducer(reducer, []);
   const [createModalActive, setCreateModalActive] = useState(false);
   const notify = useContext(NotifyContext);
@@ -54,7 +56,7 @@ export default function ModelTable({
             {fields.map((field) => (
               <th key={field.name}>{field.label}</th>
             ))}
-            <th>Actions</th>
+            {user && <th>Actions</th>}
           </tr>
         </thead>
         <tbody>
@@ -70,14 +72,16 @@ export default function ModelTable({
           ))}
         </tbody>
       </table>
-      <button
-        className="button is-primary"
-        onClick={() => {
-          setCreateModalActive(true);
-        }}
-      >
-        Create New {model.type}
-      </button>
+      {user && (
+        <button
+          className="button is-primary"
+          onClick={() => {
+            setCreateModalActive(true);
+          }}
+        >
+          Create New {model.type}
+        </button>
+      )}
       <Modal
         active={createModalActive}
         onClose={() => {
@@ -140,32 +144,34 @@ function Row({
       {fields.map((field) => (
         <td key={field.name}>{item[field.name]}</td>
       ))}
-      <td>
-        <button
-          className="button material-icons icon"
-          onClick={() => {
-            setEditActive(true);
-          }}
-        >
-          edit
-        </button>
-        <button className="button material-icons icon" onClick={onDelete}>
-          delete
-        </button>
-        <Modal
-          active={editActive}
-          onClose={() => {
-            setEditActive(false);
-          }}
-        >
-          <Form
-            model={model}
-            fields={fields}
-            item={item}
-            onSuccess={onEditSuccess}
-          />
-        </Modal>
-      </td>
+      {user && (
+        <td>
+          <button
+            className="button material-icons icon"
+            onClick={() => {
+              setEditActive(true);
+            }}
+          >
+            edit
+          </button>
+          <button className="button material-icons icon" onClick={onDelete}>
+            delete
+          </button>
+          <Modal
+            active={editActive}
+            onClose={() => {
+              setEditActive(false);
+            }}
+          >
+            <Form
+              model={model}
+              fields={fields}
+              item={item}
+              onSuccess={onEditSuccess}
+            />
+          </Modal>
+        </td>
+      )}
     </tr>
   );
 }
