@@ -50,6 +50,7 @@ export default function ModelTable({
     user: user,
   };
 
+  // Fetch initial list of items
   useEffect(() => {
     const get = async () => {
       const response = await model.list();
@@ -60,6 +61,7 @@ export default function ModelTable({
     });
   }, []);
 
+  //
   const onCreateSuccess = (newItem: Item) => {
     setCreateModalActive(false);
     dispatch({ type: "add", value: newItem });
@@ -131,10 +133,14 @@ function Row({ item }: { item: Item }) {
   };
 
   const onDelete = async () => {
+    if (!user) {
+      return;
+    }
     const id = item.id;
-    const response = await model.delete(id, user || undefined);
+    const response = await model.delete(id, user);
     if (response.error) {
       console.error(response.error);
+      return;
     }
     dispatch({ type: "remove", id: id });
     Send(notify, {
@@ -179,7 +185,11 @@ function Row({ item }: { item: Item }) {
   );
 }
 
-type FieldDescription = { name: string; label: string; widget: string };
+interface FieldDescription {
+  name: string;
+  label: string;
+  widget: string;
+}
 
 function Form({
   item,
@@ -194,15 +204,13 @@ function Form({
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
     if (!user) {
-      setErrors({
-        non_field_errors: ["You must be logged in to perform this action."],
-      });
+      return;
     }
     const formData = new FormData(event.target as HTMLFormElement);
     const newItem = { ...item, ...Object.fromEntries(formData.entries()) };
     const response = item?.id
-      ? await model.update(newItem, user || undefined)
-      : await model.create(newItem, user || undefined);
+      ? await model.update(newItem, user)
+      : await model.create(newItem, user);
     if (response.value) {
       setErrors(null);
       onSuccess(response.value);

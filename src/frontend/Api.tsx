@@ -59,11 +59,11 @@ export class Model {
     });
   }
 
-  async create(data: any, user?: User) {
+  async create(data: any, user: User) {
     return this.call({ method: "POST", data: data, user: user });
   }
 
-  async update(data: any, user?: User) {
+  async update(data: any, user: User) {
     return this.call({
       urlSuffix: `${data.id as string}/`,
       method: "PUT",
@@ -72,7 +72,7 @@ export class Model {
     });
   }
 
-  async delete(id: string, user?: User) {
+  async delete(id: string, user: User) {
     return this.call({
       urlSuffix: `${id}/`,
       method: "DELETE",
