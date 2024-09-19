@@ -3,7 +3,7 @@ import { ReactNode, useContext, createContext } from "react";
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const humanizeDuration = require("humanize-duration");
 
-interface ConversationData {
+export interface ConversationData {
   id: string;
   url: string;
   audience_name: string;

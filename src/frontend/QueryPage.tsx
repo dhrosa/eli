@@ -1,5 +1,6 @@
 import { useEffect, useState, useId, FormEvent } from "react";
 import Conversation from "./Conversation";
+import Carousel from "./RecentConversations";
 
 import { Control, Field, Label, Help } from "./Form";
 
@@ -168,6 +169,10 @@ export default function QueryPage() {
       </section>
       <section className="section">
         <SubmittedConversation conversation={conversation} pending={pending} />
+      </section>
+      <section className="section">
+        <h2 className="title">Recent Conversations</h2>
+        <Carousel />
       </section>
     </>
   );
