@@ -8,6 +8,7 @@ from enum import StrEnum
 
 class AiModelName(StrEnum):
     # Not using capital names to make ChatGPT names more readable.
+    Gpt4o = "GPT-4o"
     Gpt4oMini = "GPT-4o mini"
     Gemini15Flash = "Gemini 1.5 Flash"
 
@@ -21,8 +22,10 @@ class ResponseFormat(BaseModel):
 def fill_completion(conversation, model_name: AiModelName):
     conversation.ai_model_name = str(model_name)
     match model_name:
+        case AiModelName.Gpt4o:
+            response, raw = openai_response(conversation, "gpt-4o-2024-08-06")
         case AiModelName.Gpt4oMini:
-            response, raw = openai_response(conversation)
+            response, raw = openai_response(conversation, "gpt-4o-mini")
         case AiModelName.Gemini15Flash:
             response, raw = gemini_response(conversation)
 
@@ -77,9 +80,9 @@ Try not to literally refer to the word "analogy" in your title.
 The JSON field "text" should contain your response to the user's query.
 """
 
-def openai_response(conversation):
+def openai_response(conversation, model):
     completion = openai_client.beta.chat.completions.parse(
-        model="gpt-4o-mini",
+        model=model,
         messages=[
             {"role": "system", "content": openai_preamble + conversation.system_prompt},
             {"role": "user", "content": conversation.query},
