@@ -142,27 +142,29 @@ function CardHeader() {
   );
 }
 
-export default function Conversation({ object }: { object: any }) {
+export default function Conversation({ object, ...rest }: any) {
   if (!object) {
     return <div className="skeleton-block" />;
   }
   return (
-    <ConversationContext.Provider value={object as ConversationData}>
-      <div className="card">
-        <CardHeader />
-        <div className="card-content">
-          <Media avatar={<UserAvatar />}>
-            <MediaContent>
-              <UserQuote />
-              <Media avatar={<EliAvatar />}>
-                <MediaContent>
-                  <EliQuote />
-                </MediaContent>
-              </Media>
-            </MediaContent>
-          </Media>
+    <div {...rest}>
+      <ConversationContext.Provider value={object as ConversationData}>
+        <div className="card">
+          <CardHeader />
+          <div className="card-content">
+            <Media avatar={<UserAvatar />}>
+              <MediaContent>
+                <UserQuote />
+                <Media avatar={<EliAvatar />}>
+                  <MediaContent>
+                    <EliQuote />
+                  </MediaContent>
+                </Media>
+              </MediaContent>
+            </Media>
+          </div>
         </div>
-      </div>
-    </ConversationContext.Provider>
+      </ConversationContext.Provider>
+    </div>
   );
 }

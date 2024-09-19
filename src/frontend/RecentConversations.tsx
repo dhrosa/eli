@@ -1,21 +1,30 @@
-import { useEffect, useReducer } from "react";
-
+import { useEffect, useReducer, useRef } from "react";
+import { CSSTransition } from "react-transition-group";
 import { default as Conversation, ConversationData } from "./Conversation";
 import * as Api from "./Api";
 
 interface State {
   conversations: ConversationData[];
+  currentIndex: number;
 }
 
-interface AppendAction {
-  type: "append";
+interface ResetAction {
+  type: "reset";
   value: ConversationData[];
 }
 
-type Action = AppendAction;
+interface RotateAction {
+  type: "rotate";
+}
+
+type Action = ResetAction | RotateAction;
 
 export default function RecentConversations() {
-  const [state, dispatch] = useReducer(reducer, { conversations: [] });
+  const [state, dispatch] = useReducer(reducer, {
+    conversations: [],
+    currentIndex: 0,
+  });
+  const ref = useRef(null);
 
   // Load initial list.
   useEffect(() => {
@@ -25,24 +34,49 @@ export default function RecentConversations() {
         console.error(response.error);
         return;
       }
-      dispatch({ type: "append", value: response.value });
+      dispatch({ type: "reset", value: response.value });
+      setTimeout(rotate, timeout_ms);
     };
     fetchList().catch((e: unknown) => {
       console.error(e);
     });
   }, []);
 
+  const timeout_ms = 3000;
+  const rotate = () => {
+    dispatch({ type: "rotate" });
+    setTimeout(rotate, timeout_ms);
+  };
+
+  if (state.conversations.length === 0) {
+    return <div className="skeleton-block" />;
+  }
+  const current = state.conversations[state.currentIndex];
+
   return (
     <>
-      {state.conversations.map((c) => (
-        <Conversation object={c} key={c.id} />
-      ))}
+      <CSSTransition
+        key={current.id}
+        className="slide"
+        timeout={2500}
+        appear={true}
+        nodeRef={ref}
+      >
+        <Conversation ref={ref} object={current} />
+      </CSSTransition>
     </>
   );
 }
 
 function reducer(state: State, action: Action): State {
-  return {
-    conversations: [...state.conversations, ...action.value],
-  };
+  switch (action.type) {
+    case "reset":
+      return { conversations: action.value, currentIndex: 0 };
+    case "rotate": {
+      const newIndex = (state.currentIndex + 1) % state.conversations.length;
+      return { ...state, currentIndex: newIndex };
+    }
+    default:
+      return state;
+  }
 }
