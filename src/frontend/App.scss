@@ -54,3 +54,8 @@ $family-code:
 .media-left img {
   clip-path: circle(50%);
 }
+
+/* Render line breaks in text. */
+.media-content p {
+  white-space: pre-wrap;
+}

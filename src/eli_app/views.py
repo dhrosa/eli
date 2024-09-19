@@ -15,6 +15,7 @@ from rest_framework import viewsets, views, mixins, response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.decorators import action
 
 class TokenView(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
@@ -31,17 +32,22 @@ class TokenView(ObtainAuthToken):
 class DefaultView(TemplateView):
     template_name="eli_app/base.html"
 
-class RuleViewSet(viewsets.ModelViewSet):
+class ModelViewSet(viewsets.ModelViewSet):
+    @action(detail=False)
+    def export(self, request):
+        return Response({"cat": "dog"})
+
+class RuleViewSet(ModelViewSet):
     queryset = Rule.objects.all()
     serializer_class = serializers.RuleSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
-class AudienceViewSet(viewsets.ModelViewSet):
+class AudienceViewSet(ModelViewSet):
     queryset = Audience.objects.all()
     serializer_class = serializers.AudienceSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
-class ConversationViewSet(viewsets.ReadOnlyModelViewSet):
+class ConversationViewSet(ModelViewSet):
     queryset = Conversation.objects.all()
     serializer_class = serializers.ConversationSerializer
 
