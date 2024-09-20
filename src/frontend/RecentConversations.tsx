@@ -1,5 +1,5 @@
-import { useEffect, useReducer, useRef } from "react";
-import { CSSTransition } from "react-transition-group";
+import { useEffect, useReducer } from "react";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { default as Conversation, ConversationData } from "./Conversation";
 import * as Api from "./Api";
 
@@ -24,7 +24,6 @@ export default function RecentConversations() {
     conversations: [],
     currentIndex: 0,
   });
-  const ref = useRef(null);
 
   // Load initial list.
   useEffect(() => {
@@ -42,7 +41,7 @@ export default function RecentConversations() {
     });
   }, []);
 
-  const timeout_ms = 3000;
+  const timeout_ms = 4000;
   const rotate = () => {
     dispatch({ type: "rotate" });
     setTimeout(rotate, timeout_ms);
@@ -54,17 +53,16 @@ export default function RecentConversations() {
   const current = state.conversations[state.currentIndex];
 
   return (
-    <>
+    <TransitionGroup className="recent">
       <CSSTransition
         key={current.id}
-        className="slide"
-        timeout={2500}
-        appear={true}
-        nodeRef={ref}
+        classNames="slide"
+        timeout={1000}
+        unmountOnExit
       >
-        <Conversation ref={ref} object={current} />
+        <Conversation key={current.id} object={current} />
       </CSSTransition>
-    </>
+    </TransitionGroup>
   );
 }
 

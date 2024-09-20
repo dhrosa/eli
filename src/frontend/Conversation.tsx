@@ -147,7 +147,7 @@ export default function Conversation({ object, ...rest }: any) {
     return <div className="skeleton-block" />;
   }
   return (
-    <div {...rest}>
+    <div className="conversation" {...rest}>
       <ConversationContext.Provider value={object as ConversationData}>
         <div className="card">
           <CardHeader />
