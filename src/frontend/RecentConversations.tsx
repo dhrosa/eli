@@ -1,7 +1,8 @@
 import { useEffect, useReducer } from "react";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { default as Conversation, ConversationData } from "./Conversation";
 import * as Api from "./Api";
+
+import { motion, AnimatePresence } from "framer-motion";
 
 interface State {
   conversations: ConversationData[];
@@ -41,7 +42,7 @@ export default function RecentConversations() {
     });
   }, []);
 
-  const timeout_ms = 4000;
+  const timeout_ms = 2000;
   const rotate = () => {
     dispatch({ type: "rotate" });
     setTimeout(rotate, timeout_ms);
@@ -53,16 +54,18 @@ export default function RecentConversations() {
   const current = state.conversations[state.currentIndex];
 
   return (
-    <TransitionGroup className="recent">
-      <CSSTransition
-        key={current.id}
-        classNames="slide"
-        timeout={1000}
-        unmountOnExit
-      >
-        <Conversation key={current.id} object={current} />
-      </CSSTransition>
-    </TransitionGroup>
+    <div className="recent">
+      <AnimatePresence mode="sync">
+        <motion.div
+          key={current.id}
+          initial={{ x: 1000, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          exit={{ x: -1000, opacity: 0 }}
+        >
+          <Conversation id={current.id} object={current} />
+        </motion.div>
+      </AnimatePresence>
+    </div>
   );
 }
 

@@ -63,36 +63,10 @@ $family-code:
 .recent {
   position: relative;
 
-  .slide-enter,
-  .slide-enter-done,
-  .slide-exit,
-  .slide-exit-active {
+  .conversation {
     /* Make all cards' origin points be the same. */
     position: absolute;
     top: 0;
     left: 0;
-  }
-  .slide-enter {
-    opacity: 0;
-    transform: translateX(-100%);
-  }
-
-  .slide-enter-active {
-    opacity: 1;
-    transform: translateX(0);
-
-    transition: all 1s;
-  }
-
-  .slide-exit {
-    opacity: 1;
-    transform: translateX(0);
-  }
-
-  .slide-exit-active {
-    opacity: 0;
-    transform: translateX(100%);
-
-    transition: all 1s;
   }
 }
