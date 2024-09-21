@@ -9,7 +9,7 @@ import {
 import { Send, NotifyContext, Level, NotifyFunction } from "./Notification";
 import Modal from "./Modal";
 import { Model } from "./Api";
-import { User, UserContext } from "./UserContext";
+import { useUser, User } from "./UserContext";
 
 import { Field, Label, Control, ErrorList, SubmitButton } from "./Form";
 
@@ -37,7 +37,7 @@ export default function ModelTable({
   model: Model;
   fields: FieldDescription[];
 }) {
-  const user = useContext(UserContext);
+  const [user] = useUser();
   const [items, dispatch] = useReducer(reducer, []);
   const [createModalActive, setCreateModalActive] = useState(false);
   const notify = useContext(NotifyContext);

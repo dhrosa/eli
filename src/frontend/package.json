@@ -14,7 +14,8 @@
     "framer-motion": "^11.5.5",
     "js-cookie": "^3.0.5",
     "react": "^18.3.1",
-    "react-router-dom": "^6.26.2"
+    "react-router-dom": "^6.26.2",
+    "react-use": "^17.5.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

@@ -1,5 +1,5 @@
 import { useState, useContext, FormEventHandler, FormEvent } from "react";
-import { UserDispatchContext, UserContext, User } from "./UserContext";
+import { User, useUser } from "./UserContext";
 import Modal from "./Modal";
 
 import { Control, Field, Label, ErrorList, SubmitButton } from "./Form";
@@ -17,17 +17,13 @@ async function parseResponse(response: Response) {
   };
 }
 
-function Form({
-  user,
-  onSuccess,
-}: {
-  user: User | null;
-  onSuccess: (user: User) => void;
-}) {
+function Form({ onSuccess }: { onSuccess: (user: User) => void }) {
+  const [user] = useUser();
+  const [errors, setErrors] = useState<any>({});
+
   if (user) {
     return false;
   }
-  const [errors, setErrors] = useState<any>({});
 
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -77,13 +73,8 @@ function Form({
   );
 }
 
-function ExistingUserDialog({
-  user,
-  onSuccess,
-}: {
-  user: User | null;
-  onSuccess: any;
-}) {
+function ExistingUserDialog({ onSuccess }: { onSuccess: any }) {
+  const [user] = useUser();
   if (!user) {
     return false;
   }
@@ -100,8 +91,7 @@ function ExistingUserDialog({
 export default function LoginButton({ className }: { className?: string }) {
   const [modalIsActive, setModalIsActive] = useState(false);
   const notify = useContext(NotifyContext);
-  const user = useContext(UserContext);
-  const userDispatch = useContext(UserDispatchContext);
+  const [, userDispatch] = useUser();
 
   const onLoginSuccess = ({
     username,
@@ -152,8 +142,8 @@ export default function LoginButton({ className }: { className?: string }) {
           setModalIsActive(false);
         }}
       >
-        <ExistingUserDialog user={user} onSuccess={onLogoutSuccess} />
-        <Form user={user} onSuccess={onLoginSuccess} />
+        <ExistingUserDialog onSuccess={onLogoutSuccess} />
+        <Form onSuccess={onLoginSuccess} />
       </Modal>
     </>
   );

@@ -1,6 +1,5 @@
-import { createContext } from "react";
 import Cookies from "js-cookie";
-
+import { createReducerContext } from "react-use";
 
 export interface User {
   username: string;
@@ -18,14 +17,7 @@ interface LogoutAction {
 
 type UserAction = LoginAction | LogoutAction;
 
-interface UserDispatch {
-  (action: UserAction): void;
-}
-
-export const UserContext = createContext<User | null>(null);
-export const UserDispatchContext = createContext<UserDispatch>(() => { });
-
-export function userReducer(_user: User | null, action: UserAction): User | null {
+function reducer(_user: User | null, action: UserAction): User | null {
   switch (action.type) {
     case "login": {
       Cookies.set("eli-user", JSON.stringify(action.value));
@@ -37,6 +29,11 @@ export function userReducer(_user: User | null, action: UserAction): User | null
     }
   }
 }
+
+export const [useUser, UserProvider] = createReducerContext(
+  reducer,
+  initialUser()
+);
 
 export function initialUser(): User | null {
   const encoded = Cookies.get("eli-user");
