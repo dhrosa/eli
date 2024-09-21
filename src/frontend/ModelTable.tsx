@@ -1,6 +1,5 @@
 import {
   useEffect,
-  useReducer,
   useState,
   useContext,
   FormEvent,
@@ -10,15 +9,16 @@ import { Send, NotifyContext, Level, NotifyFunction } from "./Notification";
 import Modal from "./Modal";
 import { Model } from "./Api";
 import { useUser, User } from "./UserContext";
+import { default as useList, ListActions } from "react-use/lib/useList";
 
 import { Field, Label, Control, ErrorList, SubmitButton } from "./Form";
 
 interface Shared {
   model: Model;
   fields: FieldDescription[];
-  dispatch: (action: Action) => void;
   notify: NotifyFunction;
   user: User | null;
+  actions: ListActions<Item>;
 }
 
 const SharedContext = createContext<Shared>({} as Shared);
@@ -38,23 +38,23 @@ export default function ModelTable({
   fields: FieldDescription[];
 }) {
   const [user] = useUser();
-  const [items, dispatch] = useReducer(reducer, []);
+  const [items, actions] = useList<Item>([]);
   const [createModalActive, setCreateModalActive] = useState(false);
   const notify = useContext(NotifyContext);
 
   const shared: Shared = {
     model: model,
     fields: fields,
-    dispatch: dispatch,
     notify: notify,
     user: user,
+    actions: actions,
   };
 
   // Fetch initial list of items
   useEffect(() => {
     const get = async () => {
       const response = await model.list();
-      dispatch({ type: "set", value: response.value });
+      actions.set(response.value);
     };
     get().catch((e: unknown) => {
       console.error(e);
@@ -64,7 +64,7 @@ export default function ModelTable({
   //
   const onCreateSuccess = (newItem: Item) => {
     setCreateModalActive(false);
-    dispatch({ type: "add", value: newItem });
+    actions.push(newItem);
     Send(notify, {
       level: Level.SUCCESS,
       contents: (
@@ -118,10 +118,10 @@ export default function ModelTable({
 
 function Row({ item }: { item: Item }) {
   const [editActive, setEditActive] = useState(false);
-  const { model, fields, dispatch, notify, user } = useContext(SharedContext);
+  const { model, fields, notify, user, actions } = useContext(SharedContext);
   const onEditSuccess = (newItem: Item) => {
     setEditActive(false);
-    dispatch({ type: "update", value: newItem });
+    actions.update((a, b) => a.id == b.id, newItem);
     Send(notify, {
       level: Level.SUCCESS,
       contents: (
@@ -142,7 +142,7 @@ function Row({ item }: { item: Item }) {
       console.error(response.error);
       return;
     }
-    dispatch({ type: "remove", id: id });
+    actions.filter((x) => x.id !== id);
     Send(notify, {
       level: Level.SUCCESS,
       contents: (
@@ -269,41 +269,4 @@ function ModelField({
       </Control>
     </Field>
   );
-}
-
-interface SetAction {
-  type: "set";
-  value: Item[];
-}
-
-interface AddAction {
-  type: "add";
-  value: Item;
-}
-
-interface RemoveAction {
-  type: "remove";
-  id: string;
-}
-
-interface UpdateAction {
-  type: "update";
-  value: Item;
-}
-
-type Action = SetAction | AddAction | RemoveAction | UpdateAction;
-
-function reducer(items: Item[], action: Action) {
-  switch (action.type) {
-    case "set":
-      return action.value;
-    case "add":
-      return [...items, action.value];
-    case "remove":
-      return items.filter((a) => a.id != action.id.toString());
-    case "update":
-      return items.map((x) => (x.id === action.value.id ? action.value : x));
-    default:
-  }
-  return items;
 }
