@@ -1,4 +1,4 @@
-import { User } from "./UserContext";
+import { User } from "./User";
 
 export default {};
 

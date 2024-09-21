@@ -1,5 +1,5 @@
 import { useState, useContext, FormEventHandler, FormEvent } from "react";
-import { User, useUser } from "./UserContext";
+import { User, useUser } from "./User";
 import Modal from "./Modal";
 
 import { Control, Field, Label, ErrorList, SubmitButton } from "./Form";

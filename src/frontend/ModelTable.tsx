@@ -8,7 +8,7 @@ import {
 import { Send, NotifyContext, Level, NotifyFunction } from "./Notification";
 import Modal from "./Modal";
 import { Model } from "./Api";
-import { useUser, User } from "./UserContext";
+import { useUser, User } from "./User";
 import { default as useList, ListActions } from "react-use/lib/useList";
 
 import { Field, Label, Control, ErrorList, SubmitButton } from "./Form";
