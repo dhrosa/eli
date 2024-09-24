@@ -5,18 +5,17 @@ import {
   FormEvent,
   createContext,
 } from "react";
-import { Send, NotifyContext, Level, NotifyFunction } from "./Notification";
 import Modal from "./Modal";
 import { Model } from "./Api";
 import { useUser, User } from "./User";
 import { default as useList, ListActions } from "react-use/lib/useList";
+import { toast } from "react-toastify";
 
 import { Field, Label, Control, ErrorList, SubmitButton } from "./Form";
 
 interface Shared {
   model: Model;
   fields: FieldDescription[];
-  notify: NotifyFunction;
   user: User | null;
   actions: ListActions<Item>;
 }
@@ -40,12 +39,10 @@ export default function ModelTable({
   const [user] = useUser();
   const [items, actions] = useList<Item>([]);
   const [createModalActive, setCreateModalActive] = useState(false);
-  const notify = useContext(NotifyContext);
 
   const shared: Shared = {
     model: model,
     fields: fields,
-    notify: notify,
     user: user,
     actions: actions,
   };
@@ -65,14 +62,12 @@ export default function ModelTable({
   const onCreateSuccess = (newItem: Item) => {
     setCreateModalActive(false);
     actions.push(newItem);
-    Send(notify, {
-      level: Level.SUCCESS,
-      contents: (
-        <p>
-          Created {model.type}: <strong>{newItem.name}</strong>
-        </p>
-      ),
-    });
+    toast(
+      <p>
+        Created {model.type}: <strong>{newItem.name}</strong>
+      </p>,
+      { type: "success" }
+    );
   };
 
   return (
@@ -118,18 +113,16 @@ export default function ModelTable({
 
 function Row({ item }: { item: Item }) {
   const [editActive, setEditActive] = useState(false);
-  const { model, fields, notify, user, actions } = useContext(SharedContext);
+  const { model, fields, user, actions } = useContext(SharedContext);
   const onEditSuccess = (newItem: Item) => {
     setEditActive(false);
     actions.update((a, b) => a.id == b.id, newItem);
-    Send(notify, {
-      level: Level.SUCCESS,
-      contents: (
-        <p>
-          Updated {model.type}: <strong>{newItem.name}</strong>
-        </p>
-      ),
-    });
+    toast(
+      <p>
+        Updated {model.type}: <strong>{newItem.name}</strong>
+      </p>,
+      { type: "success" }
+    );
   };
 
   const onDelete = async () => {
@@ -143,14 +136,12 @@ function Row({ item }: { item: Item }) {
       return;
     }
     actions.filter((x) => x.id !== id);
-    Send(notify, {
-      level: Level.SUCCESS,
-      contents: (
-        <p>
-          Deleted {model.type}: <strong>{item.name}</strong>
-        </p>
-      ),
-    });
+    toast(
+      <p>
+        Deleted {model.type}: <strong>{item.name}</strong>
+      </p>,
+      { type: "success" }
+    );
   };
 
   return (

@@ -9,7 +9,7 @@ export default {
   },
   context: "/jsx/src/",
   resolve: {
-    extensions: ["", ".js", ".jsx", ".ts", ".tsx"],
+    extensions: ["", ".js", ".jsx", ".ts", ".tsx", ".css"],
   },
   module: {
     rules: [
@@ -27,7 +27,7 @@ export default {
         },
       },
       {
-        test: /\.s[ac]ss$/i,
+        test: /\.s?css$$/i,
         use: ["style-loader", "css-loader", "sass-loader"],
       },
       {

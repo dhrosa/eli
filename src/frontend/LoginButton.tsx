@@ -1,9 +1,9 @@
-import { useState, useContext, FormEventHandler, FormEvent } from "react";
+import { useState, FormEventHandler, FormEvent } from "react";
 import { User, useUser } from "./User";
 import Modal from "./Modal";
 
 import { Control, Field, Label, ErrorList, SubmitButton } from "./Form";
-import { Send, NotifyContext, Level } from "./Notification";
+import { toast } from "react-toastify";
 
 async function parseResponse(response: Response) {
   const value = await response.json();
@@ -90,7 +90,6 @@ function ExistingUserDialog({ onSuccess }: { onSuccess: any }) {
 
 export default function LoginButton({ className }: { className?: string }) {
   const [modalIsActive, setModalIsActive] = useState(false);
-  const notify = useContext(NotifyContext);
   const [, userDispatch] = useUser();
 
   const onLoginSuccess = ({
@@ -104,22 +103,21 @@ export default function LoginButton({ className }: { className?: string }) {
       type: "login",
       value: { username: username, token: token },
     });
-    Send(notify, {
-      level: Level.SUCCESS,
-      contents: (
-        <p>
-          Logged in successfully as <strong>username</strong>
-        </p>
-      ),
-    });
+    toast(
+      <p>
+        Logged in successfully as <strong>username</strong>
+      </p>,
+      {
+        type: "success",
+      }
+    );
     setModalIsActive(false);
   };
 
   const onLogoutSuccess = () => {
     userDispatch({ type: "logout" });
-    Send(notify, {
-      level: Level.SUCCESS,
-      contents: <p>Logged out successfully</p>,
+    toast(<p>Logged out successfully</p>, {
+      type: "success",
     });
     setModalIsActive(false);
   };
