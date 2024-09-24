@@ -12,6 +12,7 @@ import { default as useList, ListActions } from "react-use/lib/useList";
 import { toast } from "react-toastify";
 
 import { Field, Label, Control, ErrorList, SubmitButton } from "./Form";
+import Symbol from "./Symbol";
 
 interface Shared {
   model: Model;
@@ -152,15 +153,15 @@ function Row({ item }: { item: Item }) {
       {user && (
         <td>
           <button
-            className="button material-icons icon"
+            className="button icon"
             onClick={() => {
               setEditActive(true);
             }}
           >
-            edit
+            <Symbol name="edit" />
           </button>
-          <button className="button material-icons icon" onClick={onDelete}>
-            delete
+          <button className="button icon" onClick={onDelete}>
+            <Symbol name="delete" />
           </button>
           <Modal
             active={editActive}

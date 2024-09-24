@@ -1,6 +1,7 @@
 import { useEffect, useState, useId, FormEvent } from "react";
 import Conversation from "./Conversation";
 import Carousel from "./RecentConversations";
+import Symbol from "./Symbol";
 
 import { Control, Field, Label, Help } from "./Form";
 
@@ -108,7 +109,9 @@ function Form({
           />
         </Control>
         <Control>
-          <button className="button is-primary material-icons">send</button>
+          <button className="button is-primary">
+            <Symbol name="send" />
+          </button>
         </Control>
       </Field>
     </form>

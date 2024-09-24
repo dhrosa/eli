@@ -4,6 +4,7 @@ import Modal from "./Modal";
 
 import { Control, Field, Label, ErrorList, SubmitButton } from "./Form";
 import { toast } from "react-toastify";
+import Symbol from "./Symbol";
 
 async function parseResponse(response: Response) {
   const value = await response.json();
@@ -125,14 +126,14 @@ export default function LoginButton({ className }: { className?: string }) {
   return (
     <>
       <a
-        className={"material-icons " + (className ?? "")}
+        className={className}
         href="#"
         title="Log In"
         onClick={() => {
           setModalIsActive(true);
         }}
       >
-        person
+        <Symbol name="person" />
       </a>
       <Modal
         active={modalIsActive}

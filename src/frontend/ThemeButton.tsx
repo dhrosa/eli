@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Symbol from "./Symbol";
 
 function InitialTheme() {
   let theme = localStorage.getItem("data-theme");
@@ -21,12 +22,12 @@ export default function ThemeButton({ className }: { className: string }) {
 
   return (
     <a
-      className={"material-icons " + className}
+      className={className}
       href="#"
       title="Toggle Light/Dark Mode"
       onClick={toggle}
     >
-      {theme == "dark" ? "light_mode" : "dark_mode"}
+      <Symbol name={theme == "dark" ? "light_mode" : "dark_mode"} />
     </a>
   );
 }

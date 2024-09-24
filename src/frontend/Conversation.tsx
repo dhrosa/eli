@@ -4,6 +4,7 @@ import { ReactNode, useContext, createContext, useEffect } from "react";
 const humanizeDuration = require("humanize-duration");
 import { useCopyToClipboard } from "react-use";
 import { toast } from "react-toastify";
+import Symbol from "./Symbol";
 
 export interface ConversationData {
   id: string;
@@ -160,7 +161,7 @@ function CardHeader() {
           }}
           className="icon"
         >
-          <span className="material-icons">link</span>
+          <Symbol name="link" />
         </a>
         <Link
           to={conversation.url}
@@ -168,7 +169,7 @@ function CardHeader() {
           target="_blank"
           className="icon"
         >
-          <span className="material-symbols-outlined">open_in_new</span>
+          <Symbol name="open_in_new" />
         </Link>
       </div>
     </div>
