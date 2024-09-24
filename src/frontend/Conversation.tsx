@@ -134,9 +134,16 @@ function CardHeader() {
   const conversation = useContext(ConversationContext);
   const [copyState, copyToClipboard] = useCopyToClipboard();
 
+  const url = new URL(conversation.url, window.location.origin);
+
   useEffect(() => {
     if (copyState.value) {
-      toast.info("Link copied to clipboard");
+      toast.info(
+        <p>
+          Copied link to clipboard: &nbsp;{" "}
+          <a href={copyState.value}>{copyState.value}</a>
+        </p>
+      );
     } else if (copyState.error) {
       toast.error("Failed to copy link to clipboard.");
       console.error(copyState);
@@ -149,13 +156,18 @@ function CardHeader() {
       <div className="card-header-icon">
         <a
           onClick={() => {
-            copyToClipboard(conversation.url);
+            copyToClipboard(url.href);
           }}
           className="icon"
         >
           <span className="material-icons">link</span>
         </a>
-        <Link to={conversation.url} className="icon">
+        <Link
+          to={conversation.url}
+          rel="noopener noreferrer"
+          target="_blank"
+          className="icon"
+        >
           <span className="material-symbols-outlined">open_in_new</span>
         </Link>
       </div>
