@@ -180,6 +180,7 @@ export default function Conversation({ object, ...rest }: any) {
   if (!object) {
     return <div className="skeleton-block" />;
   }
+  console.log(object);
   return (
     <div className="conversation" {...rest}>
       <ConversationContext.Provider value={object as ConversationData}>
