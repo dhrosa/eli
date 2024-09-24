@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
-import { ReactNode, useContext, createContext } from "react";
+import { ReactNode, useContext, createContext, useEffect } from "react";
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const humanizeDuration = require("humanize-duration");
+import { useCopyToClipboard } from "react-use";
+import { toast } from "react-toastify";
 
 export interface ConversationData {
   id: string;
@@ -130,12 +132,31 @@ function MediaContent({ children }: { children: ReactNode }) {
 
 function CardHeader() {
   const conversation = useContext(ConversationContext);
+  const [copyState, copyToClipboard] = useCopyToClipboard();
+
+  useEffect(() => {
+    if (copyState.value) {
+      toast.info("Link copied to clipboard");
+    } else if (copyState.error) {
+      toast.error("Failed to copy link to clipboard.");
+      console.error(copyState);
+    }
+  }, [copyState]);
+
   return (
     <div className="card-header">
       <p className="card-header-title">{conversation.response_title}</p>
       <div className="card-header-icon">
-        <Link to={conversation.url} className="icon">
+        <a
+          onClick={() => {
+            copyToClipboard(conversation.url);
+          }}
+          className="icon"
+        >
           <span className="material-icons">link</span>
+        </a>
+        <Link to={conversation.url} className="icon">
+          <span className="material-symbols-outlined">open_in_new</span>
         </Link>
       </div>
     </div>
