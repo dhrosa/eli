@@ -1,4 +1,4 @@
-import { useEffect, useState, useId, FormEvent } from "react";
+import { useEffect, useState, FormEvent } from "react";
 import Conversation from "./Conversation";
 import Carousel from "./RecentConversations";
 import Symbol from "./Symbol";
@@ -15,18 +15,10 @@ function SelectOption({ choice }: { choice: Choice }) {
   return <option value={choice.value}>{choice.display_name}</option>;
 }
 
-function Select({
-  id,
-  name,
-  choices,
-}: {
-  id: string;
-  name: string;
-  choices: Choice[];
-}) {
+function Select({ name, choices }: { name: string; choices: Choice[] }) {
   return (
     <div className="select">
-      <select id={id} name={name}>
+      <select name={name}>
         {choices.map((c) => (
           <SelectOption key={c.value} choice={c} />
         ))}
@@ -38,13 +30,11 @@ function Select({
 function SelectField({
   label,
   name,
-  id,
   choices,
   help,
 }: {
   label: string;
   name: string;
-  id: string;
   choices: Choice[];
   help: string;
 }) {
@@ -52,7 +42,7 @@ function SelectField({
     <Field>
       <Label>{label}</Label>
       <Control>
-        <Select name={name} id={id} choices={choices} />
+        <Select name={name} choices={choices} />
       </Control>
       <Help>{help}</Help>
     </Field>
@@ -81,12 +71,10 @@ function Form({
     onResponse(await response.json());
   };
 
-  const id = useId();
   return (
     <form className="form block" onSubmit={onSubmit}>
       <SelectField
         name="audience"
-        id={"audience-" + id}
         choices={audienceChoices}
         label="Explain Like I'm A:"
         help="The target audience for ELI's responses."
@@ -94,7 +82,6 @@ function Form({
 
       <SelectField
         name="ai_model_name"
-        id={"ai-" + id}
         choices={aiModelChoices}
         label="AI Model:"
         help="LLM backend"
