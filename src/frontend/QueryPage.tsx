@@ -50,16 +50,28 @@ function SelectField({
 }
 
 function Form({
-  aiModelChoices,
-  audienceChoices,
   onPending,
   onResponse,
 }: {
-  aiModelChoices: Choice[];
-  audienceChoices: Choice[];
   onPending: () => void;
   onResponse: (response: any) => any;
 }) {
+  const [aiModelChoices, setAiModelChoices] = useState([]);
+  const [audienceChoices, setAudienceChoices] = useState([]);
+
+  useEffect(() => {
+    const get = async () => {
+      const response = await fetch("/api/query/", { method: "OPTIONS" });
+      const options = await response.json();
+      const fields = options.actions.POST;
+      setAiModelChoices(fields.ai_model_name.choices);
+      setAudienceChoices(fields.audience.choices);
+    };
+    get().catch((e: unknown) => {
+      console.error(e);
+    });
+  }, []);
+
   const onSubmit = async (event: FormEvent) => {
     onPending();
     event.preventDefault();
@@ -120,23 +132,8 @@ function SubmittedConversation({
 }
 
 export default function QueryPage() {
-  const [aiModelChoices, setAiModelChoices] = useState([]);
-  const [audienceChoices, setAudienceChoices] = useState([]);
   const [conversation, setConversation] = useState(null);
   const [pending, setPending] = useState(false);
-
-  useEffect(() => {
-    const get = async () => {
-      const response = await fetch("/api/query/", { method: "OPTIONS" });
-      const options = await response.json();
-      const fields = options.actions.POST;
-      setAiModelChoices(fields.ai_model_name.choices);
-      setAudienceChoices(fields.audience.choices);
-    };
-    get().catch((e: unknown) => {
-      console.error(e);
-    });
-  }, []);
 
   const onPending = () => {
     setPending(true);
@@ -151,12 +148,7 @@ export default function QueryPage() {
   return (
     <>
       <section className="section">
-        <Form
-          aiModelChoices={aiModelChoices}
-          audienceChoices={audienceChoices}
-          onPending={onPending}
-          onResponse={onResponse}
-        />
+        <Form onPending={onPending} onResponse={onResponse} />
         <QuerySuggestions />
       </section>
 
