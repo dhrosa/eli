@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function QuerySuggestion({
+export default function QuerySuggestions({
   onSuggest,
 }: {
   onSuggest: (query: string) => void;
@@ -36,6 +36,15 @@ export default function QuerySuggestion({
           {s}
         </button>
       ))}
+      <button
+        className="button"
+        type="button"
+        onClick={() => {
+          setSuggestions([]);
+        }}
+      >
+        More suggestions...
+      </button>
     </div>
   );
 }
