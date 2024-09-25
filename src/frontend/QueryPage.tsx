@@ -2,6 +2,7 @@ import { useEffect, useState, useId, FormEvent } from "react";
 import Conversation from "./Conversation";
 import Carousel from "./RecentConversations";
 import Symbol from "./Symbol";
+import QuerySuggestions from "./QuerySuggestions";
 
 import { Control, Field, Label, Help } from "./Form";
 
@@ -82,7 +83,7 @@ function Form({
 
   const id = useId();
   return (
-    <form onSubmit={onSubmit}>
+    <form className="form block" onSubmit={onSubmit}>
       <SelectField
         name="audience"
         id={"audience-" + id}
@@ -169,10 +170,13 @@ export default function QueryPage() {
           onPending={onPending}
           onResponse={onResponse}
         />
+        <QuerySuggestions />
       </section>
+
       <section className="section">
         <SubmittedConversation conversation={conversation} pending={pending} />
       </section>
+
       <section className="section">
         <h2 className="title">Recent Conversations</h2>
         <Carousel />

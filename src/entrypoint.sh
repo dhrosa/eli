@@ -2,4 +2,5 @@
 
 exec gunicorn --bind 0.0.0.0:3000 \
      ${LIVE_RELOAD:+--reload --reload-extra-file /code/src} \
+     --threads 4 \
      eli.wsgi:application

@@ -57,3 +57,14 @@ $family-code:
 .card-header-icon .icon {
   margin-left: 12px;
 }
+
+.suggestions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+
+  button {
+    margin-bottom: 8px;
+  }
+}

@@ -108,6 +108,7 @@ def query_suggestions(suggestion_request):
     "How do banks work?"
 
     The prompts should be very short, direct, and simply-worded.
+    The prompts should be very random and unrelated to the examples.
     """
     completion = openai_client.beta.chat.completions.parse(
         model="gpt-4o-2024-08-06",
@@ -117,5 +118,4 @@ def query_suggestions(suggestion_request):
         temperature=suggestion_request["temperature"],
         response_format=QuerySuggestion)
     
-    print(completion.choices[0].message.parsed)
     return completion.choices[0].message.parsed.suggestions
