@@ -1,10 +1,10 @@
 import React from "react";
 
-function Suggestion({ text }: { text: string }) {
-  return <button className="button">{text}</button>;
-}
-
-export default function QuerySuggestion() {
+export default function QuerySuggestion({
+  onSuggest,
+}: {
+  onSuggest: (query: string) => void;
+}) {
   const [suggestions, setSuggestions] = React.useState([]);
 
   const getSuggestions = async () => {
@@ -25,7 +25,16 @@ export default function QuerySuggestion() {
   return (
     <div className="suggestions block">
       {suggestions.map((s) => (
-        <Suggestion key={s} text={s} />
+        <button
+          key={s}
+          className="button"
+          type="button"
+          onClick={() => {
+            onSuggest(s);
+          }}
+        >
+          {s}
+        </button>
       ))}
     </div>
   );

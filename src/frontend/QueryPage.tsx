@@ -3,6 +3,7 @@ import Conversation from "./Conversation";
 import Carousel from "./RecentConversations";
 import Symbol from "./Symbol";
 import QuerySuggestions from "./QuerySuggestions";
+import { useAnimate, motion } from "framer-motion";
 
 import { Control, Field, Label, Help } from "./Form";
 
@@ -58,6 +59,8 @@ function Form({
 }) {
   const [aiModelChoices, setAiModelChoices] = useState([]);
   const [audienceChoices, setAudienceChoices] = useState([]);
+  const [query, setQuery] = useState("");
+  const [scope, animate] = useAnimate();
 
   useEffect(() => {
     const get = async () => {
@@ -71,6 +74,13 @@ function Form({
       console.error(e);
     });
   }, []);
+
+  const onSuggest = (query: string) => {
+    setQuery(query);
+    animate(scope.current, {
+      scale: [1.2, 1.0],
+    });
+  };
 
   const onSubmit = async (event: FormEvent) => {
     onPending();
@@ -101,11 +111,16 @@ function Form({
 
       <Field className="is-grouped is-grouped-right">
         <Control className="is-expanded">
-          <input
+          <motion.input
+            ref={scope}
             name="query"
             autoComplete="off"
             className="input"
             placeholder="Query. e.g. 'What is a cat?'"
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+            }}
           />
         </Control>
         <Control>
@@ -114,6 +129,7 @@ function Form({
           </button>
         </Control>
       </Field>
+      <QuerySuggestions onSuggest={onSuggest} />
     </form>
   );
 }
@@ -149,7 +165,6 @@ export default function QueryPage() {
     <>
       <section className="section">
         <Form onPending={onPending} onResponse={onResponse} />
-        <QuerySuggestions />
       </section>
 
       <section className="section">
