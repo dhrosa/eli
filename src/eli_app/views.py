@@ -16,6 +16,8 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.decorators import action
+from rest_framework.renderers import JSONRenderer
+
 
 class TokenView(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
@@ -51,7 +53,7 @@ class ConversationViewSet(ModelViewSet):
     queryset = Conversation.objects.all()
     serializer_class = serializers.ConversationSerializer
 
-class QueryViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+class QueryViewSet(viewsets.GenericViewSet):
     serializer_class = serializers.QuerySerializer
 
     def create(self, request):
@@ -74,3 +76,10 @@ class QueryViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
         conversation.save()
 
         return response.Response(data=serializers.ConversationSerializer(conversation).data)
+
+    @action(methods=["get"], detail=False, renderer_classes=[JSONRenderer])
+    def suggest(self, request):
+        input_data = serializers.QuerySuggestionRequestSerializer(data=request.data)
+        input_data.is_valid(raise_exception=True)
+
+        return response.Response(data=ai.query_suggestions(input_data.validated_data))

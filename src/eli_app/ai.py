@@ -92,3 +92,30 @@ def openai_response(conversation, model):
     response = completion.choices[0].message.parsed
     raw = completion.to_dict(mode="json")
     return response, raw
+
+class QuerySuggestion(BaseModel):
+    suggestions: list[str]
+
+def query_suggestions(suggestion_request):
+    prompt = f"""
+    Generate {suggestion_request["count"]} prompts using the following examples as a starting point:
+
+    "What is a cat?"
+    "What is the Higgs Boson?"
+    "Describe how a bird flies"
+    "Explain the plot of the movie 'Speed'"
+    "Describe how machine learning works"
+    "How do banks work?"
+
+    The prompts should be very short, direct, and simply-worded.
+    """
+    completion = openai_client.beta.chat.completions.parse(
+        model="gpt-4o-2024-08-06",
+        messages=[
+            {"role": "user", "content": prompt},
+        ],
+        temperature=suggestion_request["temperature"],
+        response_format=QuerySuggestion)
+    
+    print(completion.choices[0].message.parsed)
+    return completion.choices[0].message.parsed.suggestions

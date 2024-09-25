@@ -31,3 +31,7 @@ class QuerySerializer(serializers.Serializer):
         self.fields["audience"].choices = [
             (a.id, a.name) for a in models.Audience.objects.all()
             ]
+
+class QuerySuggestionRequestSerializer(serializers.Serializer):
+    count = serializers.IntegerField(default=10)
+    temperature = serializers.FloatField(min_value=0, max_value=2, default=1)
