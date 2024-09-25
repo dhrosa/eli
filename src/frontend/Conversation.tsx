@@ -1,8 +1,14 @@
 import { Link } from "react-router-dom";
-import { ReactNode, useContext, createContext, useEffect } from "react";
+import {
+  ReactNode,
+  useContext,
+  createContext,
+  useEffect,
+  useState,
+} from "react";
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const humanizeDuration = require("humanize-duration");
-import { useCopyToClipboard } from "react-use";
+import { useCopyToClipboard, useInterval } from "react-use";
 import { toast } from "react-toastify";
 import Symbol from "./Symbol";
 
@@ -131,9 +137,26 @@ function MediaContent({ children }: { children: ReactNode }) {
   return <div className="media-content">{children}</div>;
 }
 
+function Speech({ text }: { text: string }) {
+  useInterval(() => {
+    // Workaround for Chrome only dictating short bits of text: https://stackoverflow.com/questions/21947730/chrome-speech-synthesis-with-longer-texts#comment112224088_23808155
+    speechSynthesis.pause();
+    speechSynthesis.resume();
+  }, 3000);
+  useEffect(() => {
+    const utterance = new SpeechSynthesisUtterance(text);
+    speechSynthesis.speak(utterance);
+    return () => {
+      speechSynthesis.cancel();
+    };
+  }, []);
+  return <></>;
+}
+
 function CardHeader() {
   const conversation = useContext(ConversationContext);
   const [copyState, copyToClipboard] = useCopyToClipboard();
+  const [speak, setSpeak] = useState(false);
 
   const url = new URL(conversation.url, window.location.origin);
 
@@ -153,8 +176,19 @@ function CardHeader() {
 
   return (
     <div className="card-header">
-      <p className="card-header-title">{conversation.response_title}</p>
+      <p className="card-header-title">
+        {conversation.response_title}{" "}
+        {speak && <Speech text={conversation.response_text} />}
+      </p>
       <div className="card-header-icon">
+        <a
+          className="icon"
+          onClick={() => {
+            setSpeak(true);
+          }}
+        >
+          <Symbol name="text_to_speech" />
+        </a>
         <a
           onClick={() => {
             copyToClipboard(url.href);
@@ -180,7 +214,6 @@ export default function Conversation({ object, ...rest }: any) {
   if (!object) {
     return <div className="skeleton-block" />;
   }
-  console.log(object);
   return (
     <div className="conversation" {...rest}>
       <ConversationContext.Provider value={object as ConversationData}>
