@@ -49,13 +49,20 @@ export default function QuerySuggestions({
         </AnimatePresence>
       ))}
       <button
-        className="button"
+        className={"button"}
         type="button"
         onClick={() => {
           setDirty(true);
         }}
       >
-        More suggestions...
+        {dirty ? (
+          <>
+            Loading suggestions &nbsp;
+            <span className="is-loading" />
+          </>
+        ) : (
+          "More suggestions ..."
+        )}
       </button>
     </div>
   );
