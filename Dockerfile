@@ -8,7 +8,7 @@ RUN adduser --disabled-password --gecos '' --ingroup django  django
 
 RUN mkdir -p /code/src /static /jsx-out
 
-RUN chown -R django /code /static /jsx-out
+RUN chown -R django:django /code /static /jsx-out
 
 USER django
 
