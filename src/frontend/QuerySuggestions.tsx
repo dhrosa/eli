@@ -1,4 +1,6 @@
 import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useGetSet } from "react-use";
 
 export default function QuerySuggestions({
   onSuggest,
@@ -6,13 +8,19 @@ export default function QuerySuggestions({
   onSuggest: (query: string) => void;
 }) {
   const [suggestions, setSuggestions] = React.useState([]);
+  const [getDirty, setDirty] = useGetSet(true);
 
+  const dirty = getDirty();
   const getSuggestions = async () => {
     const response = await fetch("/api/query/suggest/", {
       headers: { Accept: "application/json" },
     });
     const newSuggestions = await response.json();
-    setSuggestions((prev) => (prev.length > 0 ? prev : newSuggestions));
+    if (!getDirty()) {
+      return;
+    }
+    setSuggestions(newSuggestions);
+    setDirty(false);
     return suggestions;
   };
 
@@ -20,27 +28,31 @@ export default function QuerySuggestions({
     getSuggestions().catch((error: unknown) => {
       console.error(error);
     });
-  }, []);
+  }, [dirty]);
 
   return (
     <div className="suggestions block">
       {suggestions.map((s) => (
-        <button
-          key={s}
-          className="button"
-          type="button"
-          onClick={() => {
-            onSuggest(s);
-          }}
-        >
-          {s}
-        </button>
+        <AnimatePresence key={s}>
+          <motion.button
+            className="button"
+            initial={{ opacity: 0, scale: 0.1 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.1 }}
+            type="button"
+            onClick={() => {
+              onSuggest(s);
+            }}
+          >
+            {s}
+          </motion.button>
+        </AnimatePresence>
       ))}
       <button
         className="button"
         type="button"
         onClick={() => {
-          setSuggestions([]);
+          setDirty(true);
         }}
       >
         More suggestions...
