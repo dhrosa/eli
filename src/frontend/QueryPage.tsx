@@ -28,25 +28,26 @@ function Select({ name, choices }: { name: string; choices: Choice[] }) {
   );
 }
 
-function SelectField({
-  label,
-  name,
-  choices,
-  help,
-}: {
-  label: string;
-  name: string;
-  choices: Choice[];
-  help: string;
-}) {
+function ButtonChoice({ name, choices }: { name: string; choices: Choice[] }) {
+  const [value, setValue] = useState("");
   return (
-    <Field>
-      <Label>{label}</Label>
-      <Control>
-        <Select name={name} choices={choices} />
-      </Control>
-      <Help>{help}</Help>
-    </Field>
+    <>
+      <input type="hidden" name={name} value={value} />
+      <div className="button-choices block">
+        {choices.map((c) => (
+          <button
+            key={c.value}
+            className={"button" + (c.value == value ? " is-primary" : "")}
+            type="button"
+            onClick={() => {
+              setValue(c.value);
+            }}
+          >
+            {c.display_name}
+          </button>
+        ))}
+      </div>
+    </>
   );
 }
 
@@ -95,19 +96,21 @@ function Form({
 
   return (
     <form className="form block" onSubmit={onSubmit}>
-      <SelectField
-        name="audience"
-        choices={audienceChoices}
-        label="Explain Like I'm A:"
-        help="The target audience for ELI's responses."
-      />
+      <Field>
+        <Label>{"Explain Like I'm A:"}</Label>
+        <Control>
+          <ButtonChoice name="audience" choices={audienceChoices} />
+        </Control>
+        <Help>{"The target audience for ELI's responses."}</Help>
+      </Field>
 
-      <SelectField
-        name="ai_model_name"
-        choices={aiModelChoices}
-        label="AI Model:"
-        help="LLM backend"
-      />
+      <Field>
+        <Label>{"AI Model:"}</Label>
+        <Control>
+          <Select name="ai_model_name" choices={aiModelChoices} />
+        </Control>
+        <Help>The AI model to use for generating responses.</Help>
+      </Field>
 
       <Field className="is-grouped is-grouped-right">
         <Control className="is-expanded">
