@@ -32,9 +32,10 @@ export default function QuerySuggestions({
 
   return (
     <div className="suggestions block">
-      {suggestions.map((s) => (
-        <AnimatePresence key={s}>
+      {suggestions.map((s, i) => (
+        <AnimatePresence key={i}>
           <motion.button
+            layout
             className="button"
             initial={{ opacity: 0, scale: 0.1 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -48,7 +49,8 @@ export default function QuerySuggestions({
           </motion.button>
         </AnimatePresence>
       ))}
-      <button
+      <motion.button
+        layout
         className={"button"}
         type="button"
         onClick={() => {
@@ -63,7 +65,7 @@ export default function QuerySuggestions({
         ) : (
           "More suggestions ..."
         )}
-      </button>
+      </motion.button>
     </div>
   );
 }
