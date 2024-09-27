@@ -31,10 +31,10 @@ function Select({ name, choices }: { name: string; choices: Choice[] }) {
 function ButtonChoice({ name, choices }: { name: string; choices: Choice[] }) {
   const [value, setValue] = useState("");
   useEffect(() => {
-    /*     if (value != "" || choices.length == 0) {
+    if (value != "" || choices.length == 0) {
       return;
     }
-    setValue(choices[0].value); */
+    setValue(choices[0].value);
   }, [choices]);
   return (
     <>
