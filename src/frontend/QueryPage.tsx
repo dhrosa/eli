@@ -5,7 +5,7 @@ import Symbol from "./Symbol";
 import QuerySuggestions from "./QuerySuggestions";
 import { useAnimate, motion } from "framer-motion";
 
-import { Control, Field, Label, Help } from "./Form";
+import { Control, Field, Label, Help, ErrorList } from "./Form";
 
 interface Choice {
   value: string;
@@ -31,10 +31,10 @@ function Select({ name, choices }: { name: string; choices: Choice[] }) {
 function ButtonChoice({ name, choices }: { name: string; choices: Choice[] }) {
   const [value, setValue] = useState("");
   useEffect(() => {
-    if (value != "" || choices.length == 0) {
+    /*     if (value != "" || choices.length == 0) {
       return;
     }
-    setValue(choices[0].value);
+    setValue(choices[0].value); */
   }, [choices]);
   return (
     <>
@@ -69,6 +69,8 @@ function Form({
   const [query, setQuery] = useState("");
   const [scope, animate] = useAnimate();
 
+  const [errors, setErrors] = useState<any>(null);
+
   useEffect(() => {
     const get = async () => {
       const response = await fetch("/api/query/", { method: "OPTIONS" });
@@ -97,7 +99,13 @@ function Form({
       method: "POST",
       body: new FormData(event.target as HTMLFormElement),
     });
-    onResponse(await response.json());
+    const value = await response.json();
+    if (response.ok) {
+      onResponse(value);
+      setErrors(null);
+    } else {
+      setErrors(value);
+    }
   };
 
   return (
@@ -108,6 +116,7 @@ function Form({
           <ButtonChoice name="audience" choices={audienceChoices} />
         </Control>
         <Help>{"The target audience for ELI's responses."}</Help>
+        <ErrorList errors={errors?.audience} />
       </Field>
 
       <Field>
@@ -116,6 +125,7 @@ function Form({
           <Select name="ai_model_name" choices={aiModelChoices} />
         </Control>
         <Help>The AI model to use for generating responses.</Help>
+        <ErrorList errors={errors?.ai_model_name} />
       </Field>
 
       <Field className="is-grouped is-grouped-right">
@@ -138,6 +148,7 @@ function Form({
           </button>
         </Control>
       </Field>
+      <ErrorList errors={errors?.query} />
       <QuerySuggestions onSuggest={onSuggest} />
     </form>
   );
@@ -166,6 +177,7 @@ export default function QueryPage() {
   };
 
   const onResponse = (response: any) => {
+    console.log("response", response);
     setPending(false);
     setConversation(response);
   };
