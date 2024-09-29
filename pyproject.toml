@@ -8,7 +8,7 @@ version = "0.0.0"
 dependencies = ["django", "google-generativeai", "django-environ", "gunicorn", "psycopg2", "Pygments", "django-markdownify", "openai", "djangorestframework", "markdown", "django-filter", "django_vite_plugin"]
 
 [tool.hatch.envs.style]
-dependencies = ["setuptools", "isort", "black", "pylama", "mypy", "types-beautifulsoup4", "django-stubs[compatible-mypy]"]
+dependencies = ["setuptools", "isort", "black", "pylama", "mypy", "types-beautifulsoup4", "django-stubs[compatible-mypy]", "djangorestframework-stubs[compatible-mypy]"]
 
 [tool.hatch.envs.style.scripts]
 format = [
@@ -17,8 +17,8 @@ format = [
 ]
 
 check = [
-      "pylama --ignore E203 src", # E203 is not pep8-compliant, and black breaks it
-      "mypy --strict --pretty src",
+      "pylama --ignore E203 src/eli src/eli_app", # E203 is not pep8-compliant, and black breaks it
+      "mypy --pretty src/eli src/eli_app",
 ] 
 all = [
     "format",

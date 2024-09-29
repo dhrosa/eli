@@ -47,7 +47,6 @@ OPENAI_API_KEY = env.str("OPENAI_API_KEY")
 # Application definition
 
 INSTALLED_APPS = [
-    "django_vite_plugin",
     "rest_framework",
     "rest_framework.authtoken",
     "markdownify.apps.MarkdownifyConfig",
@@ -73,7 +72,6 @@ MIDDLEWARE = [
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",
-        #'rest_framework.authentication.SessionAuthentication',
     ]
 }
 

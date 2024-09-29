@@ -1,5 +1,4 @@
 from secrets import token_urlsafe
-from uuid import uuid4
 
 from django.db import models
 from django.urls import reverse

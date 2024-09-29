@@ -1,20 +1,13 @@
-from functools import cache
-
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from django.urls import reverse
 from django.views.generic import TemplateView
-from django.views.generic.detail import DetailView
-from django.views.generic.edit import FormView
-from django.views.generic.list import ListView
-from rest_framework import mixins, response, views, viewsets
+from rest_framework import response, viewsets
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.renderers import JSONRenderer
+from rest_framework.response import Response
 
 from . import ai, serializers
-from .forms import QueryForm
 from .models import Audience, Conversation, Rule
 
 
@@ -25,7 +18,7 @@ class TokenView(ObtainAuthToken):
         )
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data["user"]
-        token, created = Token.objects.get_or_create(user=user)
+        token, _ = Token.objects.get_or_create(user=user)
         return response.Response(
             {
                 "token": token.key,

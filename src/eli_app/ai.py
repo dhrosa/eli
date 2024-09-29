@@ -5,7 +5,7 @@ from django.conf import settings
 from google import generativeai
 from google.generativeai.types import HarmBlockThreshold, HarmCategory
 from openai import OpenAI
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 
 class AiModelName(StrEnum):
