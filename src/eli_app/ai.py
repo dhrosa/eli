@@ -1,10 +1,12 @@
-from google import generativeai
-from google.generativeai.types import HarmCategory, HarmBlockThreshold
 import json
+from enum import StrEnum
+
 from django.conf import settings
+from google import generativeai
+from google.generativeai.types import HarmBlockThreshold, HarmCategory
 from openai import OpenAI
 from pydantic import BaseModel, Field
-from enum import StrEnum
+
 
 class AiModelName(StrEnum):
     # Not using capital names to make ChatGPT names more readable.
@@ -15,6 +17,7 @@ class AiModelName(StrEnum):
 
 class ResponseFormat(BaseModel):
     """Output schema for LLM JSON responses."""
+
     title: str
     text: str
 
@@ -35,6 +38,7 @@ def fill_completion(conversation, model_name: AiModelName):
     conversation.response_title = response.title
     conversation.response_text = response.text
 
+
 generativeai.configure(api_key=settings.GEMINI_API_KEY)
 
 gemini_preamble = """
@@ -48,6 +52,7 @@ Response = {
 For the "title" JSON field, generate a short sentence that summarizes this conversation.
 The response to the target audience should be placed in the JSON "text" field.
 """
+
 
 def gemini_response(conversation):
     harm_categories = (
@@ -66,9 +71,8 @@ def gemini_response(conversation):
     response = model.generate_content(conversation.query)
     candidate = response.candidates[0]
 
-    raw=type(candidate).to_dict(candidate, use_integers_for_enums=False)
+    raw = type(candidate).to_dict(candidate, use_integers_for_enums=False)
     return ResponseFormat(**json.loads(response.text)), raw
-
 
 
 openai_client = OpenAI()
@@ -80,6 +84,7 @@ Try not to literally refer to the word "analogy" in your title.
 The JSON field "text" should contain your response to the user's query.
 """
 
+
 def openai_response(conversation, model):
     completion = openai_client.beta.chat.completions.parse(
         model=model,
@@ -87,14 +92,17 @@ def openai_response(conversation, model):
             {"role": "system", "content": openai_preamble + conversation.system_prompt},
             {"role": "user", "content": conversation.query},
         ],
-        response_format=ResponseFormat)
+        response_format=ResponseFormat,
+    )
 
     response = completion.choices[0].message.parsed
     raw = completion.to_dict(mode="json")
     return response, raw
 
+
 class QuerySuggestion(BaseModel):
     suggestions: list[str]
+
 
 def query_suggestions(suggestion_request):
     prompt = f"""
@@ -116,6 +124,7 @@ def query_suggestions(suggestion_request):
             {"role": "user", "content": prompt},
         ],
         temperature=suggestion_request["temperature"],
-        response_format=QuerySuggestion)
-    
+        response_format=QuerySuggestion,
+    )
+
     return completion.choices[0].message.parsed.suggestions

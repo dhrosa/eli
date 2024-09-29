@@ -6,21 +6,21 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('eli_app', '0001_initial'),
+        ("eli_app", "0001_initial"),
     ]
 
     operations = [
         migrations.RenameModel(
-            old_name='Style',
-            new_name='Audience',
+            old_name="Style",
+            new_name="Audience",
         ),
         migrations.RenameModel(
-            old_name='CommonSnippet',
-            new_name='Rule',
+            old_name="CommonSnippet",
+            new_name="Rule",
         ),
         migrations.RenameField(
-            model_name='conversation',
-            old_name='style_name',
-            new_name='audience_name',
+            model_name="conversation",
+            old_name="style_name",
+            new_name="audience_name",
         ),
     ]

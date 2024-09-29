@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('eli_app', '0005_alter_audience_options_alter_conversation_options_and_more'),
+        ("eli_app", "0005_alter_audience_options_alter_conversation_options_and_more"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='conversation',
-            old_name='response',
-            new_name='raw_response',
+            model_name="conversation",
+            old_name="response",
+            new_name="raw_response",
         ),
         migrations.AddField(
-            model_name='conversation',
-            name='structured_response',
+            model_name="conversation",
+            name="structured_response",
             field=models.JSONField(default={}),
             preserve_default=False,
         ),

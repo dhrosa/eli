@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('eli_app', '0003_remove_conversation_full_prompt_and_more'),
+        ("eli_app", "0003_remove_conversation_full_prompt_and_more"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='conversation',
-            name='response_text',
+            model_name="conversation",
+            name="response_text",
         ),
     ]

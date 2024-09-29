@@ -6,29 +6,29 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('eli_app', '0007_conversation_ai_model_name'),
+        ("eli_app", "0007_conversation_ai_model_name"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='conversation',
-            old_name='raw_response',
-            new_name='response_raw',
+            model_name="conversation",
+            old_name="raw_response",
+            new_name="response_raw",
         ),
         migrations.RemoveField(
-            model_name='conversation',
-            name='structured_response',
+            model_name="conversation",
+            name="structured_response",
         ),
         migrations.AddField(
-            model_name='conversation',
-            name='response_text',
-            field=models.TextField(default=''),
+            model_name="conversation",
+            name="response_text",
+            field=models.TextField(default=""),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='conversation',
-            name='response_title',
-            field=models.TextField(default=''),
+            model_name="conversation",
+            name="response_title",
+            field=models.TextField(default=""),
             preserve_default=False,
         ),
     ]

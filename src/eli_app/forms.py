@@ -1,11 +1,10 @@
 from django import forms
 
-from .models import Audience
 from .ai import AiModelName
+from .models import Audience
 
-AI_MODEL_CHOICES = [
-    (name.name, name.value) for name in AiModelName
-    ]
+AI_MODEL_CHOICES = [(name.name, name.value) for name in AiModelName]
+
 
 class QueryForm(forms.Form):
     audience = forms.ModelChoiceField(

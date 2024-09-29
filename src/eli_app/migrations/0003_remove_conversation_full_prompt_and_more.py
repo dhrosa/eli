@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('eli_app', '0002_rename_style_audience_rename_commonsnippet_rule_and_more'),
+        ("eli_app", "0002_rename_style_audience_rename_commonsnippet_rule_and_more"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='conversation',
-            name='full_prompt',
+            model_name="conversation",
+            name="full_prompt",
         ),
         migrations.AddField(
-            model_name='conversation',
-            name='system_prompt',
-            field=models.TextField(default=''),
+            model_name="conversation",
+            name="system_prompt",
+            field=models.TextField(default=""),
             preserve_default=False,
         ),
     ]

@@ -1,8 +1,7 @@
-from django.urls import path, re_path, include
+from django.urls import include, path, re_path
+from rest_framework.routers import DefaultRouter
 
 from . import views
-
-from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register("query", views.QueryViewSet, basename="query")

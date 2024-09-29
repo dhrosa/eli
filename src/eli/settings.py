@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+
 import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -26,13 +27,19 @@ env.read_env(env.str("ENV_PATH", BASE_DIR.parent / ".env"))
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env.str("SECRET_KEY", "django-insecure-bs7ge(^&fo9@+8o1&x48)_gxisa%avnd^()y3j=v56dhhmpi==")
+SECRET_KEY = env.str(
+    "SECRET_KEY", "django-insecure-bs7ge(^&fo9@+8o1&x48)_gxisa%avnd^()y3j=v56dhhmpi=="
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", False)
 
 ALLOWED_HOSTS: list[str] = ["*"]
-CSRF_TRUSTED_ORIGINS = ["https://localhost", "https://eli-app.ddns.net", "https://unhelpful-eli.ddns.net"]
+CSRF_TRUSTED_ORIGINS = [
+    "https://localhost",
+    "https://eli-app.ddns.net",
+    "https://unhelpful-eli.ddns.net",
+]
 
 GEMINI_API_KEY = env.str("GEMINI_API_KEY")
 OPENAI_API_KEY = env.str("OPENAI_API_KEY")
@@ -42,7 +49,7 @@ OPENAI_API_KEY = env.str("OPENAI_API_KEY")
 INSTALLED_APPS = [
     "django_vite_plugin",
     "rest_framework",
-    'rest_framework.authtoken',
+    "rest_framework.authtoken",
     "markdownify.apps.MarkdownifyConfig",
     "eli_app.apps.EliAppConfig",
     "django.contrib.admin",
@@ -64,8 +71,8 @@ MIDDLEWARE = [
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication",
         #'rest_framework.authentication.SessionAuthentication',
     ]
 }
@@ -102,14 +109,14 @@ postgres_settings = {
     "PORT": 5432,
 }
 
-sqlite_settings =  {
+sqlite_settings = {
     "ENGINE": "django.db.backends.sqlite3",
     "NAME": BASE_DIR / "db.sqlite3",
 }
 
 
 DATABASES = {
-    "default": sqlite_settings if env.bool('USE_SQLITE', False) else postgres_settings,
+    "default": sqlite_settings if env.bool("USE_SQLITE", False) else postgres_settings,
 }
 
 
