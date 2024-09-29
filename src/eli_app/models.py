@@ -59,3 +59,23 @@ class Conversation(models.Model):
 
     class Meta:
         ordering = ["-timestamp"]
+
+
+class ChatResponseEvent(models.Model):
+    """ChatGPT Chat Completion history."""
+
+    # 24 bytes is enough to represent a 12[8-bit value as base64
+    id = models.CharField(
+        primary_key=True, max_length=24, default=random_id, editable=False
+    )
+    data = models.JSONField()
+
+
+class ImageResponseEvent(models.Model):
+    """Chat GPT Image Generation history."""
+
+    # 24 bytes is enough to represent a 128-bit value as base64
+    id = models.CharField(
+        primary_key=True, max_length=24, default=random_id, editable=False
+    )
+    data = models.JSONField()
