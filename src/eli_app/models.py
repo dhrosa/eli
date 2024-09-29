@@ -47,7 +47,13 @@ class Conversation(models.Model):
     system_prompt = models.TextField()
     query = models.TextField()
 
-    response_raw = models.JSONField()
+    chat_response_event = models.ForeignKey(
+        to="ChatResponseEvent",
+        blank=True,
+        null=True,
+        on_delete=models.DO_NOTHING,
+    )
+
     response_title = models.TextField()
     response_text = models.TextField()
 
@@ -68,14 +74,6 @@ class ChatResponseEvent(models.Model):
     id = models.CharField(
         primary_key=True, max_length=24, default=random_id, editable=False
     )
-    data = models.JSONField()
-
-
-class ImageResponseEvent(models.Model):
-    """Chat GPT Image Generation history."""
-
-    # 24 bytes is enough to represent a 128-bit value as base64
-    id = models.CharField(
-        primary_key=True, max_length=24, default=random_id, editable=False
-    )
-    data = models.JSONField()
+    system_prompt = models.TextField()
+    prompt = models.TextField()
+    response = models.JSONField()
