@@ -15,24 +15,19 @@ class AiModelName(StrEnum):
     Gpt4o = "GPT-4o"
     Gpt4oMini = "GPT-4o mini"
 
+    @property
+    def api_name(self) -> str:
+        match (self):
+            case AiModelName.Gpt4o:
+                return "gpt-4o-2024-08-06"
+            case AiModelName.Gpt4oMini:
+                return "gpt-4o-mini"
 
 class ResponseFormat(BaseModel):
     """Output schema for LLM JSON responses."""
 
     title: str
     text: str
-
-
-def fill_completion(conversation, model_name: AiModelName):
-    conversation.ai_model_name = str(model_name)
-    match model_name:
-        case AiModelName.Gpt4o:
-            response = openai_response(conversation, "gpt-4o-2024-08-06")
-        case AiModelName.Gpt4oMini:
-            response = openai_response(conversation, "gpt-4o-mini")
-
-    conversation.response_title = response.title
-    conversation.response_text = response.text
 
 
 openai_client = OpenAI()
@@ -45,10 +40,12 @@ The JSON field "text" should contain your response to the user's query.
 """
 
 
-def openai_response(conversation, model):
+def fill_completion(conversation, model_name: AiModelName):
+    conversation.ai_model_name = str(model_name)
+
     system_prompt = openai_preamble + conversation.system_prompt
     completion = openai_client.beta.chat.completions.parse(
-        model=model,
+        model=model_name.api_name,
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": conversation.query},
@@ -64,8 +61,9 @@ def openai_response(conversation, model):
     event.save()
     conversation.chat_response_event = event
 
-    return completion.choices[0].message.parsed
-
+    message = completion.choices[0].message.parsed
+    conversation.response_title = message.title
+    conversation.response_text = message.text
 
 class QuerySuggestion(BaseModel):
     suggestions: list[str]
@@ -86,7 +84,7 @@ def query_suggestions(suggestion_request):
     The prompts should be very random and unrelated to the examples.
     """
     completion = openai_client.beta.chat.completions.parse(
-        model="gpt-4o-2024-08-06",
+        model=AiModelName.Gpt4oMini.api_name,
         messages=[
             {"role": "user", "content": prompt},
         ],
