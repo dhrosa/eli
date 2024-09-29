@@ -11,3 +11,4 @@ class ConversationAdmin(admin.ModelAdmin):
 
 admin.site.register(models.Rule)
 admin.site.register(models.Audience)
+admin.site.register(models.ChatResponseEvent)

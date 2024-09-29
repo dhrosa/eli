@@ -94,4 +94,7 @@ def query_suggestions(suggestion_request):
         response_format=QuerySuggestion,
     )
 
+    ChatResponseEvent(
+        system_prompt="", prompt=prompt, response=completion.to_dict(mode="json")
+    ).save()
     return completion.choices[0].message.parsed.suggestions

@@ -7,37 +7,42 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('eli_app', '0009_chatresponseevent_imageresponseevent'),
+        ("eli_app", "0009_chatresponseevent_imageresponseevent"),
     ]
 
     operations = [
         migrations.DeleteModel(
-            name='ImageResponseEvent',
+            name="ImageResponseEvent",
         ),
         migrations.RenameField(
-            model_name='chatresponseevent',
-            old_name='data',
-            new_name='response',
+            model_name="chatresponseevent",
+            old_name="data",
+            new_name="response",
         ),
         migrations.RemoveField(
-            model_name='conversation',
-            name='response_raw',
+            model_name="conversation",
+            name="response_raw",
         ),
         migrations.AddField(
-            model_name='chatresponseevent',
-            name='prompt',
-            field=models.TextField(default=''),
+            model_name="chatresponseevent",
+            name="prompt",
+            field=models.TextField(default=""),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='chatresponseevent',
-            name='system_prompt',
-            field=models.TextField(default=''),
+            model_name="chatresponseevent",
+            name="system_prompt",
+            field=models.TextField(default=""),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='conversation',
-            name='chat_response_event',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='eli_app.chatresponseevent'),
+            model_name="conversation",
+            name="chat_response_event",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                to="eli_app.chatresponseevent",
+            ),
         ),
     ]
