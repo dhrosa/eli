@@ -23,6 +23,7 @@ class AiModelName(StrEnum):
             case AiModelName.Gpt4oMini:
                 return "gpt-4o-mini"
 
+
 class ResponseFormat(BaseModel):
     """Output schema for LLM JSON responses."""
 
@@ -65,6 +66,21 @@ def fill_completion(conversation, model_name: AiModelName):
     conversation.response_title = message.title
     conversation.response_text = message.text
 
+
+def generate_image(conversation):
+    prompt = f"""
+    Given the following explanation delimited by "===":
+
+    ===
+    {conversation.response_text}
+    ===
+
+    Generate a very simple diagram to accompany this explanation.
+    """
+    image = openai_client.images.generate(model="dall-e-3", prompt=prompt)
+    print(image)
+
+
 class QuerySuggestion(BaseModel):
     suggestions: list[str]
 
@@ -84,7 +100,7 @@ def query_suggestions(suggestion_request):
     The prompts should be very random and unrelated to the examples.
     """
     completion = openai_client.beta.chat.completions.parse(
-        model=AiModelName.Gpt4oMini.api_name,
+        model=AiModelName.Gpt4o.api_name,
         messages=[
             {"role": "user", "content": prompt},
         ],
