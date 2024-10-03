@@ -11,6 +11,8 @@ const humanizeDuration = require("humanize-duration");
 import { useCopyToClipboard, useInterval } from "react-use";
 import { toast } from "react-toastify";
 import Symbol from "./Symbol";
+import { motion } from "framer-motion";
+import Modal from "./Modal";
 
 export interface ConversationData {
   id: string;
@@ -58,14 +60,12 @@ function Quote({
 }) {
   return (
     <div className="content">
-      <p>
-        <strong>{author}</strong>
-        <Timestamp timestamp={timestamp} />
-        <br />
-        {children}
-        {text}
-        <br />
-      </p>
+      <strong>{author}</strong>
+      <Timestamp timestamp={timestamp} />
+      <br />
+      {children}
+      {text}
+      <br />
     </div>
   );
 }
@@ -99,13 +99,41 @@ function EliQuote() {
 
 function Image() {
   const conversation = useContext(ConversationContext);
+  const [modalActive, setModalActive] = useState(false);
   if (!conversation.has_image) {
     return false;
   }
+  const url = `/api/conversations/${conversation.id}/image/`;
   return (
-    <figure className="image is-square generated-image">
-      <img src={`/api/conversations/${conversation.id}/image/`} />
-    </figure>
+    <>
+      <motion.div
+        layout
+        className="image is-square generated-image"
+        whileHover={{ scale: 1.05 }}
+      >
+        <a
+          onClick={() => {
+            setModalActive(true);
+          }}
+        >
+          <img src={url} />
+        </a>
+      </motion.div>
+      <Modal
+        active={modalActive}
+        onClose={() => {
+          setModalActive(false);
+        }}
+      >
+        <a
+          onClick={() => {
+            setModalActive(false);
+          }}
+        >
+          <img src={url} />
+        </a>
+      </Modal>
+    </>
   );
 }
 

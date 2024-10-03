@@ -45,13 +45,6 @@ $family-code:
 
 .recent {
   position: relative;
-
-  .conversation {
-    /* Make all cards' origin points be the same. */
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
 }
 
 .card-header-icon .icon {
@@ -75,8 +68,19 @@ $family-code:
   height: 256px;
   position: static;
   float: right;
+  margin: 12px;
 
   img {
     position: static;
+    border-radius: 0.5em;
+    cursor: zoom-in;
+  }
+}
+
+.conversation .modal-content {
+  width: 100%;
+
+  a {
+    cursor: zoom-out;
   }
 }

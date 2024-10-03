@@ -73,12 +73,12 @@ export default function RecentConversations() {
         setFocused(false);
       }}
     >
-      <AnimatePresence mode="sync">
+      <AnimatePresence mode="wait">
         <motion.div
           key={current.id}
-          initial={{ x: 1000, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          exit={{ x: -1000, opacity: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
         >
           <Conversation object={current} />
         </motion.div>
