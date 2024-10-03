@@ -69,3 +69,14 @@ $family-code:
     margin-bottom: 8px;
   }
 }
+
+.conversation .generated-image {
+  width: 256px;
+  height: 256px;
+  position: static;
+  float: right;
+
+  img {
+    position: static;
+  }
+}

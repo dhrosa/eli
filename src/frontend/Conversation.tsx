@@ -21,6 +21,7 @@ export interface ConversationData {
   timestamp: string;
   response_title: string;
   response_text: string;
+  has_image: boolean;
 }
 
 const ConversationContext = createContext<ConversationData>(
@@ -48,10 +49,12 @@ function Quote({
   author,
   text,
   timestamp,
+  children,
 }: {
   author: string;
   text: string;
   timestamp: string;
+  children?: ReactNode;
 }) {
   return (
     <div className="content">
@@ -59,6 +62,7 @@ function Quote({
         <strong>{author}</strong>
         <Timestamp timestamp={timestamp} />
         <br />
+        {children}
         {text}
         <br />
       </p>
@@ -80,11 +84,28 @@ function UserQuote() {
 function EliQuote() {
   const conversation = useContext(ConversationContext);
   return (
-    <Quote
-      author="ELI"
-      text={conversation.response_text}
-      timestamp={conversation.timestamp}
-    />
+    <>
+      <Quote
+        author="ELI"
+        text={conversation.response_text}
+        timestamp={conversation.timestamp}
+      >
+        {" "}
+        <Image />
+      </Quote>
+    </>
+  );
+}
+
+function Image() {
+  const conversation = useContext(ConversationContext);
+  if (!conversation.has_image) {
+    return false;
+  }
+  return (
+    <figure className="image is-square generated-image">
+      <img src={`/api/conversations/${conversation.id}/image/`} />
+    </figure>
   );
 }
 
