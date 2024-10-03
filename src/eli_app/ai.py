@@ -78,15 +78,16 @@ def generate_image(conversation):
 
     Generate a very simple diagram to accompany this explanation.
     """
+    # Placeholder entry.
+    image = GeneratedImage.objects.create(conversation=conversation)
+
     response = openai_client.images.generate(
         model="dall-e-3", prompt=prompt, response_format="b64_json"
     )
 
-    GeneratedImage.objects.create(
-        conversation=conversation,
-        revised_prompt=response.data[0].revised_prompt,
-        data=b64decode(response.data[0].b64_json),
-    )
+    image.revised_prompt = response.data[0].revised_prompt
+    image.data = b64decode(response.data[0].b64_json)
+    image.save()
 
 
 class QuerySuggestion(BaseModel):

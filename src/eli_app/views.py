@@ -1,3 +1,5 @@
+import time
+
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 from rest_framework import response, viewsets
@@ -57,7 +59,12 @@ class ConversationViewSet(ModelViewSet):
     @action(detail=True, methods=["get"])
     def image(self, request, pk):
         conversation = self.get_object()
-        if not conversation.has_image:
+        if conversation.has_image:
+            while not conversation.generatedimage.data:
+                time.sleep(0.2)
+                conversation.refresh_from_db()
+
+        else:
             ai.generate_image(conversation)
         return HttpResponse(conversation.generatedimage.data, content_type="image/png")
 
