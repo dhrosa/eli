@@ -1,4 +1,5 @@
 import time
+from threading import Thread
 
 from django.http import HttpResponse
 from django.views.generic import TemplateView
@@ -59,13 +60,11 @@ class ConversationViewSet(ModelViewSet):
     @action(detail=True, methods=["get"])
     def image(self, request, pk):
         conversation = self.get_object()
-        if conversation.has_image:
-            while not conversation.generatedimage.data:
-                time.sleep(0.2)
-                conversation.refresh_from_db()
-
-        else:
-            ai.generate_image(conversation)
+        if not conversation.has_image:
+            return HttpResponse("No image generated yet.", status=404)
+        while not conversation.generatedimage.data:
+            time.sleep(0.2)
+            conversation.refresh_from_db()            
         return HttpResponse(conversation.generatedimage.data, content_type="image/png")
 
 
@@ -90,6 +89,8 @@ class QueryViewSet(viewsets.GenericViewSet):
         )
         ai.fill_completion(conversation, ai.AiModelName[data["ai_model_name"]])
         conversation.save()
+
+        Thread(target=lambda: ai.generate_image(conversation)).start()
 
         return response.Response(
             data=serializers.ConversationSerializer(conversation).data
