@@ -100,6 +100,7 @@ function EliQuote() {
 function Image() {
   const conversation = useContext(ConversationContext);
   const [modalActive, setModalActive] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   if (!conversation.has_image) {
     return false;
   }
@@ -108,7 +109,9 @@ function Image() {
     <>
       <motion.div
         layout
-        className="image is-square generated-image"
+        className={
+          "image is-square generated-image " + (loaded ? "" : "is-loading")
+        }
         whileHover={{ scale: 1.05 }}
       >
         <a
@@ -116,7 +119,12 @@ function Image() {
             setModalActive(true);
           }}
         >
-          <img src={url} />
+          <img
+            src={url}
+            onLoad={() => {
+              setLoaded(true);
+            }}
+          />
         </a>
       </motion.div>
       <Modal
