@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.views.generic import TemplateView
 from rest_framework import response, viewsets
 from rest_framework.authtoken.models import Token
@@ -52,6 +53,13 @@ class AudienceViewSet(ModelViewSet):
 class ConversationViewSet(ModelViewSet):
     queryset = Conversation.objects.all()
     serializer_class = serializers.ConversationSerializer
+
+    @action(detail=True, methods=["get"])
+    def image(self, request, pk):
+        conversation = self.get_object()
+        if not conversation.has_image:
+            ai.generate_image(conversation)
+        return HttpResponse(conversation.generatedimage.data, content_type="image/png")
 
 
 class QueryViewSet(viewsets.GenericViewSet):

@@ -17,9 +17,13 @@ class AudienceSerializer(serializers.ModelSerializer):
 
 class ConversationSerializer(serializers.ModelSerializer):
     url = serializers.SerializerMethodField()
+    has_image = serializers.SerializerMethodField()
 
     def get_url(self, obj):
         return obj.get_absolute_url()
+
+    def get_has_image(self, obj):
+        return obj.has_image
 
     class Meta:
         model = models.Conversation

@@ -1,4 +1,5 @@
 import json
+from base64 import b64decode
 from enum import StrEnum
 
 from django.conf import settings
@@ -7,7 +8,7 @@ from google.generativeai.types import HarmBlockThreshold, HarmCategory
 from openai import OpenAI
 from pydantic import BaseModel
 
-from .models import ChatResponseEvent
+from .models import ChatResponseEvent, GeneratedImage
 
 
 class AiModelName(StrEnum):
@@ -77,8 +78,15 @@ def generate_image(conversation):
 
     Generate a very simple diagram to accompany this explanation.
     """
-    image = openai_client.images.generate(model="dall-e-3", prompt=prompt)
-    print(image)
+    response = openai_client.images.generate(
+        model="dall-e-3", prompt=prompt, response_format="b64_json"
+    )
+
+    GeneratedImage.objects.create(
+        conversation=conversation,
+        revised_prompt=response.data[0].revised_prompt,
+        data=b64decode(response.data[0].b64_json),
+    )
 
 
 class QuerySuggestion(BaseModel):

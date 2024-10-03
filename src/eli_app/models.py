@@ -63,6 +63,10 @@ class Conversation(models.Model):
     def get_absolute_url(self):
         return reverse("conversation", kwargs={"pk": self.id})
 
+    @property
+    def has_image(self):
+        return hasattr(self, "generatedimage")
+
     class Meta:
         ordering = ["-timestamp"]
 
@@ -77,3 +81,13 @@ class ChatResponseEvent(models.Model):
     system_prompt = models.TextField()
     prompt = models.TextField()
     response = models.JSONField()
+
+
+class GeneratedImage(models.Model):
+    conversation = models.OneToOneField(
+        to=Conversation, on_delete=models.CASCADE, primary_key=True
+    )
+
+    start_timestamp = models.DateTimeField(auto_now_add=True)
+    revised_prompt = models.TextField(blank=True)
+    data = models.BinaryField(blank=True)
